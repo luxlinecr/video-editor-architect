@@ -74,14 +74,19 @@ export const MotionReglasApple = z.object({
 	logo: z.string().min(1).nullable().optional(),
 });
 
+export const MotionPrivacyS26 = z.object({
+	nombre: z.literal('privacy-s26'),
+});
+
 /**
- * Los tres primeros (skills-instaladas, basura-a-diseno, reglas-apple) son escenas de 810 × 980 con fondo propio; los
- * tres "libres" (src/estilo/motion-libre.ts) solo van en layout "flotante", anclados a tu cabeza.
+ * Los tres primeros (skills-instaladas, basura-a-diseno, reglas-apple) son escenas de 810 × 980 con fondo propio;
+ * `privacy-s26` ocupa 1080×1920 completo; los tres "libres" (src/estilo/motion-libre.ts) solo van en layout "flotante",
+ * anclados a tu cabeza.
  */
-export const MotionEsquema = z.discriminatedUnion('nombre', [MotionSkillsInstaladas, MotionBasuraADiseno, MotionReglasApple, MotionPruebaCorregida, MotionPlantillaApple, MotionPantallaAObjeto]);
+export const MotionEsquema = z.discriminatedUnion('nombre', [MotionSkillsInstaladas, MotionBasuraADiseno, MotionReglasApple, MotionPrivacyS26, MotionPruebaCorregida, MotionPlantillaApple, MotionPantallaAObjeto]);
 export type Motion = z.infer<typeof MotionEsquema>;
 export type NombreMotion = Motion['nombre'];
-export const NOMBRES_MOTION: readonly NombreMotion[] = ['skills-instaladas', 'basura-a-diseno', 'reglas-apple', 'prueba-corregida', 'plantilla-apple', 'pantalla-a-objeto'];
+export const NOMBRES_MOTION: readonly NombreMotion[] = ['skills-instaladas', 'basura-a-diseno', 'reglas-apple', 'privacy-s26', 'prueba-corregida', 'plantilla-apple', 'pantalla-a-objeto'];
 
 /** ¿Es de los libres (solo flotante, anclados a tu cabeza)? */
 export const esMotionLibre = (nombre: string): boolean => esLibre(nombre);
@@ -94,7 +99,8 @@ export const assetMotion = (nombre: NombreMotion): string => `motion:${nombre}`;
 export type SkillsResuelto = {nombre: 'skills-instaladas'; comando: string; skills: string[]; pie: string | null; avatar: string | null; repo: string};
 export type BasuraResuelto = {nombre: 'basura-a-diseno'; cambio_s: number; antes: string; despues: string};
 export type AppleResuelto = {nombre: 'reglas-apple'; titulo: string; principios: Array<{titulo: string; nota: string}>; logo: string | null};
-export type EscenaResuelto = SkillsResuelto | BasuraResuelto | AppleResuelto;
+export type PrivacyS26Resuelto = {nombre: 'privacy-s26'};
+export type EscenaResuelto = SkillsResuelto | BasuraResuelto | AppleResuelto | PrivacyS26Resuelto;
 export type MotionResuelto = EscenaResuelto | LibreResuelto;
 
 export const PRINCIPIOS_APPLE = [
@@ -128,6 +134,8 @@ export function resolverMotion(m: Motion, desde?: number): MotionResuelto {
 				principios: (m.principios ?? PRINCIPIOS_APPLE).map((p) => ({...p})),
 				logo: m.logo === undefined ? LOGO_APPLE : m.logo,
 			};
+		case 'privacy-s26':
+			return {nombre: 'privacy-s26'};
 	}
 }
 
@@ -286,7 +294,16 @@ export function lineaApple(m: AppleResuelto): LineaApple {
 /** Segundos mínimos que necesita un motion para que todo entre y se lea. */
 export function duracionMinimaMotion(m: Motion): number {
 	const r = resolverMotion(m);
-	const cuadros = r.nombre === 'skills-instaladas' ? lineaSkills(r).minimo : r.nombre === 'basura-a-diseno' ? lineaBasura(r).minimo : r.nombre === 'reglas-apple' ? lineaApple(r).minimo : minimoLibre(r);
+	const cuadros =
+		r.nombre === 'skills-instaladas'
+			? lineaSkills(r).minimo
+			: r.nombre === 'basura-a-diseno'
+				? lineaBasura(r).minimo
+				: r.nombre === 'reglas-apple'
+					? lineaApple(r).minimo
+					: r.nombre === 'privacy-s26'
+						? 3 * FPS_MOTION
+						: minimoLibre(r);
 	return Math.round((cuadros / FPS_MOTION) * 100) / 100;
 }
 

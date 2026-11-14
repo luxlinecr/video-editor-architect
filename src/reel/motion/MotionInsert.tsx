@@ -17,6 +17,7 @@ import {EscenaFlotante} from '../Flotante';
 import {Grano} from './materiales';
 import {PantallaAObjeto} from './PantallaAObjeto';
 import {PlantillaApple} from './PlantillaApple';
+import {PrivacyDisplayS26} from './PrivacyDisplayS26';
 import {PruebaCorregida} from './PruebaCorregida';
 
 /**
@@ -65,6 +66,14 @@ export const MotionInsert: React.FC<{insert: InsertEdl; duracion?: number}> = ({
 	if (!insert.motion) return null;
 	const m = resolverMotion(insert.motion, insert.desde);
 	const dur = duracion ?? Math.max(1, Math.round((insert.hasta - insert.desde) * 30));
+
+	if (m.nombre === 'privacy-s26') {
+		return (
+			<AbsoluteFill data-insert={insert.id} data-motion={m.nombre} style={{width: 1080, height: 1920, overflow: 'hidden'}}>
+				<PrivacyDisplayS26 dur={dur} />
+			</AbsoluteFill>
+		);
+	}
 
 	if (m.nombre === 'prueba-corregida' || m.nombre === 'plantilla-apple' || m.nombre === 'pantalla-a-objeto') {
 		return (

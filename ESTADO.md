@@ -1,8 +1,12 @@
 # ESTADO
 
-Estado: Borrador `v3` listo para revisión de [2026-11-14-iphone-13](proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4) (`cumple 3 de 3 checks (0 N/A)` en QA y `cumple 6 de 6 reglas (7 N/A)` en `validar.ts`), con el perfil `luxline-cr-oficial` intacto y soporte de junction para `public/` en `herramientas/render.ts` bajo Windows verificado (`render.test.ts` `27/27`, `tsc --noEmit` en 0).
+Estado: Borrador `v1` listo para revisión de [2026-11-14-s26-ultra-privacy](proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4) (`25 s`, `750` cuadros, `cumple 3 de 3 checks (0 N/A)` en QA y `cumple 3 de 3 reglas (10 N/A)` en `validar.ts`), con el perfil `luxline-cr-oficial` intacto y verificación de tipos/pruebas (`tsc --noEmit` en 0, `motion.test.ts` `15/15`).
 
 ## Qué se hizo
+
+- Se registró el motion `privacy-s26` en `src/estilo/motion.ts` (`MotionPrivacyS26`, `NOMBRES_MOTION`, `resolverMotion`, `duracionMinimaMotion`) y se conectó en `src/reel/motion/MotionInsert.tsx` como escena completa `1080×1920`.
+- Se creó el componente `src/reel/motion/PrivacyDisplayS26.tsx` (`25 s`, `750` cuadros a `30 fps`) con las 6 escenas solicitadas: cámara dinámica (`<CamaraEscena>`), revelado de texto con máscara (`<TextoMascara>`), movimientos encadenados, silueta del usuario + espía con lupa vectorial (`<EspiaConLupa>`), Galaxy S26 Ultra 3D con giro a `45°`/`58°`, medidor sincronizado `"100 %"` → `"3.5 %"` (`<IndicadorAngulo>`), rotación vertical/horizontal con pantalla PIN gráfica y transformación de objeto (`<TelefonoYMorph>`) al emblema geométrico de Luxline CR; únicamente muestra los 6 textos autorizados del guion dentro de la zona segura de Reels.
+- Se creó el proyecto aislado `proyectos/2026-11-14-s26-ultra-privacy/` (`base.mp4` de `25 s` y `edicion-v1.json`) sin modificar `estilo/estilos/luxline-cr-oficial/`, se validó (`validar.ts`: `cumple 3 de 3 reglas (10 N/A)`), se renderizó el borrador (`borrador-v1.mp4`, `720×1280`, `1.9 MB`, `85.3 s`), se ejecutó QA (`qa.ts`: `cumple 3 de 3 checks (0 N/A)`) y se inspeccionó `qa/v1/hoja-01.jpg`.
 
 - Se creó el proyecto aislado `proyectos/2026-11-14-iphone-13/` (prueba de motion para venta de iPhone 13 Negro 128 GB sin modificar `estilo/estilos/luxline-cr-oficial/`, `src/` ni `C:\Users\jerem\Downloads\20261114_150814.mp4`), omitiendo transcripción/corte de silencios al trabajar por ritmo visual (`base.mp4`, `655` cuadros, `21.833 s`, `subtitulos: []`) y limitando todo texto en pantalla a `"iPhone 13"`, `"128 GB"` y `"Negro"`.
 - Se corrigió `herramientas/render.ts` en Windows (`process.platform === 'win32'`) para evitar el `EPERM` de `@remotion/bundler` al copiar junctions de `public/`, enlazando `public/` al bundle generado mediante `'junction'` (compatibilidad con `borrarBundle`); `npx vitest run pruebas/unit/render.test.ts` (`27 passed | 4 skipped`) y `npx tsc --noEmit` (código `0`) pasaron.
@@ -28,9 +32,13 @@ Estado: Borrador `v3` listo para revisión de [2026-11-14-iphone-13](proyectos/2
 
 ## Qué sigue
 
-- Revisar visualmente `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4` y confirmar si pasamos a render final (`1080×1920`) o ajustamos algo en una `v4`.
+- Revisar visualmente `proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4` y confirmar si pasamos a render final (`1080×1920`) o ajustamos algún tiempo o encuadre en una `v2`.
+- Pendiente anterior: revisar `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4` para confirmar su render final.
 
 ## Decisiones
+
+- Para el video 100 % código de `2026-11-14-s26-ultra-privacy`, se encapsuló toda la animación en un insert `motion:privacy-s26` a pantalla completa (`1080×1920`) en `src/reel/motion/PrivacyDisplayS26.tsx` para dejar intacto `estilo/estilos/luxline-cr-oficial/` y aprovechar `validar.ts`, `render.ts` y `qa.ts`.
+- En `PrivacyDisplayS26.tsx`, la capa tipográfica (`<TextoMascara>` e `<IndicadorAngulo>`) vive en un HUD fijo dentro de la zona segura (`x: 135–945, y: 220–1600`) separado de `<CamaraEscena>`, evitando que el zoom `1.34×` empuje textos fuera de márgenes; el signo `?` sobre el espía y el emblema final se dibujaron con SVG puro sin nodos `<text>`.
 
 - En Windows (`render.ts`), al construir el bundle de Remotion se omite el `copyDir()` de `@remotion/bundler` sobre `public/` (que arroja `EPERM` en junctions sin Modo de desarrollador) y se enlaza `outDir/public` hacia `public/` mediante `'junction'`.
 - Para `proyectos/2026-11-14-iphone-13/`, `desenfoque` (`ConDesenfoque`) mostró bordes reflejados tipo espejo en el borrador `v1`, por lo que se optó por una transformación basada en push-in de zoom encadenado (`z_trans`) + apertura de píldora y entrada de texto sincronizada sin editar `src/`.
