@@ -5,7 +5,8 @@ Estado: Instalación verificada (`doctor.ts` 13/13 ✔ con refresco automático 
 ## Qué se hizo
 
 - Se implementó `leerPathRegistroWindows` y la fusión con `pathAmpliado`/`refrescarPath` en `herramientas/instalar.ts` (y `refrescarPathWindows` en `herramientas/doctor.ts`), leyendo `Machine` + `User` `Path` del registro de Windows y aplicándolo a `process.env.Path` y `process.env.PATH`, con prueba unitaria nueva en `pruebas/unit/instalar.test.ts`.
-- Se actualizó `pruebas/unit/hook.test.ts` a `.agents/hooks/vigilar-bash.mjs` y se añadió `hookSpecificOutput` compatible en `negarAntigravity` de `.agents/hooks/vigilar-bash.mjs`.
+- Se verificó el hook `PreToolUse` de Antigravity en `.agents/hooks/vigilar-bash.mjs` (`negarAntigravity` con `{decision, reason}` sin `hookSpecificOutput` y `negarLegado` intacto), se eliminaron con aprobación del creador los respaldos `.claude.bak/` y `CLAUDE.md.bak`, y se guardó en Git (`34f4f47` / `eed8082`).
+- Se actualizó `pruebas/unit/hook.test.ts` a `.agents/hooks/vigilar-bash.mjs` (`44/44` pasan).
 - Se registraron las licencias OFL-1.1 de las fuentes en `biblioteca/LICENCIAS.md` y `"Claude Code"` en `biblioteca/vocabulario.json`, se normalizaron separadores `/` y rutas de Windows en `herramientas/` (`lib/inserts.ts`, `lib/manifest.ts`, `lib/perfil-estilo.ts`, `lib/llaves.ts`, `grabador/secretos.ts`, `estilo/corpus.ts`) y se corrigieron las pruebas dependientes de Windows/fixtures opcionales (`npx vitest run`: 59 archivos pasaron, 1 omitido por ausencia de fixtures opcionales, 1534 tests pasaron, 77 omitidos, 0 fallos).
 
 - Se actualizó `herramientas/instalar.ts` (`WINGET_YA_INSTALADO = 0x8a15002b` / `2316632107` y `codigoExitoso`) para tratar como éxito el código de `winget` cuando un paquete ya está instalado sin actualización, junto con `unir()`/`posix.join` para pruebas multiplataforma y su test en `pruebas/unit/instalar.test.ts` (`24/24` pasan; `tsc --noEmit` sin errores).
@@ -25,7 +26,6 @@ Estado: Instalación verificada (`doctor.ts` 13/13 ✔ con refresco automático 
 ## Qué sigue
 
 - Recibir la ruta del primer video crudo para editarlo con `/editar` (Paso 5 de `/empezar`).
-- Confirmar más adelante si el usuario aprueba eliminar `.claude.bak/` y `CLAUDE.md.bak`.
 
 ## Decisiones
 
