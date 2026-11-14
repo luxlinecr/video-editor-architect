@@ -1,9 +1,10 @@
 # ESTADO
 
-Estado: **Borrador 720×1280 de `Luxline-PrivacyDisplay-S26U` renderizado** — composición `1080×1920` a `60 fps` (`1500` cuadros) registrada en `src/Root.tsx` con paleta `android` de `luxline-ventas`, cues en tuteo en `src/reel/motion/luxline/privacy-s26u-cues.json` y borrador MP4 en `out/luxline-privacy-display-s26u-720x1280.mp4`.
+Estado: **Render final 1080×1920 de `Luxline-PrivacyDisplay-S26U` completado** — composición `1080×1920` a `60 fps` (`1500` cuadros, `25 s`, H.264 `yuv420p`) registrada en `src/Root.tsx` con paleta `android` de `luxline-ventas`, cues en tuteo en `src/reel/motion/luxline/privacy-s26u-cues.json`, borrador en `out/luxline-privacy-display-s26u-720x1280.mp4` y render final en `out/luxline-privacy-display-s26u-1080x1920.mp4`.
 
 ## Qué se hizo
 
+- Se renderizó la versión final `1080×1920` de `"Luxline-PrivacyDisplay-S26U"` (`60 fps`, `1500` cuadros, `25.0 s`, H.264 `yuv420p`, `crf: 16`, `x264Preset: medium`, `bt709`) en `out/luxline-privacy-display-s26u-1080x1920.mp4` (verificado con `ffprobe`).
 - Se creó `src/reel/motion/luxline/PrivacyDisplayS26U.tsx` (`1080×1920`, `60 fps`, `1500` cuadros) y se registró la composición `"Luxline-PrivacyDisplay-S26U"` en `src/Root.tsx` junto a `Luxline-Style-Demo`, usando estilo `luxline-ventas`, paleta `android`, `assets/marca/logos/logo-negro.svg`, `NotoSansDisplay-Variable.ttf`, `Mono-Regular.ttf`, `front-cutout.png` + `angle.png` para el Galaxy S26 Ultra real (incluyendo la rotación 3D de la escena 4), silueta contrastada del dueño sujetando el teléfono, espía en vector plano con lupa, las 5 técnicas de `Techniques.tsx` y `ZONA_SEGURA.capas`.
 - Se creó `src/reel/motion/luxline/privacy-s26u-cues.json` con las 6 líneas planeadas de locución en tuteo (`~2–3` palabras/s, `voiceApproved: false`, `simulation: false`, sin generar audio), y se actualizaron las pruebas unitarias en `pruebas/unit/luxline-motion.test.ts`.
 - Se renderizó el borrador `720×1280` (`60 fps`, `1500` cuadros, `25 s`, H.264 `yuv420p`) en `out/luxline-privacy-display-s26u-720x1280.mp4`.
@@ -41,7 +42,7 @@ Estado: **Borrador 720×1280 de `Luxline-PrivacyDisplay-S26U` renderizado** — 
 
 ## Qué sigue
 
-- Revisar el borrador `out/luxline-privacy-display-s26u-720x1280.mp4` (`Luxline-PrivacyDisplay-S26U`, `720×1280`, `60 fps`, `1500` cuadros) para aprobarlo o ajustar tiempos antes de renderizar la versión final `1080×1920` (y conectar audio si luego se graba locución con `privacy-s26u-cues.json`).
+- Opcional: grabar y conectar la locución en tuteo usando `src/reel/motion/luxline/privacy-s26u-cues.json` si luego se agrega voz a `Luxline-PrivacyDisplay-S26U` (el render final `1080×1920` sin audio quedó en `out/luxline-privacy-display-s26u-1080x1920.mp4`).
 - Pendiente anterior: revisar `proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4` y `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4`.
 
 ## Decisiones
