@@ -26,7 +26,7 @@ import {pythonVenv, RAIZ_PROYECTO} from './plataforma.ts';
 export const COMMIT_FUENTES = '9710da1eacb3be272583c3224dcb70f9da6eadbb';
 const URL_BASE = `https://raw.githubusercontent.com/google/fonts/${COMMIT_FUENTES}/ofl`;
 
-type Instancia = {archivo: string; sha256: string; ejes: string[]};
+type Instancia = {archivo: string; sha256: string; sha256Win?: string; ejes: string[]};
 export type FamiliaOfl = {
 	carpeta: string;
 	/** Ruta dentro de google/fonts/ofl (ya codificada para URL). */
@@ -65,9 +65,9 @@ export const FAMILIAS_OFL: readonly FamiliaOfl[] = [
 		sha256Fuente: '29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031',
 		ofl: {ruta: 'inter/OFL.txt', sha256: '5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57'},
 		instancias: [
-			{archivo: 'Inter-SemiBold.ttf', sha256: '4e2353ba2b6a3514acdfe5d2409ad59468bb4d0b8ee01aabf03120ecf2dae95a', ejes: ['wght=600', 'opsz=14']},
-			{archivo: 'Inter-Bold.ttf', sha256: 'd289ec2c941d44e340fdc16adae7e82dbb3674c3ce6ed7d7c0d5d0558f5aa73e', ejes: ['wght=700', 'opsz=14']},
-			{archivo: 'Inter-ExtraBold.ttf', sha256: '0a63d47e990a5107e1fa64c5c904458fdebf11c86f3a56f9c0e07a42bd8f13e7', ejes: ['wght=800', 'opsz=14']},
+			{archivo: 'Inter-SemiBold.ttf', sha256: '4e2353ba2b6a3514acdfe5d2409ad59468bb4d0b8ee01aabf03120ecf2dae95a', sha256Win: 'a9801cb4bc6c57ed2e918935249ec8a68d9ed398ee5da891df2fe391a5e5a27e', ejes: ['wght=600', 'opsz=14']},
+			{archivo: 'Inter-Bold.ttf', sha256: 'd289ec2c941d44e340fdc16adae7e82dbb3674c3ce6ed7d7c0d5d0558f5aa73e', sha256Win: '42eb54f7b7d5157f6b53139a5676433637e345a9866e0461edf5a1e48226fd5b', ejes: ['wght=700', 'opsz=14']},
+			{archivo: 'Inter-ExtraBold.ttf', sha256: '0a63d47e990a5107e1fa64c5c904458fdebf11c86f3a56f9c0e07a42bd8f13e7', sha256Win: 'a2ab6c0a66194f4af2283c111c62f1bd9a6c8019e010f50f608bcbdfa4812654', ejes: ['wght=800', 'opsz=14']},
 		],
 	},
 	{
@@ -177,7 +177,7 @@ export async function prepararFuentes(op: {raiz?: string; python?: string; todas
 						throw fallo('preparar las fuentes', `fonttools no pudo instanciar ${inst.archivo}`, 'revisa que el .venv traiga fonttools y skia-pathops (npx tsx herramientas/doctor.ts)', 1, r.stderr);
 					}
 					const real = sha256(readFileSync(salida));
-					if (real !== inst.sha256) {
+					if (real !== inst.sha256 && real !== inst.sha256Win) {
 						throw fallo('preparar las fuentes', `${inst.archivo} salió con otro sha256 (${real.slice(0, 12)}…)`, 'usa las versiones fijas de herramientas/py/requirements.txt (fonttools 4.63.0, skia-pathops 0.9.2)', 1);
 					}
 					copyFileSync(salida, join(destino, inst.archivo)); // copia: temporal y proyecto pueden estar en discos distintos

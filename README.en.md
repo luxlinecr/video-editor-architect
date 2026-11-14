@@ -4,12 +4,12 @@
     <source media="(prefers-color-scheme: light) and (prefers-reduced-motion: reduce)" srcset="assets/hero-light-en-static.svg">
     <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark-en.svg">
     <source media="(prefers-color-scheme: light)" srcset="assets/hero-light-en.svg">
-    <img alt="Video Editor Architect: you train your editing style and Claude edits your reels with it" src="assets/hero-dark-en.svg" width="100%">
+    <img alt="Video Editor Architect: you train your editing style and the agent edits your reels with it" src="assets/hero-dark-en.svg" width="100%">
   </picture>
 </p>
 
 <p align="center">
-  <a href="#quick-start"><img src="https://img.shields.io/badge/Claude_Code-Agent-D97757?style=for-the-badge&logo=claude&logoColor=white&labelColor=0B0F14" alt="Claude Code agent"></a>
+  <a href="#quick-start"><img src="https://img.shields.io/badge/Antigravity_IDE-Agent-4285F4?style=for-the-badge&logo=google&logoColor=white&labelColor=0B0F14" alt="Antigravity IDE agent"></a>
   <a href="https://www.remotion.dev"><img src="https://img.shields.io/badge/Remotion-4-8AA4C8?style=for-the-badge&labelColor=0B0F14" alt="Remotion 4"></a>
   <a href="#requirements"><img src="https://img.shields.io/badge/macOS_·_Windows-E6EDF3?style=for-the-badge&labelColor=0B0F14" alt="macOS and Windows"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge&labelColor=0B0F14" alt="MIT license"></a>
@@ -17,10 +17,10 @@
   <a href="README.en.md"><img src="https://img.shields.io/badge/Lang-English-FF6B4A?style=for-the-badge&labelColor=0B0F14" alt="English"></a>
 </p>
 
-<p align="center"><b>Train your style. Claude edits your reels.</b></p>
+<p align="center"><b>Train your style. The agent edits your reels.</b></p>
 
 <p align="center">
-Video Editor Architect is a reel editor you run with Claude Code. You train <b>your</b> editing style (subtitles, keyword cards, pacing, cuts, sound) from your own reels or from creators you like. Then Claude edits your raw footage with it: it decides what goes on screen and when, deterministic scripts do the math and <a href="https://www.remotion.dev">Remotion</a> renders the MP4. If you post reels often and you're tired of explaining to every editor how you like them, it's for you.
+Video Editor Architect is a reel editor built for Antigravity IDE. You train <b>your</b> editing style (subtitles, keyword cards, pacing, cuts, sound) from your own reels or from creators you like. Then the agent edits your raw footage with it: it decides what goes on screen and when, deterministic scripts do the math and <a href="https://www.remotion.dev">Remotion</a> renders the MP4. If you post reels often and you're tired of explaining to every editor how you like them, it's for you.
 </p>
 
 <p align="center">
@@ -44,41 +44,41 @@ You type `/empezar` and the setup agent walks you through it, one question at a 
 ```text
 You       /empezar
 
-Claude    ¿En qué idioma prefieres que trabajemos: español o inglés? /
+Agent     ¿En qué idioma prefieres que trabajemos: español o inglés? /
           Which language do you prefer: Spanish or English?
 
 You       English.
 
-Claude    Checking your install with the doctor (read only).
+Agent     Checking your install with the doctor (read only).
           ✓ Node 24 · ✓ ffmpeg · ✓ whisper.cpp and its models · ✗ yt-dlp
           yt-dlp is missing; it downloads your reels for free. Run this
           and tell me when it's done:  brew install yt-dlp
 
 You       Done.
 
-Claude    The doctor is all green. What should I call you?
+Agent     The doctor is all green. What should I call you?
           ...
 
-Claude    Where does your style come from?
+Agent     Where does your style come from?
           a) Your own published reels (free with yt-dlp or a folder of MP4s)
           b) Creators you name as reference
           c) Start with base-neutra and train later
 
 You       a, my reels.
 
-Claude    Got it. I'll fetch them from your profile with yt-dlp and measure
+Agent     Got it. I'll fetch them from your profile with yt-dlp and measure
           subtitles, cards, pacing, framing and sound. You'll get a summary
           with every number and its n, then you hand me a raw video for
           the first reel.
 ```
 
-If something costs money, Claude tells you how much and waits for your "yes" in that same turn.
+If something costs money, the agent tells you how much and waits for your "yes" in that same turn.
 
 ## Quick start
 
-**Before:** Node.js 24, Git and Claude Code signed in to your account. The [macOS](docs/install-macos.md) and [Windows](docs/install-windows.md) guides cover each one.
+**Before:** Node.js 24, Git and Antigravity IDE signed in to your account. The [macOS](docs/install-macos.md) and [Windows](docs/install-windows.md) guides cover each one.
 
-Clone the repo and go in:
+Clone the repo and open it in Antigravity IDE:
 
 ```bash
 git clone https://github.com/Hainrixz/video-editor-architect.git my-editor
@@ -86,10 +86,9 @@ cd my-editor
 npm ci
 npm run instalar          # shows the plan: what is missing and how it gets installed
 npm run instalar -- --si  # with your yes, installs it
-claude
 ```
 
-Inside Claude Code, type `/empezar` (it speaks English too; saying "start" also works).
+Inside Antigravity IDE chat, type `/empezar` (it speaks English too; saying "start" also works).
 
 `npm run instalar` only installs what your system (macOS or Windows) is missing: ffmpeg, whisper.cpp and its models, uv and Python, yt-dlp, Chromium and the fonts. It never uses `sudo` and never touches your keys; anything that needs your password is printed for you to run. Afterwards, `npx tsx herramientas/doctor.ts` confirms everything is there.
 
@@ -111,7 +110,7 @@ You pick where it comes from: your own published reels (`/aprender-estilo`), cre
   <img alt="The repeat, the filler and the dead air are struck, the text is approved and the rest closes up" src="assets/banner-cortes-en.svg" width="100%">
 </picture>
 
-whisper.cpp transcribes your raw footage on your machine and Claude proposes the text without silences or repeated takes. You approve it before anything gets cut. If your style asks for it, the take is sped up without changing the pitch of your voice. The original is never touched.
+whisper.cpp transcribes your raw footage on your machine and the agent proposes the text without silences or repeated takes. You approve it before anything gets cut. If your style asks for it, the take is sped up without changing the pitch of your voice. The original is never touched.
 
 ### Subtitles and cards
 
@@ -120,7 +119,7 @@ whisper.cpp transcribes your raw footage on your machine and Claude proposes the
   <img alt="Word-by-word subtitle, keyword card and a prompt that types itself" src="assets/banner-subtitulos-en.svg" width="100%">
 </picture>
 
-Two-to-three-word subtitles with your style's size and position, and keyword cards with what you say, word for word. When you say "ask Claude…", a prompt card types itself in so viewers can copy it.
+Two-to-three-word subtitles with your style's size and position, and keyword cards with what you say, word for word. When you say "ask the AI…", a prompt card types itself in so viewers can copy it.
 
 ### The director
 
@@ -129,7 +128,7 @@ Two-to-three-word subtitles with your style's size and position, and keyword car
   <img alt="Sticker, SFX, insert and demo tracks fill up; a meme is dropped because the profile says no memes" src="assets/banner-director-en.svg" width="100%">
 </picture>
 
-Claude decides what goes in and when: logos and stickers from your library, sound effects without repeats, your screenshots, and screen demos recorded with `/grabar-demo`. Its decisions go in `notas-director.json`, and your profile wins whenever it clashes with the draft.
+The agent decides what goes in and when: logos and stickers from your library, sound effects without repeats, your screenshots, and screen demos recorded with `/grabar-demo`. Its decisions go in `notas-director.json`, and your profile wins whenever it clashes with the draft.
 
 ### Render and review
 
@@ -156,11 +155,11 @@ Remotion renders at 1440×2560 (and 4K if your raw footage is 4K) at −14 LUFS 
 | Install guide | [docs/install-macos.md](docs/install-macos.md) | [docs/install-windows.md](docs/install-windows.md) |
 | Node.js | 24 or newer | 24 or newer |
 | Also needed | ffmpeg, whisper.cpp, Python with uv, Chrome | ffmpeg, whisper.cpp, Python with uv, Chrome |
-| Claude Code | yes | yes |
+| Antigravity IDE | yes | yes |
 | Face tracking and OCR | Apple Vision | Python (RapidOCR + MediaPipe in the uv `.venv`) |
-| Claude Code sandbox | yes | no on native Windows (yes on WSL2) |
+| Rules & hook | `AGENTS.md` + `.agents/` | `AGENTS.md` + `.agents/` (no OS sandbox; review commands) |
 
-On native Windows the repo's rules still apply, but there is no sandbox enforcing them. If your whisper models live in another folder, the guides explain `EDITOR_WHISPER_MODELO`, `EDITOR_VAD_MODELO`, `EDITOR_VAD_CLI` and `EDITOR_MODELOS`.
+Main workspace rules live in `AGENTS.md`, `.agents/rules/seguridad.md`, and the `.agents/hooks.json` hook (watching `playwright-cli`), alongside workflows in `.agents/workflows/` and skills in `.agents/skills/`. Antigravity IDE does not enforce an OS-level command sandbox, so review each command before approving it. If your whisper models live in another folder, the guides explain `EDITOR_WHISPER_MODELO`, `EDITOR_VAD_MODELO`, `EDITOR_VAD_CLI` and `EDITOR_MODELOS`.
 
 ## How your style is stored
 
@@ -171,9 +170,9 @@ Each style is a folder in `estilo/estilos/<id>/`:
 - `aprendizajes.md`: what worked and what didn't while training it.
 - `fuentes.json`: the reels and profiles it was learned from.
 
-The registry is `estilo/estilos/estilos.json`. You can have several styles; if you don't name one when editing, Claude asks which. Your profile (`creador.json`), your styles and `ESTADO.md` are meant to be committed to **your** private repo. More in [estilo/estilos/README.md](estilo/estilos/README.md).
+The registry is `estilo/estilos/estilos.json`. You can have several styles; if you don't name one when editing, the agent asks which. Your profile (`creador.json`), your styles and `ESTADO.md` are meant to be committed to **your** private repo. More in [estilo/estilos/README.md](estilo/estilos/README.md).
 
-Tool names, folders and flags are in Spanish (`herramientas/` = tools, `crudo` = raw footage, `proyectos/` = projects, `estilo/` = style, `biblioteca/` = library). Claude talks to you in English all the same.
+Tool names, folders and flags are in Spanish (`herramientas/` = tools, `crudo` = raw footage, `proyectos/` = projects, `estilo/` = style, `biblioteca/` = library). The agent talks to you in English all the same.
 
 ## What this repo does NOT include
 
@@ -191,10 +190,11 @@ No videos, stickers, sound effects, memes, logos or font files. You add your own
 | `/sfx` | Manages your sound-effects library |
 | `/stickers` | Brand logos and your own PNG stickers |
 | `/grabar-demo` | Records a web screen demo to use as an insert |
+| `/revisor-qa` | Reviews an already rendered reel with contact sheets and `validar.ts` |
 
 ## Design and video skills
 
-None of them ship with the repo: each one installs separately, under its own license. [docs/skills.md](docs/skills.md) says what each is for and how to install it:
+None of them ship with the repo: each one installs separately, under its own license. [docs/skills.md](docs/skills.md) says what each is for and how to install it in Antigravity IDE (`npx skills add ...` or via the Plugins Manager):
 
 - **Remotion's official skills**, for captions, animation and rendering.
 - **UI UX Pro Max**, for palettes and type for subtitles, cards and titles.
@@ -202,14 +202,14 @@ None of them ship with the repo: each one installs separately, under its own lic
 - **BRAG**, for a project's launch video.
 - **Motion Architect**, for full motion graphics with a storyboard.
 
-They are listed in `.claude/settings.json` but don't install themselves: trust the folder and run `claude plugin install <name>@video-editor-architect --scope project` for each one you want.
+The recommended skill and marketplace references are documented in [docs/skills.md](docs/skills.md) and [docs/marketplaces.json](docs/marketplaces.json).
 
 ## Keys and spending
 
 > [!WARNING]
-> **Claude never reads, prints or asks for your keys.** They go in `~/.config/claude-editor/.env`, written by you. `npx tsx herramientas/doctor.ts` only says whether each one is present.
+> **The agent never reads, prints or asks for your keys.** They go in `~/.config/claude-editor/.env`, written by you. `npx tsx herramientas/doctor.ts` only says whether each one is present.
 
-Transcribing, cutting and rendering cost nothing beyond your Claude plan: they run on your machine. The optional paid parts (Apify to fetch reels with their metrics, Gemini for content analysis) need your yes in the same turn, with the cost stated first, and the scripts refuse to run without `--si-gasto=<amount>`.
+Transcribing, cutting and rendering run locally on your machine at no extra cost. The optional paid parts (Apify to fetch reels with their metrics, Gemini for content analysis) need your yes in the same turn, with the cost stated first, and the scripts refuse to run without `--si-gasto=<amount>`.
 
 ## Remotion license
 
@@ -219,16 +219,16 @@ Transcribing, cutting and rendering cost nothing beyond your Claude plan: they r
 ## FAQ
 
 **Do I need to know how to code?**
-No. `/empezar` guides you and explains each step. The technical part is installing Claude Code and pasting a few commands.
+No. `/empezar` guides you and explains each step. The technical part is opening the project in Antigravity IDE and running a few commands.
 
 **Do my videos leave my computer?**
-Transcription (whisper.cpp) and rendering (Remotion) run on your machine. What Claude reads to direct the edit, like the transcript and the contact sheets, goes through your Claude Code session.
+Transcription (whisper.cpp) and rendering (Remotion) run on your machine. What the agent reads to direct the edit, like the transcript and the contact sheets, goes through your Antigravity IDE session.
 
 **Does it work on Windows?**
-Yes. Face tracking and OCR run with Python instead of Apple Vision, and native Windows has no sandbox (WSL2 does). The [Windows guide](docs/install-windows.md) covers the differences.
+Yes. Face tracking and OCR run with Python instead of Apple Vision. The [Windows guide](docs/install-windows.md) covers the details.
 
 **Can I have more than one style?**
-Yes. Each one lives in its own folder and is registered in `estilos.json`. When editing, Claude asks which one to use if you don't name it.
+Yes. Each one lives in its own folder and is registered in `estilos.json`. When editing, the agent asks which one to use if you don't name it.
 
 **Does it post for me?**
 No. It hands you the final MP4 (`salida/final-vN.mp4`) and you decide where it goes.

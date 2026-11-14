@@ -23,15 +23,15 @@ npm run instalar -- --si  # installs it, step by step
 
 It installs only what is missing: ffmpeg (`Gyan.FFmpeg`), uv, yt-dlp and Chrome with `winget` (it accepts the source and package agreements for you); whisper.cpp from the official zip of the `ggml-org/whisper.cpp` releases, unzipped under `%USERPROFILE%\.cache\video-editor\whisper`, with `EDITOR_WHISPER_CLI` and `EDITOR_VAD_CLI` set for your user (`setx`, no admin); the Python `.venv` with the OCR and face packages; the whisper large-v3 model (**about 3.1 GB**, the download resumes if it gets cut) and the silero VAD; Playwright's Chromium; and the OFL fonts. Each step is checked right after, and it ends with "listo X de Y (Z omitidos)". `--solo uv,venv` limits it to some pieces.
 
-It never asks for admin rights on its own and never touches your keys. Node is only mentioned (it is what runs the installer). When it finishes, **open a new terminal** (and restart Claude Code) so the PATH and the new variables are seen, then run `npx tsx herramientas/doctor.ts`. Remember: on native Windows Claude Code has no sandbox, so read the plan before saying yes.
+It never asks for admin rights on its own and never touches your keys. Node is only mentioned (it is what runs the installer). When it finishes, **open a new terminal** (and restart Antigravity IDE) so the PATH and the new variables are seen, then run `npx tsx herramientas/doctor.ts`. Remember: on native Windows there is no OS sandbox, so read the plan before saying yes.
 
 The manual steps below do the same, one by one.
 
 ## Two ways to run it
 
-**A. Native Windows (simplest).** Everything below. Important: **Claude Code's sandbox does not run on native Windows.** Claude Code's docs say so directly: "On native Windows, Claude Code runs commands unsandboxed." The project's rules still apply (no keys, no spending without your yes, originals untouched), but nothing at the OS level enforces them. Keep the `deny` and `ask` permissions in `.claude/settings.json` and read what the agent proposes before saying yes.
+**A. Native Windows (simplest).** Everything below. Important: **on native Windows there is no OS-level command sandbox.** The project's rules still apply (`AGENTS.md`, `.agents/rules/seguridad.md`, and the `.agents/hooks.json` hook for `playwright-cli`), but nothing at the OS level isolates files or network; read what the agent proposes before saying yes.
 
-**B. WSL2 (recommended if you want the sandbox).** The sandbox runs on macOS, Linux and WSL2 (not WSL1). Inside WSL2 you follow Linux steps: install Claude Code with `curl -fsSL https://claude.ai/install.sh | bash`, the sandbox needs `bubblewrap` and `socat`, Remotion needs glibc 2.35+ and its Linux packages, and whisper.cpp has Ubuntu x64 builds in its releases. Keep the project inside the Linux filesystem (for example `~/my-editor`), not under `/mnt/c`. A full WSL2 guide is **not written yet**; this page covers native Windows.
+**B. WSL2 (optional if you prefer a Linux environment).** Inside WSL2 you follow Linux steps: Remotion needs glibc 2.35+ and its Linux packages, and whisper.cpp has Ubuntu x64 builds in its releases. Keep the project inside the Linux filesystem (for example `~/my-editor`), not under `/mnt/c`. A full WSL2 guide is **not written yet**; this page covers native Windows.
 
 ## 1. Git for Windows
 
@@ -39,7 +39,7 @@ The manual steps below do the same, one by one.
 winget install --id Git.Git -e
 ```
 
-Claude Code uses Git Bash for its Bash tool; without Git for Windows it falls back to PowerShell. The project's `public/` folder uses **symlinks**: before cloning, turn on Windows **Developer Mode** (Settings → System → For developers) and run:
+On native Windows, the agent runs commands in PowerShell (and `public/` uses junctions via `preparar-public.ts`). If you want symlinks too, turn on Windows **Developer Mode** (Settings → System → For developers) and run before cloning:
 
 ```powershell
 git config --global core.symlinks true
@@ -139,27 +139,22 @@ npx playwright install chromium
 
 Playwright stores its browsers in `%USERPROFILE%\AppData\Local\ms-playwright`.
 
-## 10. Claude Code
+## 10. Antigravity IDE
 
-```powershell
-irm https://claude.ai/install.ps1 | iex
-```
+Open this folder as a workspace in **Antigravity IDE**. Project rules (`AGENTS.md`, `.agents/rules/`), workflows (`.agents/workflows/`), skills (`.agents/skills/`) and the hook (`.agents/hooks.json`) are discovered automatically.
 
-Or `winget install Anthropic.ClaudeCode` (winget installs don't auto-update: `winget upgrade Anthropic.ClaudeCode`). No admin rights needed.
-
-## 11. Project and plugins
+## 11. Project and skills
 
 ```powershell
 npm ci
 npx tsx herramientas/doctor.ts
-claude
 ```
 
-Accept the folder trust dialog, then install the recommended plugins: [skills.md](skills.md). Note: HyperFrames and BRAG have no official Windows support statement (not verified), and Motion Architect's installer is macOS and Linux only.
+Then install any recommended skills or plugins you want: [skills.md](skills.md). Note: HyperFrames and BRAG have no official Windows support statement (not verified), and Motion Architect's installer is macOS and Linux only.
 
 ## What is different from macOS
 
-- No sandbox on native Windows (use WSL2 if you want it).
+- No OS-level sandbox on native Windows (mitigated via `.agents/rules/seguridad.md`, `.agents/hooks.json` and manual command review).
 - No Apple Vision: OCR and face use RapidOCR and MediaPipe in Python.
 - The native window recorder (`herramientas/grabador/ventana.ts`) relies on macOS screen capture; on Windows, record demos with the web recorder (Chrome + Playwright). Whether `ventana.ts` runs on Windows is not verified.
 - Paths use `\`; the tools take care of it, but write paths in quotes if they have spaces.

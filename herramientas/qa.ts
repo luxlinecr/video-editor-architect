@@ -8,7 +8,7 @@
  *       [--fuente-sincronia auto|original|base|final] [--sin-sincronia] [--sin-ab] [--publicado <mp4>]
  *   npx tsx herramientas/qa.ts <slug> --version N --veredicto si|no     (registra tu veredicto del lado a lado)
  *
- * 1. Verifica el MP4 (salida/final-vN.mp4; con --borrador, salida/borrador-vN.mp4): tamaño (1440×2560 o
+ * 1. Verifica el MP4 (salida/final-vN.mp4; con --borrador, salida/borrador-vN.mp4): tamaño (1080×1920 o
  *    720×1280), 30/1, h264, AAC 48 kHz, cuadros = round(duracion_s × 30) y audio vs video ±1 cuadro.
  * 2. Stills con ffmpeg en el cuadro exacto (en tandas, select por tiempo tras buscar con -ss): en los tiempos de --tiempos o en el
  *    inicio y la mitad de cada subtítulo. Las hojas de contacto (con etiqueta por still) van a
@@ -34,7 +34,7 @@ import {DIR_PROYECTOS, RAIZ, dirProyecto, hashearArchivo, leerManifest, registra
 import {esVelocidadValida} from './lib/remapear.ts';
 import {actualizarReporte, contarChecks, crearCheck, fraseConteo, leerReporte, regenerarReporte, type Check} from './lib/reporte.ts';
 import {extraerAudio16k, mapeoDesdeTramos, medirSincronia, MOTIVOS_EXCLUSION, SINCRONIA, type FuenteSincronia, type Mapeo, type MotivoExclusion, type ResultadoSincronia} from './lib/sincronia.ts';
-import {elegirVersion, rutaEdicion, verificarVideo, type Esperado} from './render.ts';
+import {elegirVersion, RENDER, rutaEdicion, verificarVideo, type Esperado} from './render.ts';
 import {rutaEnPublic} from './validar.ts';
 
 export const FPS = 30;
@@ -367,7 +367,7 @@ export async function correrQa(op: OpcionesQa): Promise<ResultadoQa> {
 
 	// 1. Verificación
 	const cuadrosEsperados = Math.max(1, Math.round(edicion.duracion_s * FPS));
-	const esperado: Esperado = op.borrador ? {ancho: 720, alto: 1280, cuadros: cuadrosEsperados} : {ancho: 1440, alto: 2560, cuadros: cuadrosEsperados};
+	const esperado: Esperado = op.borrador ? {ancho: RENDER.borrador.ancho, alto: RENDER.borrador.alto, cuadros: cuadrosEsperados} : {ancho: RENDER.final.ancho, alto: RENDER.final.alto, cuadros: cuadrosEsperados};
 	const verificacion = await medir('verificacion', async () => verificarVideo(await sondear(video), esperado, `ffprobe de salida/${nombreVideo}`));
 
 	// 2. Stills + hojas de contacto

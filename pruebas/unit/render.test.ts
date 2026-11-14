@@ -31,6 +31,7 @@ import {
 	notaLoudness,
 	parsearEbur128,
 	parsearLoudnorm,
+	RENDER,
 	renderizar,
 	tpDeReintento,
 	versionesEdicion,
@@ -221,7 +222,7 @@ describe('render.ts — versiones y compuerta de validación', () => {
 			const invalida = clonar(EDL);
 			invalida.lienzo.w = 1080;
 			writeFileSync(join(dirCli, 'edicion-v1.json'), JSON.stringify(invalida));
-			const r = spawnSync('npx', ['tsx', 'herramientas/render.ts', slugCli], {cwd: RAIZ, encoding: 'utf8'});
+			const r = spawnSync(process.execPath, [join(RAIZ, 'node_modules', 'tsx', 'dist', 'cli.mjs'), 'herramientas/render.ts', slugCli], {cwd: RAIZ, encoding: 'utf8'});
 			expect(r.status, r.stderr).toBe(2);
 			expect(r.stdout).toMatch(/\[esquema\] lienzo\.w/);
 			expect(r.stderr.trim().split('\n').at(-1)).toMatch(/^No pude renderizar: la edición no pasa validar\.ts \(1 problema\(s\)\)\. Siguiente paso: .+\.$/);
@@ -362,7 +363,7 @@ describe('qa.ts', () => {
 		ruta: 'x.mp4',
 		duracion: 3,
 		video: {
-			indice: 0, codec: 'h264', ancho: cambios.ancho ?? 1440, alto: 2560, rotacion: 0, anchoVisible: 1440, altoVisible: 2560,
+			indice: 0, codec: 'h264', ancho: cambios.ancho ?? 1080, alto: 1920, rotacion: 0, anchoVisible: 1080, altoVisible: 1920,
 			fpsReal: 30, fpsNominal: 30, rFrameRate: '30/1', avgFrameRate: '30/1', vfr: false, colorTransfer: 'bt709', colorPrimaries: 'bt709',
 			colorSpace: 'bt709', pixFmt: 'yuv420p', hdr: false, duracion: 3, cuadros: cambios.cuadros === undefined ? 90 : cambios.cuadros,
 		},
@@ -386,14 +387,15 @@ describe('qa.ts', () => {
 		expect(registrarVeredicto(slug, 1, 'no', proyectos)).toBe('cumple 1 de 2 checks (0 N/A)');
 	});
 
-	it('verificarVideo: pasa con 1440×2560, 90 cuadros y audio a 0.3 cuadros', () => {
-		const v = verificarVideo(sondeo(), {ancho: 1440, alto: 2560, cuadros: 90}, 'prueba');
+	it('verificarVideo: pasa con RENDER.final (1080×1920, scale 0.75), 90 cuadros y audio a 0.3 cuadros', () => {
+		expect(RENDER.final).toEqual({escala: 0.75, ancho: 1080, alto: 1920});
+		const v = verificarVideo(sondeo(), {ancho: 1080, alto: 1920, cuadros: 90}, 'prueba');
 		expect(v.checks.map((c) => c.estado)).toEqual(['PASA', 'PASA', 'PASA']);
 		expect(v.datos.dif_cuadros_audio_video).toBe(0.3);
 	});
 
 	it('verificarVideo: falla con otro ancho, 89 cuadros o audio a 2 cuadros', () => {
-		const v = verificarVideo(sondeo({ancho: 1080, cuadros: 89, audio: 3.0667}), {ancho: 1440, alto: 2560, cuadros: 90}, 'prueba');
+		const v = verificarVideo(sondeo({ancho: 720, cuadros: 89, audio: 3.0667}), {ancho: 1080, alto: 1920, cuadros: 90}, 'prueba');
 		expect(v.checks.map((c) => c.estado)).toEqual(['FALLA', 'FALLA', 'FALLA']);
 		expect(v.problemas).toHaveLength(3);
 	});

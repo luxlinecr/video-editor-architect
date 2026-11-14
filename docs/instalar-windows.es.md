@@ -23,15 +23,15 @@ npm run instalar -- --si  # lo instala, paso a paso
 
 Solo instala lo que falta: ffmpeg (`Gyan.FFmpeg`), uv, yt-dlp y Chrome con `winget` (acepta por ti los acuerdos del origen y del paquete); whisper.cpp del zip oficial de las releases de `ggml-org/whisper.cpp`, descomprimido en `%USERPROFILE%\.cache\video-editor\whisper`, con `EDITOR_WHISPER_CLI` y `EDITOR_VAD_CLI` fijadas para tu usuario (`setx`, sin administrador); el `.venv` de Python con los paquetes de OCR y cara; el modelo large-v3 de whisper (**unos 3.1 GB**, la descarga se retoma si se corta) y el VAD silero; el Chromium de Playwright; y las fuentes OFL. Cada paso se revisa al terminar, y al final dice "listo X de Y (Z omitidos)". `--solo uv,venv` lo limita a algunas piezas.
 
-Nunca pide permisos de administrador por su cuenta y nunca toca tus llaves. Node solo se avisa (es lo que corre el instalador). Al terminar, **abre una terminal nueva** (y reinicia Claude Code) para que se vean el PATH y las variables nuevas, y corre `npx tsx herramientas/doctor.ts`. Recuerda: en Windows nativo Claude Code no tiene sandbox, así que lee el plan antes de decir que sí.
+Nunca pide permisos de administrador por su cuenta y nunca toca tus llaves. Node solo se avisa (es lo que corre el instalador). Al terminar, **abre una terminal nueva** (y reinicia Antigravity IDE) para que se vean el PATH y las variables nuevas, y corre `npx tsx herramientas/doctor.ts`. Recuerda: en Windows nativo no hay sandbox del sistema operativo, así que lee el plan antes de decir que sí.
 
 Los pasos manuales de abajo hacen lo mismo, uno por uno.
 
 ## Dos formas de correrlo
 
-**A. Windows nativo (lo más simple).** Todo lo de esta página. Importante: **el sandbox de Claude Code no corre en Windows nativo.** La documentación de Claude Code lo dice tal cual: en Windows nativo, Claude Code corre los comandos sin sandbox. Las reglas del proyecto siguen (nada de llaves, nada de gastos sin tu sí, los originales no se tocan), pero el sistema operativo no las hace cumplir. Deja los permisos `deny` y `ask` de `.claude/settings.json` y lee lo que te propone el agente antes de decir que sí.
+**A. Windows nativo (lo más simple).** Todo lo de esta página. Importante: **en Windows nativo no hay sandbox del sistema operativo.** Las reglas del proyecto siguen vigentes (`AGENTS.md`, `.agents/rules/seguridad.md` y el hook `.agents/hooks.json` para `playwright-cli`), pero el sistema operativo no impone aislamiento de archivos/red; lee cada comando que propone el agente antes de aprobarlo.
 
-**B. WSL2 (lo recomendado si quieres sandbox).** El sandbox corre en macOS, Linux y WSL2 (no en WSL1). Dentro de WSL2 sigues pasos de Linux: instalas Claude Code con `curl -fsSL https://claude.ai/install.sh | bash`, el sandbox pide `bubblewrap` y `socat`, Remotion pide glibc 2.35+ y sus paquetes de Linux, y whisper.cpp tiene builds para Ubuntu x64 en sus releases. Deja el proyecto dentro del sistema de archivos de Linux (por ejemplo `~/mi-editor`), no en `/mnt/c`. La guía completa de WSL2 **todavía no está escrita**; esta página cubre Windows nativo.
+**B. WSL2 (opcional si prefieres entorno Linux).** Dentro de WSL2 sigues pasos de Linux: Remotion pide glibc 2.35+ y sus paquetes de Linux, y whisper.cpp tiene builds para Ubuntu x64 en sus releases. Deja el proyecto dentro del sistema de archivos de Linux (por ejemplo `~/mi-editor`), no en `/mnt/c`. La guía completa de WSL2 **todavía no está escrita**; esta página cubre Windows nativo.
 
 ## 1. Git para Windows
 
@@ -39,7 +39,7 @@ Los pasos manuales de abajo hacen lo mismo, uno por uno.
 winget install --id Git.Git -e
 ```
 
-Claude Code usa Git Bash para su herramienta de Bash; sin Git para Windows usa PowerShell. La carpeta `public/` del proyecto usa **symlinks**: antes de clonar, prende el **Modo de desarrollador** de Windows (Configuración → Sistema → Para programadores) y corre:
+En Windows nativo, el agente corre comandos en PowerShell (y los enlaces de `public/` usan junctions con `preparar-public.ts`). Si usas symlinks, prende el **Modo de desarrollador** de Windows (Configuración → Sistema → Para programadores) y corre antes de clonar:
 
 ```powershell
 git config --global core.symlinks true
@@ -139,27 +139,22 @@ npx playwright install chromium
 
 Playwright guarda sus navegadores en `%USERPROFILE%\AppData\Local\ms-playwright`.
 
-## 10. Claude Code
+## 10. Antigravity IDE
 
-```powershell
-irm https://claude.ai/install.ps1 | iex
-```
+Abre esta carpeta como workspace en **Antigravity IDE**. Las reglas del proyecto (`AGENTS.md`, `.agents/rules/`), los workflows (`.agents/workflows/`), las skills (`.agents/skills/`) y el hook (`.agents/hooks.json`) se detectan automáticamente.
 
-O `winget install Anthropic.ClaudeCode` (con winget no se actualiza solo: `winget upgrade Anthropic.ClaudeCode`). No necesitas permisos de administrador.
-
-## 11. Proyecto y plugins
+## 11. Proyecto y skills
 
 ```powershell
 npm ci
 npx tsx herramientas/doctor.ts
-claude
 ```
 
-Acepta el aviso de confianza de la carpeta y luego instala los plugins recomendados: [habilidades.es.md](habilidades.es.md). Ojo: HyperFrames y BRAG no dicen oficialmente si soportan Windows (sin verificar), y el instalador de Motion Architect solo es para macOS y Linux.
+Luego instala las skills o plugins recomendados que necesites: [habilidades.es.md](habilidades.es.md). Ojo: HyperFrames y BRAG no dicen oficialmente si soportan Windows (sin verificar), y el instalador de Motion Architect solo es para macOS y Linux.
 
 ## Qué cambia respecto a macOS
 
-- No hay sandbox en Windows nativo (usa WSL2 si lo quieres).
+- No hay sandbox del sistema operativo en Windows nativo (se compensa con `.agents/rules/seguridad.md`, `.agents/hooks.json` y revisión manual de comandos).
 - No hay Apple Vision: el OCR y la cara van con RapidOCR y MediaPipe en Python.
 - El grabador de ventanas nativo (`herramientas/grabador/ventana.ts`) usa la captura de pantalla de macOS; en Windows graba las demos con el grabador web (Chrome + Playwright). Si `ventana.ts` corre en Windows está sin verificar.
 - Las rutas usan `\`; las herramientas lo resuelven, pero pon entre comillas las rutas que tengan espacios.

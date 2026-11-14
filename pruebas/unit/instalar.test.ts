@@ -9,6 +9,7 @@ import {
 	assetWhisper,
 	barra,
 	BYTES_MODELO_WHISPER,
+	codigoExitoso,
 	componentesDe,
 	desdeDonde,
 	elegirAssetWhisper,
@@ -19,6 +20,7 @@ import {
 	resumen,
 	textoPlan,
 	verificarDescarga,
+	WINGET_YA_INSTALADO,
 	type EntradaPlan,
 	type IdComponente,
 	type Paso,
@@ -56,6 +58,15 @@ const paso = (pasos: Paso[], id: IdComponente): Paso => {
 describe('argumentos de los gestores', () => {
 	it('winget sin preguntas a mitad', () => {
 		expect(argvWinget('Gyan.FFmpeg')).toEqual(['winget', 'install', '--id', 'Gyan.FFmpeg', '-e', '--accept-source-agreements', '--accept-package-agreements']);
+	});
+	it('winget trata 2316632107 (0x8A15002B: ya instalado, sin actualización) como éxito', () => {
+		expect(WINGET_YA_INSTALADO).toBe(2316632107);
+		expect(codigoExitoso('winget', 0)).toBe(true);
+		expect(codigoExitoso('winget', 2316632107)).toBe(true);
+		expect(codigoExitoso('winget.exe', 0x8a15002b | 0)).toBe(true);
+		expect(codigoExitoso('winget', 1)).toBe(false);
+		expect(codigoExitoso('winget', null)).toBe(false);
+		expect(codigoExitoso('brew', 2316632107)).toBe(false);
 	});
 	it('brew normal y cask', () => {
 		expect(argvBrew('ffmpeg')).toEqual(['brew', 'install', 'ffmpeg']);

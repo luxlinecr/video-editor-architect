@@ -6,7 +6,7 @@ Revisado el 2026-10-11. Fuentes en [fuentes-investigacion.md](fuentes-investigac
 
 ## Qué hace Remotion aquí
 
-Claude escribe cada edición como un JSON (`proyectos/<slug>/edicion-vN.json`, la EDL). Remotion es el motor que la dibuja: una composición de React llamada "Reel" lee la EDL y acomoda el video base, los subtítulos, el titular, las tarjetas, los stickers, los inserts y el sonido, cuadro por cuadro. `herramientas/render.ts` llama a `selectComposition` y `renderMedia` de Remotion para sacar `salida/final-vN.mp4`. Con Remotion Studio ves la edición antes de renderizar.
+El agente escribe cada edición como un JSON (`proyectos/<slug>/edicion-vN.json`, la EDL). Remotion es el motor que la dibuja: una composición de React llamada "Reel" lee la EDL y acomoda el video base, los subtítulos, el titular, las tarjetas, los stickers, los inserts y el sonido, cuadro por cuadro. `herramientas/render.ts` llama a `selectComposition` y `renderMedia` de Remotion para sacar `salida/final-vN.mp4`. Con Remotion Studio ves la edición antes de renderizar.
 
 La plantilla fija Remotion en **4.0.532** (`package.json`). La versión estable más nueva en npm el 2026-10-11 era **4.0.534**. Actualiza a propósito y lleva todos los paquetes `@remotion/*` a la misma versión (la skill `remotion-upgrade` te ayuda).
 
@@ -39,7 +39,7 @@ Lo que pide Remotion (documentación, 2026-10-11): Node 16+ o Bun 1.0.3+. Esta p
 - **Windows:** solo **x64** (según la guía de migración a v4.0). El navegador de render existe para Windows x64.
 - **Linux (y WSL2):** glibc 2.35 o más nueva y unos paquetes extra que lista Remotion en su página de dependencias de Linux. Alpine y NixOS no tienen soporte.
 
-**Chrome Headless Shell.** Remotion lo baja solo a `node_modules/.remotion/chrome-headless-shell/<plataforma>/` la primera vez que renderiza (macOS x64/arm64, Windows x64, Linux x64/arm64). Puedes bajarlo antes con `npx remotion browser ensure`. No funciona dentro del sandbox de Claude Code en macOS; por eso los comandos de render están en `excludedCommands`.
+**Chrome Headless Shell.** Remotion lo baja solo a `node_modules/.remotion/chrome-headless-shell/<plataforma>/` la primera vez que renderiza (macOS x64/arm64, Windows x64, Linux x64/arm64). Puedes bajarlo antes con `npx remotion browser ensure`. Al correr desde Antigravity IDE, ejecuta los comandos de render solos en su llamada a `run_command` (sin `&&` ni pipes).
 
 **FFmpeg.** Remotion 4 trae su propio FFmpeg chico (la documentación de la CLI dice que es de la línea 7.1; la guía de migración a v4.0 todavía dice 6.0) y FFprobe dentro de `@remotion/renderer`, y los llamas con `npx remotion ffmpeg` y `npx remotion ffprobe`. Solo entiende los códecs que usa Remotion (H.264, H.265, VP8, VP9, ProRes). Las demás herramientas de la plantilla (ingesta, cortes, video base, loudness, QA) llaman al `ffmpeg` y `ffprobe` **del sistema**, así que igual tienes que instalarlos: lee [instalar-macos.es.md](instalar-macos.es.md) e [instalar-windows.es.md](instalar-windows.es.md).
 

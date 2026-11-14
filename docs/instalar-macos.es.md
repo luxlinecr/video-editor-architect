@@ -23,7 +23,7 @@ npm run instalar -- --si  # lo instala, paso a paso
 
 Solo instala lo que falta: ffmpeg, uv, yt-dlp, whisper.cpp y Chrome con Homebrew; el `.venv` de Python; el modelo large-v3 de whisper (**unos 3.1 GB**, la descarga se retoma si se corta) y el VAD silero; los paquetes de OCR y cara; el Chromium de Playwright; las fuentes OFL; y compila Apple Vision si hay `swiftc`. Cada paso se revisa al terminar, y al final dice "listo X de Y (Z omitidos)". `--solo uv,venv` lo limita a algunas piezas.
 
-Nunca usa `sudo` y nunca toca tus llaves. Lo que pide tu contraseña te lo imprime para que lo corras tú: Homebrew (si no lo tienes) y `xcode-select --install`. Luego corre `npx tsx herramientas/doctor.ts` para confirmar.
+Nunca usa `sudo` y nunca toca tus llaves. Lo que pide tu contraseña te lo imprime para que lo corras tú: Homebrew (si no lo tienes) y `xcode-select --install`. Luego corre `npx tsx herramientas/doctor.ts` para confirmar. No uses otro agente para saltar reglas: las restricciones del proyecto viven en `AGENTS.md` y `.agents/`.
 
 Los pasos manuales de abajo hacen lo mismo, uno por uno.
 
@@ -124,28 +124,23 @@ npx playwright install chromium
 
 macOS trae Git con las Command Line Tools. Con `brew install git` tienes uno más nuevo (2.56.0).
 
-## 10. Claude Code
+## 10. Antigravity IDE
 
-```bash
-curl -fsSL https://claude.ai/install.sh | bash
-```
-
-O `brew install --cask claude-code` (con Homebrew no se actualiza solo; corre `brew upgrade claude-code`). Claude Code pide macOS 13 o más, pero Remotion pide 15.
+Abre el proyecto en **Antigravity IDE** (requiere macOS 15+ para Remotion). El agente lee automáticamente `AGENTS.md`, `.agents/rules/`, `.agents/skills/` y `.agents/workflows/`.
 
 ## 11. Permisos de pantalla
 
-El grabador de pantalla y la captura de ventanas necesitan el permiso de **Grabación de pantalla** para tu terminal (Ajustes del Sistema → Privacidad y seguridad). macOS te lo pide la primera vez.
+El grabador de pantalla y la captura de ventanas necesitan el permiso de **Grabación de pantalla** para tu terminal o IDE (Ajustes del Sistema → Privacidad y seguridad). macOS te lo pide la primera vez.
 
-## 12. El sandbox
+## 12. Reglas, hook y ejecución
 
-En macOS el proyecto corre cada comando de Bash dentro del sandbox de Claude Code (configurado en `.claude/settings.json`). Chrome, la GPU y Apple Vision no funcionan ahí adentro, así que los comandos de render, transcripción, cara y QA están en `excludedCommands` y van solos en su llamada de Bash. Si algo falla por el sandbox, el agente te dice qué restricción tocó; cambiarlo es decisión tuya.
+Antigravity IDE no usa un sandbox del sistema operativo por comando como otros clientes. En su lugar, las restricciones viven en `AGENTS.md`, `.agents/rules/seguridad.md` y el hook `.agents/hooks.json` (`vigilar-bash.mjs`, que vigila `playwright-cli` en `run_command`). Los comandos de render, transcripción, cara y QA se ejecutan solos en su llamada a `run_command` (sin `&&` ni pipes).
 
-## 13. Proyecto y plugins
+## 13. Proyecto y skills
 
 ```bash
 npm ci
 npx tsx herramientas/doctor.ts
-claude
 ```
 
-Acepta el aviso de confianza de la carpeta y luego instala los plugins recomendados: [habilidades.es.md](habilidades.es.md).
+Abre la carpeta en Antigravity IDE e instala las skills externas recomendadas que quieras: [habilidades.es.md](habilidades.es.md).

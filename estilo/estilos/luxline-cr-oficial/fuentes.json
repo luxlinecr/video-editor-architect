@@ -1,0 +1,10 @@
+{
+	"estilo": "luxline-cr-oficial",
+	"fecha": "2026-11-14",
+	"origen": "base-neutra",
+	"perfiles": [],
+	"reels": [],
+	"lo_que_le_gusta": "Arranque base-neutra, exportando sin 4K (preferencia 1080×1920).",
+	"lo_que_no": "Exportar en 4K (render lento y mucha RAM en laptop de 16 GB; Instagram reescala a 1080 de ancho).",
+	"base": "base-neutra"
+}

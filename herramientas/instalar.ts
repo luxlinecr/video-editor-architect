@@ -38,7 +38,7 @@ import {createReadStream, createWriteStream, existsSync, mkdirSync, mkdtempSync,
 import * as http from 'node:http';
 import {createRequire} from 'node:module';
 import {homedir, tmpdir} from 'node:os';
-import {dirname, join, resolve, sep} from 'node:path';
+import {dirname, join, posix, resolve, sep} from 'node:path';
 import {parseArgs} from 'node:util';
 import {contextoDoctor, LLAVES, revisarItems, type Contexto} from './doctor.ts';
 import {correr, esPrincipal, fallo, FalloEditor} from './lib/fallo.ts';
@@ -231,6 +231,8 @@ export type EntradaPlan = {
 	node: string;
 };
 
+const unir = (s: Sistema, ...partes: string[]): string => (s === 'windows' && !partes[0]?.startsWith('/') ? join(...partes) : posix.join(...partes));
+
 /** El paso que deja lista una pieza en un sistema (puro). */
 export function pasoPara(id: IdComponente, e: EntradaPlan): Paso {
 	const {s} = e;
@@ -271,8 +273,8 @@ export function pasoPara(id: IdComponente, e: EntradaPlan): Paso {
 			if (s === 'linux' && id === 'yt-dlp') return {...base, accion: {tipo: 'comandos', argvs: [['uv', 'tool', 'install', 'yt-dlp']]}, dependeDe: ['uv']};
 			return manual(INSTALACION[id === 'chrome' ? 'chrome' : 'ffmpeg'][s] ?? '', 'Pide permisos de administrador: córrelo tú y vuelve a correr el instalador.');
 		case 'venv': {
-			const req = join(e.raiz, 'herramientas', 'py', 'requirements.txt');
-			const argvs = [...(e.hayVenv ? [] : [['uv', 'venv', join(e.raiz, '.venv'), '--python', '3.12']]), ['uv', 'pip', 'install', '--python', e.python, '-r', req]];
+			const req = unir(s, e.raiz, 'herramientas', 'py', 'requirements.txt');
+			const argvs = [...(e.hayVenv ? [] : [['uv', 'venv', unir(s, e.raiz, '.venv'), '--python', '3.12']]), ['uv', 'pip', 'install', '--python', e.python, '-r', req]];
 			return {...base, accion: {tipo: 'comandos', argvs}, dependeDe: ['uv'], bytesAprox: 250_000_000, nota: 'Python 3.12 (si no lo tienes, uv lo baja) + fonttools, skia-pathops, numpy, onnxruntime, RapidOCR y MediaPipe.'};
 		}
 		case 'fuentes':
@@ -291,7 +293,7 @@ export function pasoPara(id: IdComponente, e: EntradaPlan): Paso {
 				...(s === 'linux' ? {nota: 'Si al abrirlo faltan librerías del sistema: sudo npx playwright install-deps chromium (lo corres tú).'} : {}),
 			};
 		case 'vision-swift': {
-			const v = (script: string, ...args: string[]) => ['bash', join(e.raiz, 'herramientas', 'vision', script), ...args];
+			const v = (script: string, ...args: string[]) => ['bash', unir(s, e.raiz, 'herramientas', 'vision', script), ...args];
 			return {...base, accion: {tipo: 'comandos', argvs: [v('compilar.sh', 'ocr', 'mascara'), v('compilar-cara.sh'), v('compilar-recortar.sh')]}, dependeDe: ['swift']};
 		}
 	}
@@ -539,7 +541,7 @@ export function pathAmpliado(env: Entorno, s: Sistema, home: string, existe: (r:
 	const extra =
 		s === 'windows'
 			? [join(env.LOCALAPPDATA ?? join(home, 'AppData', 'Local'), 'Microsoft', 'WinGet', 'Links')]
-			: [...(s === 'mac' ? ['/opt/homebrew/bin', '/usr/local/bin'] : []), join(home, '.local', 'bin'), join(home, '.cargo', 'bin')];
+			: [...(s === 'mac' ? ['/opt/homebrew/bin', '/usr/local/bin'] : []), posix.join(home, '.local', 'bin'), posix.join(home, '.cargo', 'bin')];
 	for (const dir of extra) if (!partes.includes(dir) && existe(dir)) partes.push(dir);
 	return partes.join(sepPath);
 }
@@ -568,6 +570,16 @@ function entornoSinLlaves(): NodeJS.ProcessEnv {
 	return env;
 }
 
+/** Código de winget cuando el paquete ya está instalado y no hay actualización (0x8A15002B = 2316632107, o -1978335189 con signo). */
+export const WINGET_YA_INSTALADO = 0x8a15002b;
+
+/** ¿El código de salida de `programa` cuenta como éxito? (0 siempre; en winget también 0x8A15002B = ya instalado sin actualización). Pura. */
+export function codigoExitoso(programa: string, codigo: number | null): boolean {
+	if (codigo === 0) return true;
+	if (codigo !== null && /^(.*[\\/])?winget(\.exe)?$/i.test(programa) && (codigo >>> 0) === WINGET_YA_INSTALADO) return true;
+	return false;
+}
+
 async function correrArgv(argv: string[]): Promise<void> {
 	const [programa, ...args] = argv;
 	const ruta = /[\\/]/.test(programa) ? programa : (ejecutable(programa) ?? programa);
@@ -578,7 +590,7 @@ async function correrArgv(argv: string[]): Promise<void> {
 		hijo.on('close', (c) => res([c, undefined]));
 	});
 	if (error) throw fallo(`correr ${programa}`, error.code === 'ENOENT' ? `no encontré ${programa}` : error.message, 'abre una terminal nueva (para que se actualice el PATH) y vuelve a correr el instalador', 3);
-	if (codigo !== 0) throw fallo(`correr ${programa}`, `terminó con código ${codigo} (arriba está su salida)`, 'revisa el mensaje de arriba y vuelve a correr el instalador', 3);
+	if (!codigoExitoso(programa, codigo)) throw fallo(`correr ${programa}`, `terminó con código ${codigo} (arriba está su salida)`, 'revisa el mensaje de arriba y vuelve a correr el instalador', 3);
 }
 
 function buscarArchivo(dir: string, nombre: string): string | null {

@@ -3,6 +3,16 @@
 	"oficial": null,
 	"estilos": [
 		{
+			"id": "luxline-cr-oficial",
+			"nombre": "Luxline CR oficial",
+			"carpeta": "estilo/estilos/luxline-cr-oficial",
+			"estado": "en-prueba",
+			"desde": "2026-11-14",
+			"referencia": null,
+			"resumen": "Copia de base-neutra para Luxline CR (@luxline.cr): sin exportación 4K (preferencia 1080×1920).",
+			"version": 1
+		},
+		{
 			"id": "base-neutra",
 			"nombre": "Base neutra",
 			"carpeta": "estilo/estilos/base-neutra",

@@ -52,6 +52,8 @@ export const RENDER = {
 	/** Tolerancia de la loudness integrada medida contra el objetivo de la EDL (LU). */
 	toleranciaI: 1,
 	borrador: {escala: 0.5, ancho: 720, alto: 1280, crf: 23},
+	/** Final estándar: 1080×1920 (scale 0.75 sobre el lienzo 1440×2560; coincide 1:1 con el contenedor base 1080×1920). */
+	final: {escala: 0.75, ancho: 1080, alto: 1920},
 	/** --4k: el lienzo a ×1.5 (2160×3840) sobre base-4k.mp4 (base.ts --4k), con el mismo loudnorm del final. */
 	cuatroK: {escala: 1.5, ancho: 2160, alto: 3840, base: 'base-4k.mp4'},
 } as const;
@@ -501,7 +503,7 @@ export async function renderizar(op: OpcionesRender): Promise<ResultadoRender> {
 		composicion: RENDER.composicion,
 		remotion: versionRemotion(),
 		codigo_sha256: hashCodigo(),
-		video: borrador ? {...RENDER.video, crf: RENDER.borrador.crf, escala: RENDER.borrador.escala} : cuatroK ? {...RENDER.video, escala: RENDER.cuatroK.escala} : RENDER.video,
+		video: borrador ? {...RENDER.video, crf: RENDER.borrador.crf, escala: RENDER.borrador.escala} : cuatroK ? {...RENDER.video, escala: RENDER.cuatroK.escala} : {...RENDER.video, escala: RENDER.final.escala},
 		audio: borrador ? {aac: 'por defecto de Remotion', loudnorm: null} : {...RENDER.audio, loudnorm: objetivo, tp_maximo: RENDER.tpMaximo, tp_reintento: tpDeReintento(objetivo.TP)},
 	};
 	if (!op.forzar && (await etapaVigente(slug, etapa, entradas, parametros, proyectos))) {
@@ -581,7 +583,7 @@ export async function renderizar(op: OpcionesRender): Promise<ResultadoRender> {
 						imageFormat: v.imageFormat,
 						jpegQuality: v.jpegQuality,
 						colorSpace: v.colorSpace,
-						scale: borrador ? RENDER.borrador.escala : cuatroK ? RENDER.cuatroK.escala : 1,
+						scale: borrador ? RENDER.borrador.escala : cuatroK ? RENDER.cuatroK.escala : RENDER.final.escala,
 						...(borrador ? {audioCodec: 'aac' as const, enforceAudioTrack: true} : {}),
 						onProgress: progreso(borrador ? 'borrador' : 'video'),
 					});
@@ -629,7 +631,7 @@ export async function renderizar(op: OpcionesRender): Promise<ResultadoRender> {
 				fallidaRegistrada = true;
 				throw fallo(`dejar el pico real del final de ${slug} v${version} en ${RENDER.tpMaximo} dBTP o menos`, `con TP ${intentos.map((x) => x.tp_objetivo).join(' y ')} el MP4 midió ${intentos.map((x) => x.final.TP).join(' y ')} dBTP`, `revisa ${relative(RAIZ, rutaFinal)} y avísame`, 1, intentos);
 			}
-			const verif = await cronometrar('verificacion', async () => verificarVideo(await sondear(rutaFinal), cuatroK ? {ancho: RENDER.cuatroK.ancho, alto: RENDER.cuatroK.alto, cuadros} : {ancho: 1440, alto: 2560, cuadros}, `ffprobe de salida/${nombreSalida}`));
+			const verif = await cronometrar('verificacion', async () => verificarVideo(await sondear(rutaFinal), cuatroK ? {ancho: RENDER.cuatroK.ancho, alto: RENDER.cuatroK.alto, cuadros} : {ancho: RENDER.final.ancho, alto: RENDER.final.alto, cuadros}, `ffprobe de salida/${nombreSalida}`));
 			if (verif.problemas.length > 0) throw fallo(`verificar el final de ${slug} v${version}`, verif.problemas.join('; '), `revisa ${relative(RAIZ, rutaFinal)} y avísame`, 1, verif.datos);
 			mkdirSync(join(dir, 'salida'), {recursive: true});
 			renameSync(rutaFinal, destino);

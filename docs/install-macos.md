@@ -124,28 +124,23 @@ npx playwright install chromium
 
 macOS includes Git with the Command Line Tools. `brew install git` gives you a newer one (2.56.0).
 
-## 10. Claude Code
+## 10. Antigravity IDE
 
-```bash
-curl -fsSL https://claude.ai/install.sh | bash
-```
-
-Or `brew install --cask claude-code` (Homebrew installs don't auto-update; run `brew upgrade claude-code`). Claude Code needs macOS 13 or newer, but Remotion needs 15.
+Open the project in **Antigravity IDE** (macOS 15+ is required for Remotion). The agent automatically discovers `AGENTS.md`, `.agents/rules/`, `.agents/skills/` and `.agents/workflows/`.
 
 ## 11. Screen permissions
 
-The screen recorder and window capture need **Screen Recording** permission for your terminal (System Settings → Privacy & Security). macOS asks the first time.
+The screen recorder and window capture need **Screen Recording** permission for your terminal or IDE (System Settings → Privacy & Security). macOS asks the first time.
 
-## 12. The sandbox
+## 12. Rules, hook and execution
 
-On macOS the project runs every Bash command inside Claude Code's sandbox (configured in `.claude/settings.json`). Chrome, the GPU and Apple Vision don't work inside it, so render, transcription, face and QA commands are listed in `excludedCommands` and must run alone in their Bash call. If something fails because of the sandbox, the agent tells you which restriction it hit; changing it is your decision.
+Antigravity IDE does not enforce an OS-level sandbox per shell command. Instead, restrictions are enforced via `AGENTS.md`, `.agents/rules/seguridad.md` and the `.agents/hooks.json` hook (`vigilar-bash.mjs`, which guards `playwright-cli` on `run_command`). Render, transcription, face and QA commands should run standalone in their own `run_command` call (without `&&` or pipes).
 
-## 13. Project and plugins
+## 13. Project and skills
 
 ```bash
 npm ci
 npx tsx herramientas/doctor.ts
-claude
 ```
 
-Accept the folder trust dialog, then install the recommended plugins: [skills.md](skills.md).
+Open the folder in Antigravity IDE and install any recommended external skills you want: [skills.md](skills.md).
