@@ -1,0 +1,10 @@
+{
+  "iphone": {
+    "src": "assets/marca/imagenes/products/iphone/iphone-13-midnight/iphone-13-cutout.png",
+    "label": "iPhone 13 Midnight"
+  },
+  "detalle": {
+    "src": "assets/marca/imagenes/products/iphone/iphone-13-midnight/iphone-13-cutout.png",
+    "label": "Detalle de iPhone 13 Midnight"
+  }
+}

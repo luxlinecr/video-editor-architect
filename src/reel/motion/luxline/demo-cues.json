@@ -1,0 +1,18 @@
+{
+  "mode": "sales",
+  "voiceApproved": false,
+  "simulation": true,
+  "note": "Marcadores sintéticos para demo silenciosa. Sustituir por tiempos de la grabación final antes de afirmar sincronía con habla real.",
+  "cues": [
+    {
+      "word": "iPhone",
+      "start": 366,
+      "end": 414
+    },
+    {
+      "word": "Detalle",
+      "start": 414,
+      "end": 474
+    }
+  ]
+}

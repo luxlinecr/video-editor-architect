@@ -30,6 +30,12 @@ One row per file in `biblioteca/` (paths relative to this folder). Binaries are 
 | `fuentes/anton/OFL.txt` | Anton | OFL-1.1 | https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/anton/OFL.txt | 2026-10-03 | `ee67e6ee22790b7929f1a3769ca2801d565c64b5a9096942c1adf5596de9c9e4` | Texto de licencia OFL-1.1 |
 | `fuentes/caveat/Caveat-Bold.ttf` | Caveat | OFL-1.1 | https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/caveat/Caveat%5Bwght%5D.ttf | 2026-10-03 | `87d9a31f0993aada44ccd0a9f91faf92407f6f08c71afb410181afb85f1f49f8` | Instancia `wght=700` |
 | `fuentes/caveat/OFL.txt` | Caveat | OFL-1.1 | https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/caveat/OFL.txt | 2026-10-03 | `1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b` | Texto de licencia OFL-1.1 |
+| `fuentes/Mono-Regular.ttf` | Noto Sans Mono | OFL-1.1 | http://scripts.sil.org/OFL | 2026-11-14 | `6b692c4b6d15ccf59f1c1fe8d11cb8a92f51960f3e9f1f523781755a3af7e29f` | Noto Sans Mono Regular · Version 2.006 (LUXLINE-BRAND-KIT-v3) |
+| `fuentes/NotoSansDisplay-Variable.ttf` | Noto Sans Display | OFL-1.1 | http://scripts.sil.org/OFL | 2026-11-14 | `deaa68141fa5ad21bd17d7c11fa79183ceda19b32e40ff5c33874d42f3636dde` | Noto Sans Display Regular variable 100–900 · Version 2.003 (LUXLINE-BRAND-KIT-v3) |
+| `fuentes/Sans-Bold.ttf` | Noto Sans Display | OFL-1.1 | http://scripts.sil.org/OFL | 2026-11-14 | `1640ba8acb852d9e00406e166d1fc0cedd62a4c20342fd92f1f6dbc7baa61de2` | Noto Sans Display Bold · Version 2.003 (LUXLINE-BRAND-KIT-v3) |
+| `fuentes/Sans-Light.ttf` | Noto Sans Display | OFL-1.1 | http://scripts.sil.org/OFL | 2026-11-14 | `b2938eecdbdacbbcc9fab3641268d02afb0c0896335ab12331793195de019197` | Noto Sans Display Light · Version 2.003 (LUXLINE-BRAND-KIT-v3) |
+| `fuentes/Sans-Medium.ttf` | Noto Sans Display | OFL-1.1 | http://scripts.sil.org/OFL | 2026-11-14 | `0d7de6c6a264dfa9b0e93efc1338414bff20f79aaf9ff85e3a9fc901bdf9dbea` | Noto Sans Display Medium · Version 2.003 (LUXLINE-BRAND-KIT-v3) |
+| `fuentes/Sans-SemiBold.ttf` | Noto Sans Display | OFL-1.1 | http://scripts.sil.org/OFL | 2026-11-14 | `9fa1f6b9fc7d95e0aa49ec75a90ce858e0a4c55b839811eb64abb7798afc94fd` | Noto Sans Display SemiBold · Version 2.003 (LUXLINE-BRAND-KIT-v3) |
 
 ## Stickers y logos / Stickers and logos (`stickers/`)
 
@@ -45,3 +51,9 @@ One row per file in `biblioteca/` (paths relative to this folder). Binaries are 
 
 | Archivo / File | Qué es / What | Licencia o permiso / License or permission | URL de origen / Source URL | Fecha / Date | sha256 | Notas / Notes |
 |---|---|---|---|---|---|---|
+
+## Avisos originales y deduplicación (LUXLINE-BRAND-KIT-v3)
+
+- `fuentes/Mono-Regular.ttf` (Noto Sans Mono Regular, v2.006): Copyright 2015 Google LLC. All Rights Reserved. SIL Open Font License, Version 1.1 (`http://scripts.sil.org/OFL`).
+- `fuentes/NotoSansDisplay-Variable.ttf`, `fuentes/Sans-Light.ttf`, `fuentes/Sans-Medium.ttf`, `fuentes/Sans-SemiBold.ttf`, `fuentes/Sans-Bold.ttf` (Noto Sans Display, v2.003): Copyright 2015 Google Inc. All Rights Reserved. SIL Open Font License, Version 1.1 (`http://scripts.sil.org/OFL`).
+- **Deduplicación v3:** Se conservaron los bytes originales de `NotoSansDisplay-Variable.ttf`. Se retiraron solo los alias idénticos por SHA-256 del kit (`tipografia.ttf`, `Sans-Regular.ttf`).

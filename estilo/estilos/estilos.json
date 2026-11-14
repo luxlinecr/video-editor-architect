@@ -1,7 +1,17 @@
 {
-	"_nota": "Registro de estilos de edición del creador / Registry of the creator's editing styles. Estados / states: base, en-prueba, aprobado, descartado (los descartados no se ofrecen al editar / discarded ones are not offered when editing). Al editar: si el creador nombra el estilo se usa ese; si no, Claude pregunta cuál / When editing: if the creator names a style, use it; otherwise ask which one.",
+	"_nota": "Registro de estilos de edición del creador / Registry of the creator's editing styles. Estados / states: base, en-prueba, aprobado, descartado (los descartados no se ofrecen al editar / discarded ones are not offered when editing). Al editar: si el creador nombra el estilo se usa ese; si no, se pregunta cuál / When editing: if the creator names a style, use it; otherwise ask which one.",
 	"oficial": null,
 	"estilos": [
+		{
+			"id": "luxline-ventas",
+			"nombre": "Luxline Ventas",
+			"carpeta": "estilo/estilos/luxline-ventas",
+			"estado": "en-prueba",
+			"desde": "2026-11-14",
+			"referencia": "assets/marca/referencias-visuales/DEMO-CONTACTOS.png",
+			"resumen": "Estilo de ventas/producto LUXLINE CR con las 5 técnicas de motion activadas (MaskReveal, ChainMove, CameraFollow, ObjectMorph, SpeechVisualSync con transcripción real), tipografía Noto Sans Display/Mono, liquid glass 2.5D y zona segura del editor (paletas pendientes de confirmación).",
+			"version": 1
+		},
 		{
 			"id": "luxline-cr-oficial",
 			"nombre": "Luxline CR oficial",
@@ -9,8 +19,8 @@
 			"estado": "en-prueba",
 			"desde": "2026-11-14",
 			"referencia": null,
-			"resumen": "Copia de base-neutra para Luxline CR (@luxline.cr): sin exportación 4K (preferencia 1080×1920).",
-			"version": 1
+			"resumen": "Reels hablados de Luxline CR (@luxline.cr): tipografía Noto Sans Display/Mono y reglas editoriales v3 sin cambiar su motion (sin motion graphics ni exportación 4K; paletas pendientes de confirmación).",
+			"version": 2
 		},
 		{
 			"id": "base-neutra",

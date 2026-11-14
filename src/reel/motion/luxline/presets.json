@@ -1,0 +1,125 @@
+[
+  {
+    "universe": "android",
+    "seed": 731,
+    "seconds": 15,
+    "width": 1080,
+    "height": 1920,
+    "fps": 60,
+    "cta": "luxline.tech",
+    "shots": [
+      {
+        "kind": "hero",
+        "title": "Tu próxima\nelección.",
+        "subtitle": "Contenido de muestra · plantilla reutilizable",
+        "media": [
+          {
+            "src": "assets/marca/imagenes/promo-android/galaxy.png",
+            "presentation": "cutout",
+            "label": "Galaxy S25 Ultra"
+          }
+        ]
+      },
+      {
+        "kind": "explanation",
+        "title": "Elegí con\ncriterio.",
+        "subtitle": "Agregá aquí un beneficio verificado.",
+        "media": [
+          {
+            "src": "assets/marca/imagenes/promo-android/galaxy.png",
+            "presentation": "cutout",
+            "label": "Galaxy S25 Ultra"
+          }
+        ]
+      },
+      {
+        "kind": "closing",
+        "title": "Encontrá\nel tuyo.",
+        "subtitle": "Explorá las opciones en LUXLINE CR.",
+        "media": [
+          {
+            "src": "assets/marca/imagenes/promo-android/galaxy.png",
+            "presentation": "cutout",
+            "label": "Galaxy S25 Ultra"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "universe": "iphone",
+    "seed": 731,
+    "seconds": 15,
+    "width": 1080,
+    "height": 1920,
+    "fps": 60,
+    "cta": "luxline.tech",
+    "shots": [
+      {
+        "kind": "hero",
+        "title": "Tu próxima\nelección.",
+        "subtitle": "Contenido de muestra · plantilla reutilizable",
+        "media": [
+          {
+            "src": "assets/marca/imagenes/promo-iphone/iphone.png",
+            "presentation": "cutout",
+            "label": "iPhone 16 Pro"
+          }
+        ]
+      },
+      {
+        "kind": "explanation",
+        "title": "Elegí con\ncriterio.",
+        "subtitle": "Agregá aquí un beneficio verificado.",
+        "media": [
+          {
+            "src": "assets/marca/imagenes/promo-iphone/iphone.png",
+            "presentation": "cutout",
+            "label": "iPhone 16 Pro"
+          }
+        ]
+      },
+      {
+        "kind": "closing",
+        "title": "Encontrá\nel tuyo.",
+        "subtitle": "Explorá las opciones en LUXLINE CR.",
+        "media": [
+          {
+            "src": "assets/marca/imagenes/promo-iphone/iphone.png",
+            "presentation": "cutout",
+            "label": "iPhone 16 Pro"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "universe": "accessories",
+    "seed": 731,
+    "seconds": 15,
+    "width": 1080,
+    "height": 1920,
+    "fps": 60,
+    "cta": "luxline.tech",
+    "shots": [
+      {
+        "kind": "hero",
+        "title": "Tu próxima\nelección.",
+        "subtitle": "Contenido de muestra · plantilla reutilizable",
+        "media": []
+      },
+      {
+        "kind": "explanation",
+        "title": "Elegí con\ncriterio.",
+        "subtitle": "Agregá aquí un beneficio verificado.",
+        "media": []
+      },
+      {
+        "kind": "closing",
+        "title": "Encontrá\nel tuyo.",
+        "subtitle": "Explorá las opciones en LUXLINE CR.",
+        "media": []
+      }
+    ]
+  }
+]

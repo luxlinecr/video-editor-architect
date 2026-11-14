@@ -1,0 +1,13 @@
+{
+  "model": "Samsung Galaxy S26 Ultra",
+  "color": "White",
+  "sourcePage": "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/buy/galaxy-s26-ultra-256gb-unlocked-sku-sm-s948uzwaxaa/",
+  "verifiedOn": "2026-11-11",
+  "copyright": "Samsung. Official product artwork; not photography recorded by LUXLINE. Internal test; commercial reuse permission not established.",
+  "files": [
+    {"file":"front.png","assetId":"550994161","officialDescription":"Galaxy S26 Ultra DeviceFront White","url":"https://images.samsung.com/is/image/samsung/p6pim/us/s2602/gallery/us-galaxy-s26-ultra-s948-sm-s948uzwaatt-550994161?fmt=png-alpha&wid=1800&hei=1800","size":[1800,1800],"transparentRatio":0.8361524691358024,"visibleBounds":[648,372,1154,1430]},
+    {"file":"angle.png","assetId":"550994162","officialDescription":"Galaxy S26 Ultra DeviceFrontL30 White","url":"https://images.samsung.com/is/image/samsung/p6pim/us/s2602/gallery/us-galaxy-s26-ultra-s948-sm-s948uzwaatt-550994162?fmt=png-alpha&wid=1800&hei=1800","size":[1800,1800],"transparentRatio":0.8514185185185185,"visibleBounds":[671,351,1126,1449]},
+    {"file":"back-angle.png","assetId":"550994160","officialDescription":"Galaxy S26 Ultra DeviceBackR30 White","url":"https://images.samsung.com/is/image/samsung/p6pim/us/s2602/gallery/us-galaxy-s26-ultra-s948-sm-s948uzwaatt-550994160?fmt=png-alpha&wid=1800&hei=1800","size":[1800,1800],"transparentRatio":0.8514160493827161,"visibleBounds":[673,351,1128,1449]}
+  ],
+  "derivatives": [{"file":"front-cutout.png","source":"front.png","operation":"Lossless crop x=640,y=364,w=524,h=1076; no retouch, synthesis or upscale."}]
+}

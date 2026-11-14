@@ -1,0 +1,183 @@
+{
+	"id": "luxline-ventas",
+	"version": 1,
+	"estado": "en-prueba",
+	"cuenta": "luxline.cr",
+	"fecha": "2026-11-14",
+	"documento": "estilo/estilos/luxline-ventas/perfil.md",
+	"base": "luxline-cr-oficial",
+	"referencia": {
+		"proyecto": null,
+		"edicion": null,
+		"final": null,
+		"veredicto": null
+	},
+	"velocidad": {
+		"factor": 1
+	},
+	"cortes": {
+		"solo_silencios": true,
+		"sin_aires": false,
+		"quitar_repeticiones_y_autocorrecciones": true
+	},
+	"titular": {
+		"por_defecto": "decidir por reel",
+		"referencia": null
+	},
+	"tipografia": {
+		"principal": {
+			"familia": "Noto Sans Display",
+			"archivo": "biblioteca/fuentes/NotoSansDisplay-Variable.ttf",
+			"rango_variable": [100, 900],
+			"titulares_pesos": [500, 600, 700],
+			"cuerpo_pesos": [400, 500]
+		},
+		"tecnica": {
+			"familia": "Noto Sans Mono",
+			"archivo": "biblioteca/fuentes/Mono-Regular.ttf",
+			"peso": 400
+		},
+		"logos": "assets/marca/logos/"
+	},
+	"marca": {
+		"nombre": "LUXLINE CR",
+		"dominio": "luxline.tech",
+		"seminuevos": true,
+		"liquid_glass_2_5d": true,
+		"sin_texto_legal_ni_creditos": true,
+		"sin_precios_inventados": true,
+		"prohibidos_video": ["fondo-mesh-elevenlabs.png", "foto-producto.jpg"],
+		"paletas_fuente": "estilo/luxline-marca.json",
+		"paletas_pendientes_confirmacion": true,
+		"guia": "assets/marca/docs/ESTILO-DE-VIDEO.md"
+	},
+	"motion": {
+		"activo": true,
+		"modulo": "src/reel/motion/luxline/Techniques.tsx",
+		"tecnicas": [
+			"MaskReveal",
+			"ChainMove",
+			"CameraFollow",
+			"ObjectMorph",
+			"SpeechVisualSync"
+		],
+		"secuencia_glass": "src/reel/motion/luxline/glass-motion.ts",
+		"curvas": {
+			"habitual": "cubic-bezier(0.22, 1, 0.36, 1)",
+			"glass": "6t^5 - 15t^4 + 10t^3"
+		},
+		"sincronia_habla": {
+			"fuente_produccion": "transcripcion.json",
+			"helper": "cuesDesdeTranscripcion",
+			"solo_simulation_demo": "demo-cues.json"
+		},
+		"demo_referencia": {
+			"composicion": "Luxline-Style-Demo",
+			"fps": 60,
+			"cuadros": 600,
+			"nota": "la demo del kit corre a 60 fps / 600 cuadros; el pipeline de Reel corre a 30 fps"
+		}
+	},
+	"subtitulos": {
+		"min_palabras": 2,
+		"max_palabras": 3,
+		"y": null,
+		"color": "#FFFFFF",
+		"borde": "#000000",
+		"paletas_pendientes_confirmacion": true
+	},
+	"tarjetas": {
+		"palabras_min": 1,
+		"palabras_max": 3,
+		"por_minuto": {
+			"valor": 10,
+			"n": 0,
+			"fuente": "punto de partida v3 según lectura móvil, no medida"
+		},
+		"con_emoji": 0,
+		"prompt_tecleado": true,
+		"literales": true,
+		"estilo_visual": "liquid glass 2.5D cuando aporte valor, sin repetir 3 tarjetas fijas"
+	},
+	"stickers": {
+		"por_minuto": {
+			"valor": 0,
+			"n": 0,
+			"fuente": "assets autorizados por palabra vía word-assets.json y productos reales"
+		},
+		"sin_repetir_assets": true
+	},
+	"memes": {
+		"por_minuto": {
+			"valor": 0,
+			"n": 0,
+			"fuente": "decisión de arranque: sin memes"
+		}
+	},
+	"sfx": {
+		"solo_fuentes": [],
+		"archivo": "biblioteca/sfx/preferencias.json"
+	},
+	"zona_segura": {
+		"x": [135, 945],
+		"y": [220, 1600],
+		"subtitulos_y_max": 1590,
+		"puede_tapar_cara": false,
+		"manda": "src/estilo/zona-segura.ts"
+	},
+	"demos": {
+		"tema": "oscuro"
+	},
+	"no_va": [
+		"memes",
+		"exportación 4K",
+		"fondo-mesh-elevenlabs.png",
+		"foto-producto.jpg",
+		"demo-cues.json en producción",
+		"textos legales o créditos en video",
+		"precios o datos comerciales inventados",
+		"plantilla repetitiva de tres tarjetas"
+	],
+	"referencias": [
+		"assets/marca/referencias-visuales/DEMO-CONTACTOS.png",
+		"assets/marca/docs/ESTILO-DE-VIDEO.md"
+	],
+	"exportar_4k": {
+		"si_crudo_4k": false
+	},
+	"direccion": {
+		"sin_borrador_automatico": false,
+		"nota": "activa las 5 técnicas de src/reel/motion/luxline/ con cues reales de transcripcion.json"
+	},
+	"motor": {
+		"version": 1,
+		"velocidad": {
+			"factor": 1,
+			"decision": "sin acelerar: el ritmo visual sale del motion y cambios cada 1.5–3 s"
+		},
+		"aires": {
+			"hueco_minimo_s": 0.3,
+			"umbral_sobre_piso_db": 12,
+			"quitar_sueltos_s": 0,
+			"decision": "corta pausas de más de 0.3 s en tomas con voz aprobada"
+		},
+		"zona": {
+			"puede_tapar_cara": false,
+			"nota_cara": "sin tapar boca ni ojos; capas y motion acotados a x: 135–945, y: 220–1600"
+		},
+		"ritmo": {
+			"tarjetas_por_min": 10,
+			"stickers_por_min": 0,
+			"tarjetas_con_emoji": 0,
+			"fuente": "guía operativa v3 (ESTILO-DE-VIDEO.md), n = 0"
+		},
+		"decisiones": [
+			{
+				"fecha": "2026-11-14",
+				"tema": "motion_5_tecnicas",
+				"cita": "Crea el estilo luxline-ventas con las 5 técnicas activadas y regístralo en estilos.json.",
+				"nota": "MaskReveal, ChainMove, CameraFollow, ObjectMorph/glassShotSequence y SpeechVisualSync (con cuesDesdeTranscripcion en producción)."
+			}
+		]
+	}
+}

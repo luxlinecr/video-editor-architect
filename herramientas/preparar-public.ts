@@ -29,19 +29,35 @@ export type ResultadoAcceso = {nombre: string; estado: 'creado' | 'ya-estaba'};
 export function prepararPublic(raiz = RAIZ, plataforma: NodeJS.Platform = process.platform): ResultadoAcceso[] {
 	const publico = join(raiz, 'public');
 	mkdirSync(publico, {recursive: true});
-	return ACCESOS.map(({nombre, destino}) => {
+	const resultados = ACCESOS.map(({nombre, destino}) => {
 		const absoluto = join(raiz, destino);
 		mkdirSync(absoluto, {recursive: true});
-		const enlace = join(publico, nombre);
-		if (existsSync(enlace) || esEnlace(enlace)) {
-			if (esEnlace(enlace) && resolve(publico, readlinkSync(enlace)) === resolve(absoluto)) return {nombre, estado: 'ya-estaba'};
-			throw fallo(`preparar public/${nombre}`, 'ya existe algo ahí que no apunta a ' + destino, `revisa public/${nombre} y bórralo si es un acceso viejo`, 2);
-		}
-		// Windows: junction con ruta absoluta (sin admin). Mac/Linux: symlink relativo, como en git.
-		if (plataforma === 'win32') symlinkSync(absoluto, enlace, 'junction');
-		else symlinkSync(join('..', destino), enlace, 'dir');
-		return {nombre, estado: 'creado'};
+		return asegurarEnlace(publico, nombre, destino, absoluto, plataforma);
 	});
+	// Si existen assets de marca en el repo (`assets/`), exponerlos en `public/assets` sin alterar ACCESOS.
+	const assetsAbsoluto = join(raiz, 'assets');
+	if (existsSync(assetsAbsoluto)) {
+		asegurarEnlace(publico, 'assets', 'assets', assetsAbsoluto, plataforma);
+	}
+	return resultados;
+}
+
+function asegurarEnlace(
+	publico: string,
+	nombre: string,
+	destino: string,
+	absoluto: string,
+	plataforma: NodeJS.Platform,
+): ResultadoAcceso {
+	const enlace = join(publico, nombre);
+	if (existsSync(enlace) || esEnlace(enlace)) {
+		if (esEnlace(enlace) && resolve(publico, readlinkSync(enlace)) === resolve(absoluto)) return {nombre, estado: 'ya-estaba'};
+		throw fallo(`preparar public/${nombre}`, 'ya existe algo ahí que no apunta a ' + destino, `revisa public/${nombre} y bórralo si es un acceso viejo`, 2);
+	}
+	// Windows: junction con ruta absoluta (sin admin). Mac/Linux: symlink relativo, como en git.
+	if (plataforma === 'win32') symlinkSync(absoluto, enlace, 'junction');
+	else symlinkSync(join('..', destino), enlace, 'dir');
+	return {nombre, estado: 'creado'};
 }
 
 function esEnlace(ruta: string): boolean {

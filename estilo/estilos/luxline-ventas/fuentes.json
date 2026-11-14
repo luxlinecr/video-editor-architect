@@ -1,0 +1,17 @@
+{
+	"estilo": "luxline-ventas",
+	"fecha": "2026-11-14",
+	"origen": "LUXLINE-BRAND-KIT-v3 + base luxline-cr-oficial",
+	"perfiles": [],
+	"reels": [],
+	"referencias_kit": [
+		"estilo/luxline-marca.json",
+		"assets/marca/docs/BRAND-IDENTITY.md",
+		"assets/marca/docs/ESTILO-DE-VIDEO.md",
+		"assets/marca/motion/MOTION-TRANSITIONS.md",
+		"assets/marca/referencias-visuales/DEMO-CONTACTOS.png"
+	],
+	"lo_que_le_gusta": "Identidad LUXLINE CR (Noto Sans Display / Mono, liquid glass 2.5D, exportación 1080×1920) con las 5 técnicas de motion activadas y sincronía por palabra desde la transcripción real del editor.",
+	"lo_que_no": "Videos secos/estáticos/repetitivos, demo-cues.json fuera de la demo, fondo-mesh-elevenlabs.png, foto-producto.jpg, textos legales/créditos o precios inventados, exportación 4K.",
+	"base": "luxline-cr-oficial"
+}

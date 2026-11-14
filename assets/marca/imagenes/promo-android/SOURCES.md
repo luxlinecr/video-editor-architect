@@ -1,0 +1,2 @@
+Official Samsung Mobile Press Galaxy S25 Ultra product image. Copyright Samsung. Internal promotional test. Source: https://www.samsungmobilepress.com/media-assets/galaxy-s25-ultra?tab=images
+No price or stock assertions. Audio: original LUXLINE procedural test score.Transparent product PNG downloaded from Samsung UK product gallery, 1400x1400. Copyright Samsung. Source: https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s938-sm-s938bzbdeub-544815197?fmt=png-alpha&wid=1400&hei=1400

@@ -26,6 +26,7 @@ Skills live in `.agents/skills/*/SKILL.md`, workflows in `.agents/workflows/*.md
 - `base-neutra` is a generic starter style (white subtitles with black outline, 2–3 words, keyword cards, no stickers/memes, speed 1.0, silence cuts) for editing a first reel before training.
 - **When editing:** if the creator names a style, use it. Otherwise ask which one (options from `estilos.json`, approved first, plus "train a new one"), even if there is only one. Save the choice to `proyectos/<slug>/notas-director.json` → `"estilo": "<id>"`.
 - **The style profile wins** over the director's draft and over `/editar` whenever they clash. Save every creator correction literally and dated to `perfil.md` history; technical lessons go to `aprendizajes.md`. Personal decisions (speed, air cuts, face overlap, sound sources, memes/stickers) belong to the profile; never assume them.
+- **LUXLINE CR brand & video guide:** read `.agents/rules/marca.md` (brand rules, Noto Sans fonts, safe zone priority, 5 motion techniques in `src/reel/motion/luxline/`, prohibited video assets `fondo-mesh-elevenlabs.png` and `foto-producto.jpg`) and `assets/marca/docs/ESTILO-DE-VIDEO.md` + `estilo/luxline-marca.json`.
 
 ## Organization
 

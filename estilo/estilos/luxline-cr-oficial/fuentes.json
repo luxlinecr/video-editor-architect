@@ -1,10 +1,15 @@
 {
 	"estilo": "luxline-cr-oficial",
 	"fecha": "2026-11-14",
-	"origen": "base-neutra",
+	"origen": "base-neutra + LUXLINE-BRAND-KIT-v3 (sin cambiar motion; paletas por universo aplicadas a fondos y piezas generadas)",
 	"perfiles": [],
 	"reels": [],
-	"lo_que_le_gusta": "Arranque base-neutra, exportando sin 4K (preferencia 1080×1920).",
-	"lo_que_no": "Exportar en 4K (render lento y mucha RAM en laptop de 16 GB; Instagram reescala a 1080 de ancho).",
+	"referencias_kit": [
+		"estilo/luxline-marca.json",
+		"assets/marca/docs/BRAND-IDENTITY.md",
+		"assets/marca/docs/ESTILO-DE-VIDEO.md"
+	],
+	"lo_que_le_gusta": "Arranque base-neutra, exportando sin 4K (1080×1920), con tipografía Noto Sans Display / Noto Sans Mono, subtítulos/tarjetas blanco con borde negro sobre video real y paletas android/iphone/accessories para fondos y piezas generadas.",
+	"lo_que_no": "Exportar en 4K, cambiar motion graphics en luxline-cr-oficial, usar fondo-mesh-elevenlabs.png o foto-producto.jpg, textos legales/créditos o precios inventados.",
 	"base": "base-neutra"
 }

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <radialGradient id="meshGlow" cx="50%" cy="50%" r="42%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.18"/>
+      <stop offset="55%" stop-color="#2563EB" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#F7F6F2" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #F7F6F2; }
+      .guide-dashed { stroke: #0A0A0A; stroke-width: 1; stroke-dasharray: 6 6; fill: none; opacity: 0.28; }
+      .line-solid { stroke: #0A0A0A; stroke-width: 1.5; fill: none; opacity: 0.45; }
+      .phone-body { fill: #FFFFFF; stroke: #0A0A0A; stroke-width: 3; }
+      .phone-screen { fill: #F7F6F2; stroke: #E5E5EA; stroke-width: 1.5; }
+      .card { fill: #FFFFFF; fill-opacity: 0.88; stroke: #E5E5EA; stroke-width: 1.5; }
+      .pill-black { fill: #0A0A0A; }
+      .txt-label { font-family: 'Noto Sans Mono', monospace; font-size: 18px; fill: #6E6E73; letter-spacing: 0.08em; }
+      .txt-title { font-family: 'Google Sans', sans-serif; font-weight: 700; font-size: 24px; fill: #0A0A0A; }
+      .txt-white { font-family: 'Google Sans', sans-serif; font-weight: 600; font-size: 20px; fill: #F7F6F2; }
+    </style>
+  </defs>
+  
+  <!-- Base Warm Bone Background (>70% Negative Space) -->
+  <rect width="1080" height="1920" class="bg"/>
+  <circle cx="540" cy="960" r="520" fill="url(#meshGlow)"/>
+  
+  <!-- 1px Geometric Orbit & Connection Lines (ElevenLabs Style) -->
+  <circle cx="540" cy="960" r="430" class="guide-dashed"/>
+  <line x1="540" y1="180" x2="540" y2="480" class="line-solid"/>
+  <line x1="540" y1="1440" x2="540" y2="1740" class="line-solid"/>
+  <path d="M 330 780 L 140 780 L 140 620" class="guide-dashed"/>
+  <path d="M 750 1140 L 940 1140 L 940 1300" class="guide-dashed"/>
+  
+  <!-- Top Node: Brand / Hook -->
+  <rect x="360" y="220" width="360" height="64" rx="32" class="pill-black"/>
+  <text x="540" y="260" text-anchor="middle" class="txt-white">LUXLINE CR · SEMINUEVOS</text>
+  
+  <!-- CENTER ANCHOR: Minimalist Phone Chassis (X:330..750, Y:510..1410) -->
+  <g id="center-phone-slot">
+    <rect x="330" y="510" width="420" height="900" rx="68" class="phone-body"/>
+    <rect x="348" y="528" width="384" height="864" rx="54" class="phone-screen"/>
+    <!-- Dynamic Island -->
+    <rect x="480" y="548" width="120" height="34" rx="17" fill="#0A0A0A"/>
+    <!-- Center Crosshair for Product Placement -->
+    <line x1="510" y1="960" x2="570" y2="960" class="line-solid"/>
+    <line x1="540" y1="930" x2="540" y2="990" class="line-solid"/>
+    <text x="540" y="1030" text-anchor="middle" class="txt-label">ZONA CENTRAL DE PRODUCTO</text>
+    <text x="540" y="1065" text-anchor="middle" class="txt-title">Colocar iPhone / UI Aquí</text>
+    
+    <!-- Mobile 2-Column Grid Placeholder inside screen -->
+    <rect x="372" y="1120" width="160" height="140" rx="18" class="card"/>
+    <text x="452" y="1195" text-anchor="middle" class="txt-label">COL 1 (2-GRID)</text>
+    <rect x="548" y="1120" width="160" height="140" rx="18" class="card"/>
+    <text x="628" y="1195" text-anchor="middle" class="txt-label">COL 2 (2-GRID)</text>
+  </g>
+  
+  <!-- Floating Micro-Component Left: Condition Grade -->
+  <g id="node-condition" transform="translate(80, 500)">
+    <rect x="0" y="0" width="310" height="110" rx="24" class="card"/>
+    <circle cx="36" cy="40" r="8" fill="#10B981"/>
+    <text x="58" y="46" class="txt-label">CLASIFICACIÓN</text>
+    <text x="36" y="84" class="txt-title">Grado A+ · A · B</text>
+  </g>
+  
+  <!-- Floating Micro-Component Right: Warranty & Delivery -->
+  <g id="node-warranty" transform="translate(690, 1280)">
+    <rect x="0" y="0" width="310" height="125" rx="24" class="card"/>
+    <circle cx="36" cy="40" r="8" fill="#2563EB"/>
+    <text x="58" y="46" class="txt-label">GARANTÍA REAL</text>
+    <text x="36" y="82" class="txt-title">90 Días / 1 Año</text>
+    <text x="36" y="108" class="txt-label">SINPE · Boxful · Correos</text>
+  </g>
+  
+  <!-- Bottom Node: CTA / Domain -->
+  <rect x="350" y="1660" width="380" height="68" rx="34" class="card"/>
+  <text x="540" y="1702" text-anchor="middle" class="txt-title">luxline.tech</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1100" width="600" height="1100">
+  <!-- Outer Titanium Frame -->
+  <rect x="80" y="50" width="440" height="1000" rx="76" fill="none" stroke="#8C8A84" stroke-width="6"/>
+  <!-- Inner Bezel -->
+  <rect x="86" y="56" width="428" height="988" rx="70" fill="none" stroke="#0A0A0A" stroke-width="14"/>
+  <!-- Dynamic Island -->
+  <rect x="236" y="82" width="128" height="36" rx="18" fill="#0A0A0A"/>
+  <!-- Home Bar -->
+  <rect x="230" y="1018" width="140" height="6" rx="3" fill="#0A0A0A" opacity="0.35"/>
+</svg>

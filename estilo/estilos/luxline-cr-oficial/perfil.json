@@ -1,6 +1,6 @@
 {
 	"id": "luxline-cr-oficial",
-	"version": 1,
+	"version": 2,
 	"estado": "en-prueba",
 	"cuenta": "luxline.cr",
 	"fecha": "2026-11-14",
@@ -24,6 +24,63 @@
 		"por_defecto": "decidir por reel",
 		"referencia": null
 	},
+	"tipografia": {
+		"principal": {
+			"familia": "Noto Sans Display",
+			"archivo": "biblioteca/fuentes/NotoSansDisplay-Variable.ttf",
+			"rango_variable": [100, 900],
+			"titulares_pesos": [500, 600, 700],
+			"cuerpo_pesos": [400, 500]
+		},
+		"tecnica": {
+			"familia": "Noto Sans Mono",
+			"archivo": "biblioteca/fuentes/Mono-Regular.ttf",
+			"peso": 400
+		},
+		"logos": {
+			"carpeta": "assets/marca/logos/",
+			"android": "assets/marca/logos/logo-negro.svg",
+			"iphone": "assets/marca/logos/logo-negro.svg",
+			"accessories": "assets/marca/logos/logo-blanco.svg"
+		}
+	},
+	"marca": {
+		"nombre": "LUXLINE CR",
+		"dominio": "luxline.tech",
+		"seminuevos": true,
+		"sin_texto_legal_ni_creditos": true,
+		"sin_precios_inventados": true,
+		"prohibidos_video": ["fondo-mesh-elevenlabs.png", "foto-producto.jpg"],
+		"paletas_fuente": "estilo/luxline-marca.json",
+		"paletas_alcance": "fondos y piezas generadas; en reels sobre video real subtítulos y tarjetas conservan blanco con borde negro",
+		"guia": "assets/marca/docs/ESTILO-DE-VIDEO.md"
+	},
+	"paletas": {
+		"android": {
+			"background": {"hex": "#F6F5F2", "uso": "Fondo principal"},
+			"ink": {"hex": "#0D0D0D", "uso": "Texto y CTA con contraste"},
+			"accent": {"hex": "#9E9E9E", "uso": "Acento material; plata neutra en Android"},
+			"secondary": {"hex": "#2E2E2E", "uso": "Contraste secundario / iridiscencia sutil"},
+			"highlight": {"hex": "#FFFFFF", "uso": "Reflejos"},
+			"metalDark": {"hex": "#383838", "uso": "Metal oscuro"},
+			"frosted": {"hex": "#E2E2E2", "uso": "Vidrio esmerilado"},
+			"statusActive": {"hex": "#22C55E", "uso": "Solo estados activos o confirmaciones, con etiqueta; no decoración ni CTA genérico"}
+		},
+		"iphone": {
+			"background": {"hex": "#F8F7F4", "uso": "Fondo principal"},
+			"ink": {"hex": "#111111", "uso": "Texto y CTA con contraste"},
+			"accent": {"hex": "#AEBACB", "uso": "Acento material; plata azulada"},
+			"secondary": {"hex": "#B8A4CF", "uso": "Contraste secundario / iridiscencia sutil"},
+			"highlight": {"hex": "#FFFFFF", "uso": "Reflejos"}
+		},
+		"accessories": {
+			"background": {"hex": "#211814", "uso": "Fondo principal"},
+			"ink": {"hex": "#F7EADB", "uso": "Texto y CTA con contraste"},
+			"accent": {"hex": "#D18C62", "uso": "Acento material; cobre"},
+			"secondary": {"hex": "#F2B45F", "uso": "Contraste secundario / iridiscencia sutil"},
+			"highlight": {"hex": "#FFF1DA", "uso": "Reflejos"}
+		}
+	},
 	"subtitulos": {
 		"min_palabras": 2,
 		"max_palabras": 3,
@@ -41,7 +98,9 @@
 		},
 		"con_emoji": 0,
 		"prompt_tecleado": true,
-		"literales": true
+		"literales": true,
+		"color_video_real": "caja blanca (#FFFFFF) con texto/borde negro (#000000); paletas por universo solo en fondos y piezas generadas",
+		"estilo_visual": "liquid glass 2.5D legible cuando aporte valor en piezas generadas"
 	},
 	"stickers": {
 		"por_minuto": {
@@ -65,12 +124,23 @@
 	"zona_segura": {
 		"x": [135, 945],
 		"y": [220, 1600],
-		"puede_tapar_cara": false
+		"subtitulos_y_max": 1590,
+		"puede_tapar_cara": false,
+		"manda": "src/estilo/zona-segura.ts"
 	},
 	"demos": {
 		"tema": "oscuro"
 	},
-	"no_va": ["stickers", "memes", "zooms de edición", "motion graphics", "exportación 4K"],
+	"no_va": [
+		"stickers",
+		"memes",
+		"zooms de edición",
+		"motion graphics",
+		"exportación 4K",
+		"fondo-mesh-elevenlabs.png",
+		"foto-producto.jpg",
+		"textos legales o créditos en video"
+	],
 	"referencias": [],
 	"exportar_4k": {
 		"si_crudo_4k": false
@@ -107,6 +177,12 @@
 				"tema": "exportar_4k",
 				"cita": "Un cambio que haría ya: exportar en 1080×1920, no en 4K. Instagram reescala los Reels a 1080 de ancho, así que el 4K solo te cuesta render lento y mucha RAM en una laptop de 16 GB, sin mejora visible.",
 				"nota": "exportar_4k.si_crudo_4k = false; preferencia de salida 1080×1920"
+			},
+			{
+				"fecha": "2026-11-14",
+				"tema": "paletas_por_universo",
+				"cita": "En luxline-cr-oficial (reels sobre video real), subtítulos y tarjetas conservan blanco con borde negro. Las paletas aplican a fondos y piezas generadas. Logo: logo-negro en Android e iPhone, logo-blanco en Accesorios.",
+				"nota": "Aplicadas las 3 paletas (android, iphone con 'plata azulada', accessories con 'cobre') para fondos y piezas generadas."
 			}
 		]
 	}

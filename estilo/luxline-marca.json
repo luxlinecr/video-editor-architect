@@ -1,0 +1,234 @@
+{
+  "marca": "LUXLINE CR",
+  "nombreWeb": "LUXLINE CR",
+  "dominio": "luxline.tech",
+  "paletas": {
+    "android": {
+      "background": {
+        "hex": "#F6F5F2",
+        "uso": "Fondo principal"
+      },
+      "ink": {
+        "hex": "#0D0D0D",
+        "uso": "Texto y CTA con contraste"
+      },
+      "accent": {
+        "hex": "#9E9E9E",
+        "uso": "Acento material; plata neutra en Android"
+      },
+      "secondary": {
+        "hex": "#2E2E2E",
+        "uso": "Contraste secundario / iridiscencia sutil"
+      },
+      "highlight": {
+        "hex": "#FFFFFF",
+        "uso": "Reflejos"
+      },
+      "metalDark": {
+        "hex": "#383838",
+        "uso": "Metal oscuro"
+      },
+      "frosted": {
+        "hex": "#E2E2E2",
+        "uso": "Vidrio esmerilado"
+      },
+      "statusActive": {
+        "hex": "#22C55E",
+        "uso": "Solo estados activos o confirmaciones, con etiqueta; no decoración ni CTA genérico"
+      }
+    },
+    "iphone": {
+      "background": {
+        "hex": "#F8F7F4",
+        "uso": "Fondo principal"
+      },
+      "ink": {
+        "hex": "#111111",
+        "uso": "Texto y CTA con contraste"
+      },
+      "accent": {
+        "hex": "#AEBACB",
+        "uso": "Acento material; plata azulada"
+      },
+      "secondary": {
+        "hex": "#B8A4CF",
+        "uso": "Contraste secundario / iridiscencia sutil"
+      },
+      "highlight": {
+        "hex": "#FFFFFF",
+        "uso": "Reflejos"
+      }
+    },
+    "accessories": {
+      "background": {
+        "hex": "#211814",
+        "uso": "Fondo principal"
+      },
+      "ink": {
+        "hex": "#F7EADB",
+        "uso": "Texto y CTA con contraste"
+      },
+      "accent": {
+        "hex": "#D18C62",
+        "uso": "Acento material; cobre"
+      },
+      "secondary": {
+        "hex": "#F2B45F",
+        "uso": "Contraste secundario / iridiscencia sutil"
+      },
+      "highlight": {
+        "hex": "#FFF1DA",
+        "uso": "Reflejos"
+      }
+    }
+  },
+  "logos": [
+    "assets/marca/logos/logo-blanco.png",
+    "assets/marca/logos/logo-negro.png",
+    "assets/marca/logos/logo.svg",
+    "assets/marca/logos/logo-blanco.svg",
+    "assets/marca/logos/logo-circular-oscuro.png",
+    "assets/marca/logos/logo-circular-perla.png",
+    "assets/marca/logos/logo-cuadrado-blanco-transparente.png",
+    "assets/marca/logos/logo-cuadrado-negro-transparente.png",
+    "assets/marca/logos/logo-horizontal-blanco-transparente.png",
+    "assets/marca/logos/logo-horizontal-negro-transparente.png",
+    "assets/marca/logos/logo-negro.svg",
+    "assets/marca/logos/logo-trim-blanco-transparente.png",
+    "assets/marca/logos/logo-trim-negro-transparente.png",
+    "assets/marca/logos/LUXLINE-CR-Avatar-Blanco.png",
+    "assets/marca/logos/LUXLINE-CR-Avatar-Oscuro.png",
+    "assets/marca/logos/LUXLINE-CR-Avatar-Perla.png"
+  ],
+  "tipografias": [
+    {
+      "file": "biblioteca/fuentes/Mono-Regular.ttf",
+      "name": "Noto Sans Mono",
+      "style": "Regular",
+      "version": "Version 2.006; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "license": "SIL Open Font License 1.1",
+      "licenseURL": "http://scripts.sil.org/OFL"
+    },
+    {
+      "file": "biblioteca/fuentes/NotoSansDisplay-Variable.ttf",
+      "name": "Noto Sans Display",
+      "style": "Regular",
+      "version": "Version 2.003",
+      "license": "SIL Open Font License 1.1",
+      "licenseURL": "http://scripts.sil.org/OFL"
+    },
+    {
+      "file": "biblioteca/fuentes/Sans-Bold.ttf",
+      "name": "Noto Sans Display",
+      "style": "Bold",
+      "version": "Version 2.003; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "license": "SIL Open Font License 1.1",
+      "licenseURL": "http://scripts.sil.org/OFL"
+    },
+    {
+      "file": "biblioteca/fuentes/Sans-Light.ttf",
+      "name": "Noto Sans Display",
+      "style": "Light",
+      "version": "Version 2.003; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "license": "SIL Open Font License 1.1",
+      "licenseURL": "http://scripts.sil.org/OFL"
+    },
+    {
+      "file": "biblioteca/fuentes/Sans-Medium.ttf",
+      "name": "Noto Sans Display",
+      "style": "Medium",
+      "version": "Version 2.003; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "license": "SIL Open Font License 1.1",
+      "licenseURL": "http://scripts.sil.org/OFL"
+    },
+    {
+      "file": "biblioteca/fuentes/Sans-SemiBold.ttf",
+      "name": "Noto Sans Display",
+      "style": "SemiBold",
+      "version": "Version 2.003; ttfautohint (v1.8.3) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "license": "SIL Open Font License 1.1",
+      "licenseURL": "http://scripts.sil.org/OFL"
+    }
+  ],
+  "jerarquia": {
+    "principal": "Noto Sans Display variable 100–900",
+    "tecnica": "Noto Sans Mono para etiquetas",
+    "titular": "Dominante; estable durante lectura",
+    "apoyo": "Subordinado al titular",
+    "datos": "Etiquetas técnicas discretas",
+    "escala": "Adaptar al formato; no existe una escala universal aprobada"
+  },
+  "composicion": {
+    "formato": {
+      "width": 1080,
+      "height": 1920,
+      "fps": 60
+    },
+    "idea": "Una idea principal y un CTA",
+    "espacio": "Espacio negativo y márgenes para interfaz; comprobar lectura móvil",
+    "protagonista": "Producto, accesorio, objeto o diagrama según mensaje",
+    "continuidad": "Conectar forma, posición, luz o cámara",
+    "tarjetas": "Solo cuando sean útiles; liquid glass 2.5D legible"
+  },
+  "reglasColor": [
+    "Logo oscuro sobre claro y claro sobre oscuro con contraste verificado",
+    "Android: crema, carbón y plata; verde solo semántico",
+    "iPhone: perla, plata, titanio e iridiscencia sutil",
+    "Accesorios: champagne, cobre y ámbar",
+    "Paletas históricas no sustituyen estas paletas"
+  ],
+  "evitar": [
+    "Deformar logo, letras o productos",
+    "Inventar datos comerciales",
+    "Tarjetas repetitivas y decoración distractora",
+    "Mostrar mockup de otra familia como un modelo real"
+  ],
+  "referencias": {
+    "capturasInstagramDisponibles": false,
+    "capturasWebDisponibles": false
+  },
+  "motion": "assets/marca/motion/MOTION-TRANSITIONS.md",
+  "familiaTipografica": "Noto Sans Display",
+  "rolesTipograficos": {
+    "titulares": {
+      "familia": "Noto Sans Display",
+      "archivo": "biblioteca/fuentes/NotoSansDisplay-Variable.ttf",
+      "pesos": [
+        500,
+        600,
+        700
+      ]
+    },
+    "cuerpo": {
+      "familia": "Noto Sans Display",
+      "archivo": "biblioteca/fuentes/NotoSansDisplay-Variable.ttf",
+      "pesos": [
+        400,
+        500
+      ]
+    },
+    "datos": {
+      "familia": "Noto Sans Mono",
+      "archivo": "biblioteca/fuentes/Mono-Regular.ttf",
+      "pesos": [
+        400
+      ]
+    }
+  },
+  "rolesTipograficosNota": "Pesos operativos para el kit v3; la familia variable permite 100–900. No se falsifican pesos de Mono.",
+  "zonaSegura": {
+    "left": 90,
+    "right": 180,
+    "top": 280,
+    "bottom": 680,
+    "nota": "Margen operativo conservador del kit a 1080×1920. Revisar interfaz del placement final; no garantía universal de Instagram."
+  },
+  "reglasProduccion": {
+    "sinTextoLegalEnVideo": true,
+    "sinCreditosEnVideo": true,
+    "sinEtiquetaInformacionOficial": true,
+    "voz": "Solo en piezas aprobadas; por defecto música y efectos",
+    "flujo": "Guion visual breve → aprobación → producción",
+    "estilo": "Mucho movimiento con propósito; nada seco, estático o repetitivo"
+  }
+}
