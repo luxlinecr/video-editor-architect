@@ -493,7 +493,7 @@ describe('CLI de ingesta con un clip HLG real (generado al vuelo)', () => {
 		expect(s.video.hdr).toBe(true);
 
 		const slug = '_prueba-unit-hdr';
-		const cli = spawnSync('npx', ['tsx', 'herramientas/ingesta.ts', clip, '--slug', slug], {cwd: RAIZ, encoding: 'utf8'});
+		const cli = spawnSync(process.execPath, [join(RAIZ, 'node_modules', 'tsx', 'dist', 'cli.mjs'), 'herramientas/ingesta.ts', clip, '--slug', slug], {cwd: RAIZ, encoding: 'utf8'});
 		expect(cli.status).toBe(2);
 		expect(cli.stderr.trim().split('\n').at(-1)).toMatch(/^No pude preparar hlg\.mp4: es un video HDR \(HLG, arib-std-b67\).+\. Siguiente paso: .+\.$/);
 		expect(existsSync(join(RAIZ, 'proyectos', slug))).toBe(false);

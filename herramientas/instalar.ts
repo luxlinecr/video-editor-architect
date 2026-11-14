@@ -533,23 +533,50 @@ export function revisarComponente(id: IdComponente, ctx: Contexto): Revision {
 	return {ok: false, detalle: 'sin comprobación'};
 }
 
+/** Lee Machine + User Path del registro de Windows (para detectar paquetes recién instalados por winget). */
+export function leerPathRegistroWindows(s: Sistema = sistema()): string {
+	if (s !== 'windows') return '';
+	const r = spawnSync(
+		'powershell.exe',
+		['-NoProfile', '-NonInteractive', '-Command', "[Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')"],
+		{encoding: 'utf8', windowsHide: true, timeout: 10_000},
+	);
+	return r.status === 0 ? r.stdout.trim() : '';
+}
+
 /** PATH con las carpetas donde los instaladores dejan programas (para verlos sin abrir otra terminal). Pura. */
-export function pathAmpliado(env: Entorno, s: Sistema, home: string, existe: (r: string) => boolean = existsSync): string {
+export function pathAmpliado(
+	env: Entorno,
+	s: Sistema,
+	home: string,
+	existe: (r: string) => boolean = existsSync,
+	pathRegistro = '',
+): string {
 	const sepPath = s === 'windows' ? ';' : ':';
 	const actual = env.PATH ?? env.Path ?? '';
 	const partes = actual.split(sepPath).filter(Boolean);
 	const extra =
 		s === 'windows'
-			? [join(env.LOCALAPPDATA ?? join(home, 'AppData', 'Local'), 'Microsoft', 'WinGet', 'Links')]
+			? [
+					join(env.LOCALAPPDATA ?? join(home, 'AppData', 'Local'), 'Microsoft', 'WinGet', 'Links'),
+					...pathRegistro
+						.split(';')
+						.map((x) => x.trim())
+						.filter(Boolean),
+				]
 			: [...(s === 'mac' ? ['/opt/homebrew/bin', '/usr/local/bin'] : []), posix.join(home, '.local', 'bin'), posix.join(home, '.cargo', 'bin')];
 	for (const dir of extra) if (!partes.includes(dir) && existe(dir)) partes.push(dir);
 	return partes.join(sepPath);
 }
 
 function refrescarPath(s: Sistema): void {
-	const nuevo = pathAmpliado(process.env, s, homedir());
-	if (s === 'windows' && process.env.Path !== undefined && process.env.PATH === undefined) process.env.Path = nuevo;
-	else process.env.PATH = nuevo;
+	const nuevo = pathAmpliado(process.env, s, homedir(), existsSync, leerPathRegistroWindows(s));
+	if (s === 'windows') {
+		process.env.Path = nuevo;
+		process.env.PATH = nuevo;
+	} else {
+		process.env.PATH = nuevo;
+	}
 }
 
 function rutaPlaywrightCli(raiz: string): string | null {
@@ -766,8 +793,9 @@ async function main(): Promise<void> {
 		console.log('Uso: npx tsx herramientas/instalar.ts [--si] [--solo pieza,pieza]\nPiezas: ' + componentesDe(sistema()).map((c) => c.id).join(', '));
 		return;
 	}
-	const ctx = contextoDoctor({raiz: RAIZ_PROYECTO});
-	refrescarPath(ctx.s);
+	const s = sistema();
+	refrescarPath(s);
+	const ctx = contextoDoctor({raiz: RAIZ_PROYECTO, s});
 	usarProxyDelEntorno();
 	const solo = leerSolo(values.solo, ctx.s);
 	const ids = componentesDe(ctx.s)

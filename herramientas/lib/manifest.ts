@@ -177,7 +177,7 @@ export async function hashearArchivo(ruta: string, relativaA?: string): Promise<
 	const absoluta = resolve(ruta);
 	const sha256 = await sha256Archivo(absoluta);
 	const bytes = statSync(absoluta).size;
-	return {ruta: relativaA ? relative(relativaA, absoluta) : absoluta, sha256, bytes};
+	return {ruta: relativaA ? relative(relativaA, absoluta).replaceAll('\\', '/') : absoluta, sha256, bytes};
 }
 
 /** Huella del original para el manifest: ruta, sha256, tamaño y mtime. No lo copia ni lo modifica. */

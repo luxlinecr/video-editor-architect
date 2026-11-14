@@ -5,9 +5,9 @@ import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {describe, expect, it} from 'vitest';
 // @ts-expect-error: módulo .mjs sin tipos
-import {revisar} from '../../.claude/hooks/vigilar-bash.mjs';
+import {revisar} from '../../.agents/hooks/vigilar-bash.mjs';
 
-const HOOK = fileURLToPath(new URL('../../.claude/hooks/vigilar-bash.mjs', import.meta.url));
+const HOOK = fileURLToPath(new URL('../../.agents/hooks/vigilar-bash.mjs', import.meta.url));
 
 function correrHook(command: string, tool_name = 'Bash') {
 	const r = spawnSync('node', [HOOK], {input: JSON.stringify({tool_name, tool_input: {command}}), encoding: 'utf8'});

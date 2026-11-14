@@ -7,7 +7,7 @@
  */
 import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {homedir, tmpdir} from 'node:os';
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {afterAll, describe, expect, it} from 'vitest';
 import {CREADOR_NEUTRO, expandirRuta, fuentesSfxDe, hayCreador, leerCreador, requerirHandle} from '../../herramientas/lib/creador.ts';
 import {FalloEditor} from '../../herramientas/lib/fallo.ts';
@@ -94,6 +94,6 @@ describe('requerirHandle y expandirRuta', () => {
 		expect(expandirRuta('~')).toBe(homedir());
 		expect(expandirRuta('~/datos/apify')).toBe(join(homedir(), 'datos', 'apify'));
 		expect(expandirRuta('/abs/x')).toBe('/abs/x');
-		expect(expandirRuta('biblioteca/sfx', '/base')).toBe('/base/biblioteca/sfx');
+		expect(expandirRuta('biblioteca/sfx', '/base')).toBe(resolve('/base', 'biblioteca/sfx'));
 	});
 });

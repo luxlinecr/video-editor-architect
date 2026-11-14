@@ -164,7 +164,7 @@ describe('llaves: estado sin valor (HOME temporal con .env falso)', () => {
 		// Ninguna llave real de tu shell entra a esta prueba.
 		delete env.GEMINI_API_KEY;
 		delete env.APIFY_TOKEN;
-		const r = spawnSync(join(RAIZ, 'node_modules', '.bin', 'tsx'), [join(RAIZ, 'herramientas', 'doctor.ts')], {
+		const r = spawnSync(process.execPath, [join(RAIZ, 'node_modules', 'tsx', 'dist', 'cli.mjs'), join(RAIZ, 'herramientas', 'doctor.ts')], {
 			cwd,
 			env,
 			encoding: 'utf8',

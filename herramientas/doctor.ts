@@ -572,7 +572,30 @@ export function diagnosticar({
 	return {chequeos, notas: [...llaves.notas, NOTA_REMOTION]};
 }
 
+function refrescarPathWindows(s: Sistema): void {
+	if (s !== 'windows') return;
+	const r = spawnSync(
+		'powershell.exe',
+		['-NoProfile', '-NonInteractive', '-Command', "[Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')"],
+		{encoding: 'utf8', windowsHide: true, timeout: 10_000},
+	);
+	const extra = [
+		join(process.env.LOCALAPPDATA ?? join(homedir(), 'AppData', 'Local'), 'Microsoft', 'WinGet', 'Links'),
+		...(r.status === 0 ? r.stdout : '')
+			.split(';')
+			.map((x) => x.trim())
+			.filter(Boolean),
+	];
+	const actual = process.env.PATH ?? process.env.Path ?? '';
+	const partes = actual.split(';').filter(Boolean);
+	for (const dir of extra) if (!partes.includes(dir) && existsSync(dir)) partes.push(dir);
+	const nuevo = partes.join(';');
+	process.env.Path = nuevo;
+	process.env.PATH = nuevo;
+}
+
 async function main(): Promise<void> {
+	refrescarPathWindows(sistema());
 	const {chequeos, notas} = diagnosticar();
 	console.log(`Doctor · Claude Editor de Video (${sistema()})\n`);
 	console.log(formatearTabla(chequeos));

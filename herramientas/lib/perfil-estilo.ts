@@ -110,7 +110,7 @@ export const MOTOR_NEUTRO: PerfilMotor = Object.freeze({
 	origen: {estilo: null, archivo: null, claves: []},
 }) as PerfilMotor;
 
-const rel = (raiz: string, ruta: string): string => relative(raiz, ruta) || ruta;
+const rel = (raiz: string, ruta: string): string => (relative(raiz, ruta) || ruta).replaceAll('\\', '/');
 
 /** Ruta del perfil de un estilo. */
 export const rutaPerfil = (id: string, raiz: string = RAIZ_CREADOR): string => join(raiz, 'estilo', 'estilos', id, 'perfil.json');

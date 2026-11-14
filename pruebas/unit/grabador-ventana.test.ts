@@ -7,7 +7,7 @@
  * búsqueda de secretos en el texto del OCR (siempre enmascarados). Corren dentro del sandbox.
  * La app real (ScreenCaptureKit) la prueba pruebas/integracion/f7-grabador.ts.
  */
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {describe, expect, it} from 'vitest';
 import {FalloEditor} from '../../herramientas/lib/fallo.ts';
 import {
@@ -46,7 +46,7 @@ describe('argumentos', () => {
 			app: 'Terminal',
 			titulo: null,
 			segundos: 10,
-			salida: '/proyecto/demos/d1/terminal.mp4',
+			salida: resolve(RAIZ, 'demos/d1/terminal.mp4'),
 			fps: 30,
 			cursor: true,
 			pedirPermiso: true,
@@ -75,7 +75,7 @@ describe('argumentos', () => {
 		['más de 600 s', ['--app', 'Terminal', '--segundos', '700', '--salida', 'a.mp4']],
 		['fps con decimales', ['--app', 'Terminal', '--segundos', '3', '--salida', 'a.mp4', '--fps', '29.97']],
 		['salida que no es mp4', ['--app', 'Terminal', '--segundos', '3', '--salida', 'a.mov']],
-		['salida fuera del proyecto', ['--app', 'Terminal', '--segundos', '3', '--salida', '/home/otro/a.mp4']],
+		['salida fuera del proyecto', ['--app', 'Terminal', '--segundos', '3', '--salida', resolve('/home/otro/a.mp4')]],
 		['salida que se escapa con ..', ['--app', 'Terminal', '--segundos', '3', '--salida', '../fuera.mp4']],
 		['salida en entrada/ (solo lectura)', ['--app', 'Terminal', '--segundos', '3', '--salida', 'entrada/a.mp4']],
 		['opción desconocida', ['--app', 'Terminal', '--segundos', '3', '--salida', 'a.mp4', '--audio']],
@@ -102,7 +102,7 @@ describe('pedido y open', () => {
 			version: 1,
 			app: 'Terminal',
 			segundos: 10,
-			salida: '/proyecto/demos/d1/t.mp4',
+			salida: resolve(RAIZ, 'demos/d1/t.mp4'),
 			fps: 30,
 			resultado: '/tmp/r.json',
 			cursor: true,

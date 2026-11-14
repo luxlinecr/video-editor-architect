@@ -26,6 +26,7 @@ import {
 	textoVisible,
 } from '../../src/estilo/fuentes.ts';
 import {FalloEditor} from '../../herramientas/lib/fallo.ts';
+import {FAMILIAS_OFL} from '../../herramientas/lib/fuentes-ofl.ts';
 import {RAIZ, leerManifest} from '../../herramientas/lib/manifest.ts';
 import {cuantizar, remapearIntervalo, type Tramo} from '../../herramientas/lib/remapear.ts';
 import {abrirFuente, medirTexto, UNION_BORDE} from '../../herramientas/lib/texto-ancho.ts';
@@ -182,9 +183,13 @@ const FIX = fixtureRealista();
 describe.runIf(HAY_FUENTES)('fuentes candidatas (src/estilo/fuentes.ts y biblioteca/fuentes/)', () => {
 	it('los 6 archivos existen y su sha256 es el registrado (si no: sh biblioteca/fuentes/preparar.sh)', () => {
 		for (const id of IDS_FUENTE) {
+			const fam = FAMILIAS_OFL.find((f) => f.carpeta === id);
+			const instancias = fam && Array.isArray(fam.instancias) ? fam.instancias : [];
 			for (const archivo of Object.values(CANDIDATAS[id].archivos)) {
 				const sha = createHash('sha256').update(readFileSync(join(RAIZ, archivo.ruta))).digest('hex');
-				expect(sha, archivo.ruta).toBe(archivo.sha256);
+				const inst = instancias.find((i) => `${id}/${i.archivo}` === archivo.ruta.replace(/^biblioteca\/fuentes\//, ''));
+				const esperados = process.platform === 'win32' && inst?.sha256Win ? [archivo.sha256, inst.sha256Win] : [archivo.sha256];
+				expect(esperados, archivo.ruta).toContain(sha);
 			}
 		}
 	});
@@ -819,13 +824,13 @@ describe.runIf(HAY_FUENTES)('generarSubtitulos (proyectos/<slug>/subtitulos.json
 
 describe.runIf(HAY_FUENTES)('CLI', () => {
 	it('sin slug sale con código 2 y una sola frase con siguiente paso', () => {
-		const r = spawnSync('npx', ['tsx', 'herramientas/subtitulos.ts'], {cwd: RAIZ, encoding: 'utf8'});
+		const r = spawnSync(process.execPath, [join(RAIZ, 'node_modules', 'tsx', 'dist', 'cli.mjs'), 'herramientas/subtitulos.ts'], {cwd: RAIZ, encoding: 'utf8'});
 		expect(r.status).toBe(2);
 		expect(sinAvisosNpm(r.stderr)).toMatch(FORMATO);
 	});
 
 	it('--min-palabras fuera de 1–3 sale con código 2', () => {
-		const r = spawnSync('npx', ['tsx', 'herramientas/subtitulos.ts', 'x', '--min-palabras', '4'], {cwd: RAIZ, encoding: 'utf8'});
+		const r = spawnSync(process.execPath, [join(RAIZ, 'node_modules', 'tsx', 'dist', 'cli.mjs'), 'herramientas/subtitulos.ts', 'x', '--min-palabras', '4'], {cwd: RAIZ, encoding: 'utf8'});
 		expect(r.status).toBe(2);
 		expect(sinAvisosNpm(r.stderr)).toMatch(FORMATO);
 	});

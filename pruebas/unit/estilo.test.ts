@@ -652,7 +652,7 @@ describe('aprender.ts', () => {
 		writeFileSync(join(d, 'a.ts'), "import {b} from './lib/b.ts';\nimport x from 'zod';\nexport const a = b;\n");
 		writeFileSync(join(d, 'lib', 'b.ts'), "export {c} from './c';\nexport const b = 1;\n");
 		writeFileSync(join(d, 'lib', 'c.ts'), 'export const c = 2;\n');
-		expect(cierreDeImports(join(d, 'a.ts')).map((r) => r.slice(d.length + 1))).toEqual(['a.ts', 'lib/b.ts', 'lib/c.ts']);
+		expect(cierreDeImports(join(d, 'a.ts')).map((r) => r.slice(d.length + 1).replaceAll('\\', '/'))).toEqual(['a.ts', 'lib/b.ts', 'lib/c.ts']);
 	});
 
 	it('la huella de una etapa puede tomar solo una función de un archivo (fuenteDeFuncion)', () => {

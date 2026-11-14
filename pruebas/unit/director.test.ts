@@ -27,7 +27,7 @@ import {borradorTitular, partirTitular, revisarTitular} from '../../herramientas
 import {reglasDeVoz, revisarVoz, seccionProhibido} from '../../herramientas/lib/director/voz.ts';
 import {FalloEditor} from '../../herramientas/lib/fallo.ts';
 import {RAIZ} from '../../herramientas/lib/manifest.ts';
-import {HAY_FUENTES} from './requisitos.ts';
+import {HAY_FIXTURES, HAY_FUENTES} from './requisitos.ts';
 
 /** Palabras con tiempos: una cada `paso` s (dura paso − 0.05). */
 function palabrasDe(texto: string, paso = 0.35, t0 = 0): Palabra[] {
@@ -537,7 +537,7 @@ describe('el plan', () => {
 
 // ───────────────────────── CLI sobre un proyecto de prueba ─────────────────────────
 
-describe('director.ts sobre un proyecto', () => {
+describe.runIf(HAY_FIXTURES)('director.ts sobre un proyecto', () => {
 	const slug = '_prueba-unit-director';
 	const dir = join(RAIZ, 'proyectos', slug);
 	beforeAll(() => {

@@ -547,12 +547,12 @@ describe('recolectar + armarCorpus con carpetas sintéticas', () => {
 		expect(a.plays).toBe(2000); // pagination-2026-09-29 es la captura completa más nueva
 		expect(a.likes).toBe(150); // y sus likes no se mezclan con los de yt-dlp (160) ni los del perfil (101)
 		expect(a.fuente_metricas).toBe('insta-youtube/raw/pagination-2026-09-29');
-		expect(a.mp4?.endsWith('insta-youtube/data/videos/DAAAAAAAAAA.mp4')).toBe(true); // no el comp_* de 4K
+		expect(a.mp4?.replaceAll('\\', '/').endsWith('insta-youtube/data/videos/DAAAAAAAAAA.mp4')).toBe(true); // no el comp_* de 4K
 		expect(a.resolucion).toBe('1440x2560');
 		expect(a.fps).toBe(60);
 		const b = reels.find((r) => r.shortCode === 'DBBBBBBBBBB') as ReelCorpus;
 		expect(b.plays).toBe(3000); // apify (24-ago) es más nueva que matriz-viral (20-ago)
-		expect(b.mp4?.endsWith('matriz-viral/videos/ig_01_DBBBBBBBBBB.mp4')).toBe(true);
+		expect(b.mp4?.replaceAll('\\', '/').endsWith('matriz-viral/videos/ig_01_DBBBBBBBBBB.mp4')).toBe(true);
 		// C: publicado el 20-ago y capturado el 24-ago: fuera del ranking, y sus 9 M de plays no tocan la mediana.
 		const c = reels.find((r) => r.shortCode === 'DCCCCCCCCCC') as ReelCorpus;
 		expect(c.puntaje).toBeNull();
@@ -565,7 +565,7 @@ describe('recolectar + armarCorpus con carpetas sintéticas', () => {
 		expect(reels200?.cuentas_descartadas).toEqual(['externados/30000000081']);
 		expect(recoleccion.fuentes.some((f) => f.ruta.includes('ajenauno'))).toBe(false);
 		expect(recoleccion.fuentes.find((f) => f.fuente === 'insta-youtube/info')?.otra_cuenta).toBe(1);
-		expect(recoleccion.mp4_descartados.map((d) => d.ruta.split('/').pop()).sort()).toEqual(['DZZZZZZZZZZ.mp4', 'ig_02_DNOESTUYO1.mp4']);
+		expect(recoleccion.mp4_descartados.map((d) => d.ruta.replaceAll('\\', '/').split('/').pop()).sort()).toEqual(['DZZZZZZZZZZ.mp4', 'ig_02_DNOESTUYO1.mp4']);
 	});
 
 	it('validarCorpus corta (código 1) si se cuela un comp_*, un repetido o un mp4 fuera de tus carpetas', () => {

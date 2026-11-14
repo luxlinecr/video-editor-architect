@@ -164,6 +164,6 @@ function leerValor(despuesDelIgual: string): string {
 /** La ruta como la lees tú: con ~ en lugar de tu carpeta personal. */
 function mostrarRuta(ruta: string): string {
 	const casa = homedir();
-	if (casa && (ruta === casa || ruta.startsWith(casa + sep))) return `~${ruta.slice(casa.length)}`;
+	if (casa && (ruta === casa || ruta.startsWith(casa + sep))) return `~${ruta.slice(casa.length).replaceAll('\\', '/')}`;
 	return ruta;
 }

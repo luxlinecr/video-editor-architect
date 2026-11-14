@@ -7,7 +7,7 @@
  */
 import {chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {afterAll, describe, expect, it} from 'vitest';
 import {argumentosMascara} from '../../herramientas/cara.ts';
 import {dependenciasDe, filtrosRequeridos, FILTROS_REQUERIDOS, NOTA_REMOTION, cachePlaywright} from '../../herramientas/doctor.ts';
@@ -133,7 +133,7 @@ describe('motor de visión', () => {
 		expect(p.motor).toBe('python');
 		expect(p.programa).toBe(join('/r', '.venv', 'Scripts', 'python.exe'));
 		expect(p.prefijo).toEqual([scriptVision('ocr', '/r')]);
-		expect(p.env.EDITOR_MODELOS).toBe(join('/m'));
+		expect(p.env.EDITOR_MODELOS).toBe(resolve('/m'));
 		expect(faltaParaVision(p, (r) => r !== p.programa)).toBe(p.programa);
 		expect(faltaParaVision(p, siempre)).toBeNull();
 	});

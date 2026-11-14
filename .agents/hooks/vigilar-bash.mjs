@@ -27,10 +27,16 @@ const INTERPRETES = new Set([
 ]);
 
 function negarAntigravity(motivo) {
+	const reason = `Bloqueado por el hook del editor: ${motivo}.`;
 	process.stdout.write(
 		JSON.stringify({
 			decision: 'deny',
-			reason: `Bloqueado por el hook del editor: ${motivo}.`,
+			reason,
+			hookSpecificOutput: {
+				hookEventName: 'PreToolUse',
+				permissionDecision: 'deny',
+				permissionDecisionReason: reason,
+			},
 		}),
 	);
 	process.exit(0);

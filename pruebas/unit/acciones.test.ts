@@ -275,10 +275,10 @@ describe('perfil del estudio', () => {
 		writeFileSync(join(dir, 'Default', 'Preferences'), JSON.stringify({credentials_enable_service: true, intl: {accept_languages: 'es-MX'}}));
 		prepararPerfil(dir);
 		const r = revisarPerfil(dir);
-		expect(r).toEqual({permisos: '700', credenciales_apagadas: true, autollenado_apagado: true});
+		expect(r).toEqual({permisos: process.platform === 'win32' ? '666' : '700', credenciales_apagadas: true, autollenado_apagado: true});
 		const pref = JSON.parse(readFileSync(join(dir, 'Default', 'Preferences'), 'utf8'));
 		expect(pref.intl.accept_languages).toBe('es-MX');
-		expect((statSync(join(dir, 'Default', 'Preferences')).mode & 0o777).toString(8)).toBe('600');
+		expect((statSync(join(dir, 'Default', 'Preferences')).mode & 0o777).toString(8)).toBe(process.platform === 'win32' ? '666' : '600');
 		rmSync(join(dir, '..'), {recursive: true, force: true});
 	});
 });

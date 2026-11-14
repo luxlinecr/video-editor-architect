@@ -5,7 +5,7 @@ import {readFileSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
 import {EdicionValidada} from '../../src/esquema/edicion';
 import {validarEdicion} from '../../herramientas/validar';
-import {HAY_FUENTES} from './requisitos.ts';
+import {HAY_FIXTURES, HAY_FUENTES} from './requisitos.ts';
 
 const valida = JSON.parse(readFileSync(new URL('../edl/f0-3s.json', import.meta.url), 'utf8'));
 const clonar = <T>(x: T): T => JSON.parse(JSON.stringify(x));
@@ -66,7 +66,7 @@ describe('contrato de la edición (Zod)', () => {
 });
 
 describe('validar.ts (archivos y alfa)', () => {
-	it.runIf(HAY_FUENTES)('la EDL de prueba pasa con sus archivos reales', () => {
+	it.runIf(HAY_FUENTES && HAY_FIXTURES)('la EDL de prueba pasa con sus archivos reales', () => {
 		const {hallazgos} = validarEdicion(valida);
 		expect(hallazgos).toEqual([]);
 	});
@@ -78,7 +78,7 @@ describe('validar.ts (archivos y alfa)', () => {
 		expect(hallazgos.some((h) => h.regla === 'archivo')).toBe(true);
 	});
 
-	it.runIf(HAY_FUENTES)('marca un sticker sin transparencia (usa un JPG/MP4 como sticker)', () => {
+	it.runIf(HAY_FUENTES && HAY_FIXTURES)('marca un sticker sin transparencia (usa un JPG/MP4 como sticker)', () => {
 		const e = clonar(valida);
 		e.stickers[0].asset = 'fx/clip-6s.mp4';
 		const {hallazgos} = validarEdicion(e);

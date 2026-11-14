@@ -214,7 +214,7 @@ describe('errores: dicen el nombre y dónde ponerla, nunca el valor', () => {
 	});
 
 	it('si el archivo existe pero no se puede leer, lanza código 3 sin mostrar nada de su contenido', () => {
-		if (process.getuid?.() === 0) return; // root lee todo: esta prueba no aplica
+		if (process.platform === 'win32' || process.getuid?.() === 0) return; // Windows/root ignoran 0o000: esta prueba no aplica
 		const ruta = escribirEnv(CONTENIDO_ENV);
 		chmodSync(ruta, 0o000);
 		try {

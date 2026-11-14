@@ -804,7 +804,7 @@ export function argumentosYtDlp(shortCode: string, carpeta: string): string[] {
 		'mp4',
 		'--write-info-json',
 		'-o',
-		join(carpeta, `${shortCode}.%(ext)s`),
+		join(carpeta, `${shortCode}.%(ext)s`).replaceAll('\\', '/'),
 		`https://www.instagram.com/reel/${shortCode}/`,
 	];
 }

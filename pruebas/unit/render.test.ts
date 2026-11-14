@@ -37,7 +37,7 @@ import {
 	versionesEdicion,
 	type Motor,
 } from '../../herramientas/render.ts';
-import {HAY_FUENTES} from './requisitos.ts';
+import {HAY_FIXTURES, HAY_FUENTES} from './requisitos.ts';
 
 const EDL = JSON.parse(readFileSync(join(RAIZ, 'pruebas', 'edl', 'f0-3s.json'), 'utf8'));
 const clonar = <T>(x: T): T => JSON.parse(JSON.stringify(x));
@@ -205,7 +205,7 @@ describe('render.ts — versiones y compuerta de validación', () => {
 		expect(leerManifest(slug, proyectos)).toBeNull();
 	});
 
-	it.runIf(HAY_FUENTES)('con la EDL válida sí pasa la compuerta y llega al bundle (que aquí falla a propósito: código 1)', async () => {
+	it.runIf(HAY_FUENTES && HAY_FIXTURES)('con la EDL válida sí pasa la compuerta y llega al bundle (que aquí falla a propósito: código 1)', async () => {
 		const {motor, llamadas} = motorEspia();
 		const error = await renderizar({slug, version: 1, proyectos, motor, avisar: () => {}}).catch((e: unknown) => e);
 		expect(llamadas).toEqual(['bundle']);
@@ -300,14 +300,14 @@ describe('ajustar.ts — versiones inmutables', () => {
 		writeFileSync(join(dir, 'edicion-v1.json'), JSON.stringify(EDL, null, '\t'));
 	});
 
-	it.runIf(HAY_FUENTES)('crea v2 como copia exacta, deja v1 de solo lectura y valida (0 cambios)', () => {
+	it.runIf(HAY_FUENTES && HAY_FIXTURES)('crea v2 como copia exacta, deja v1 de solo lectura y valida (0 cambios)', () => {
 		const r = ajustar({slug, proyectos});
 		expect(r).toMatchObject({desde: 1, nueva: 2, creada: true, cambios: [], hallazgos: []});
 		expect(readFileSync(join(dir, 'edicion-v2.json'), 'utf8')).toBe(readFileSync(join(dir, 'edicion-v1.json'), 'utf8'));
 		expect(statSync(join(dir, 'edicion-v1.json')).mode & 0o222).toBe(0);
 	});
 
-	it.runIf(HAY_FUENTES)('si v2 ya existe no la pisa: la valida y da el diff contra v1', () => {
+	it.runIf(HAY_FUENTES && HAY_FIXTURES)('si v2 ya existe no la pisa: la valida y da el diff contra v1', () => {
 		const v2 = JSON.parse(readFileSync(join(dir, 'edicion-v2.json'), 'utf8'));
 		v2.stickers[0].caja.y += 100;
 		v2.stickers[0].sfx = null;
@@ -319,7 +319,7 @@ describe('ajustar.ts — versiones inmutables', () => {
 		expect(JSON.parse(readFileSync(join(dir, 'edicion-v2.json'), 'utf8')).stickers[0].sfx).toBeNull();
 	});
 
-	it.runIf(HAY_FUENTES)('una v2 inválida da hallazgos (el CLI sale con 2)', () => {
+	it.runIf(HAY_FUENTES && HAY_FIXTURES)('una v2 inválida da hallazgos (el CLI sale con 2)', () => {
 		const v2 = JSON.parse(readFileSync(join(dir, 'edicion-v2.json'), 'utf8'));
 		v2.subtitulos[0].hasta = 0.1;
 		writeFileSync(join(dir, 'edicion-v2.json'), JSON.stringify(v2));

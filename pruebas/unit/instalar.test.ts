@@ -283,6 +283,15 @@ describe('resumen y PATH', () => {
 	it('agrega las carpetas de winget o de ~/.local/bin si existen', () => {
 		const existe = () => true;
 		expect(pathAmpliado({PATH: 'C:\\Windows', LOCALAPPDATA: 'C:\\L'}, 'windows', 'C:\\casa', existe).split(';')).toHaveLength(2);
+		expect(
+			pathAmpliado(
+				{PATH: 'C:\\Windows', LOCALAPPDATA: 'C:\\L'},
+				'windows',
+				'C:\\casa',
+				existe,
+				'C:\\Windows;C:\\Tools\\uv;C:\\Tools\\yt-dlp',
+			),
+		).toBe('C:\\Windows;C:\\L\\Microsoft\\WinGet\\Links;C:\\Tools\\uv;C:\\Tools\\yt-dlp');
 		expect(pathAmpliado({PATH: '/usr/bin'}, 'linux', '/casa', existe)).toBe('/usr/bin:/casa/.local/bin:/casa/.cargo/bin');
 		expect(pathAmpliado({PATH: '/usr/bin'}, 'linux', '/casa', () => false)).toBe('/usr/bin');
 	});

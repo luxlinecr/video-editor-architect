@@ -469,7 +469,7 @@ function calcularEstado(fuentes: Revision['fuentes'], aprobados: Record<string, 
  */
 export function registrarEscaneo(dirDemo: string, escaneo: ResultadoEscaneo, rutaArchivo: string, avisos: readonly string[] = []): Revision {
 	const previa = leerRevision(dirDemo);
-	const archivo = relative(dirDemo, rutaArchivo) || basename(rutaArchivo);
+	const archivo = (relative(dirDemo, rutaArchivo) || basename(rutaArchivo)).replaceAll('\\', '/');
 	const fuente = {
 		archivo,
 		sha256: sha256De(rutaArchivo),
@@ -539,7 +539,7 @@ export function estadoRevision(dirDemo: string): {estado: EstadoRevision; motivo
 		...(existsSync(join(dirDemo, 'capturas'))
 			? readdirSync(join(dirDemo, 'capturas'))
 					.filter((n) => /\.(png|jpe?g)$/i.test(n) && !n.startsWith('explorar-'))
-					.map((n) => join('capturas', n))
+					.map((n) => `capturas/${n}`)
 			: []),
 	];
 	const sinEscanear = usables.filter((a) => !escaneados.has(a));
