@@ -1,9 +1,12 @@
 # ESTADO
 
-Estado: **LUXLINE-BRAND-KIT-v3 integrado** — fuentes y licencias fusionadas, `assets/marca/` expuesto vía `public/assets`, motion en `src/reel/motion/luxline/`, `DemoComposition` (`Luxline-Style-Demo` a `60 fps` / `600` cuadros) registrada en `src/Root.tsx`, `.agents/rules/marca.md` creada, `luxline-cr-oficial` (v2) y `luxline-ventas` (v1) configurados con las 3 paletas aplicadas por universo (`tsc --noEmit` y `vitest run` en verde).
+Estado: **Borrador 720×1280 de `Luxline-PrivacyDisplay-S26U` renderizado** — composición `1080×1920` a `60 fps` (`1500` cuadros) registrada en `src/Root.tsx` con paleta `android` de `luxline-ventas`, cues en tuteo en `src/reel/motion/luxline/privacy-s26u-cues.json` y borrador MP4 en `out/luxline-privacy-display-s26u-720x1280.mp4`.
 
 ## Qué se hizo
 
+- Se creó `src/reel/motion/luxline/PrivacyDisplayS26U.tsx` (`1080×1920`, `60 fps`, `1500` cuadros) y se registró la composición `"Luxline-PrivacyDisplay-S26U"` en `src/Root.tsx` junto a `Luxline-Style-Demo`, usando estilo `luxline-ventas`, paleta `android`, `assets/marca/logos/logo-negro.svg`, `NotoSansDisplay-Variable.ttf`, `Mono-Regular.ttf`, `front-cutout.png` + `angle.png` para el Galaxy S26 Ultra real (incluyendo la rotación 3D de la escena 4), silueta contrastada del dueño sujetando el teléfono, espía en vector plano con lupa, las 5 técnicas de `Techniques.tsx` y `ZONA_SEGURA.capas`.
+- Se creó `src/reel/motion/luxline/privacy-s26u-cues.json` con las 6 líneas planeadas de locución en tuteo (`~2–3` palabras/s, `voiceApproved: false`, `simulation: false`, sin generar audio), y se actualizaron las pruebas unitarias en `pruebas/unit/luxline-motion.test.ts`.
+- Se renderizó el borrador `720×1280` (`60 fps`, `1500` cuadros, `25 s`, H.264 `yuv420p`) en `out/luxline-privacy-display-s26u-720x1280.mp4`.
 - Se copiaron las 6 fuentes nuevas de `LUXLINE-BRAND-KIT-v3` en `biblioteca/fuentes/` (`Mono-Regular.ttf`, `NotoSansDisplay-Variable.ttf`, `Sans-Bold.ttf`, `Sans-Light.ttf`, `Sans-Medium.ttf`, `Sans-SemiBold.ttf`) sin sobrescribir las existentes y se fusionó `biblioteca/LICENCIAS.md` con sus `sha256` y avisos OFL-1.1.
 - Se copiaron `estilo/luxline-marca.json` (corrigiendo `uso` de `accent`: `"Acento material; plata azulada"` en `iphone` y `"Acento material; cobre"` en `accessories`) y `assets/marca/` excluyendo estrictamente `fondo-mesh-elevenlabs.png` y `foto-producto.jpg`; `herramientas/preparar-public.ts` mantiene el arreglo base de 4 `ACCESOS` y enlaza `public/assets → assets`.
 - Se integró el paquete portable de motion en `src/reel/motion/luxline/` adaptado a la escala del editor (`width / 1080`) y subordinado a `ZONA_SEGURA` de `src/estilo/zona-segura.ts` (`x: 135–945`, `y: 220–1600`), con `cuesDesdeTranscripcion()` leyendo tiempos reales por palabra de `transcripcion.json` / `edicion.subtitulos` (dejando `demo-cues.json` solo para `Demo.tsx`) y `esAssetProhibido()`. Se registró `DemoComposition` (`Luxline-Style-Demo`, `60 fps`, `600` cuadros, `1080×1920`) en `src/Root.tsx` sin cambiar el `30 fps` global de `Reel`, y se verificó renderizando el cuadro `72` en PNG.
@@ -38,10 +41,12 @@ Estado: **LUXLINE-BRAND-KIT-v3 integrado** — fuentes y licencias fusionadas, `
 
 ## Qué sigue
 
-- Revisar visualmente `proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4` y confirmar si pasamos a render final (`1080×1920`) o ajustamos algún tiempo o encuadre en una `v2`.
-- Pendiente anterior: revisar `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4` para confirmar su render final.
+- Revisar el borrador `out/luxline-privacy-display-s26u-720x1280.mp4` (`Luxline-PrivacyDisplay-S26U`, `720×1280`, `60 fps`, `1500` cuadros) para aprobarlo o ajustar tiempos antes de renderizar la versión final `1080×1920` (y conectar audio si luego se graba locución con `privacy-s26u-cues.json`).
+- Pendiente anterior: revisar `proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4` y `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4`.
 
 ## Decisiones
+
+- `"Luxline-PrivacyDisplay-S26U"` usa `<Sequence>` por escena con `SceneFade` (ya que `SceneFade` evalúa `useCurrentFrame()` en tiempo local), escala vía `width / 1080` para renderizar `720×1280` o `1080×1920` sin alterar proporciones ni la zona segura `ZONA_SEGURA.capas`, y combina `front-cutout.png` + `angle.png` ajustado por `scaleX(cos(θ)/cos(30°))` para evitar dobles bordes durante la rotación 3D.
 
 - Para mantener la compatibilidad del editor (`Reel` y `herramientas/` a `30 fps`), `Luxline-Style-Demo` se registró con sus `60 fps` y `600` cuadros propios sin alterar el `30 fps` global; `SpeechVisualSync` lee tiempos reales por palabra vía `cuesDesdeTranscripcion()`, reservando `demo-cues.json` (`simulation: true`) solo para `Demo.tsx`, y `ZONA_SEGURA` de `src/estilo/zona-segura.ts` gobierna los márgenes.
 - Las 3 paletas (`android`, `iphone`, `accessories`) viven como bloque por universo en `luxline-cr-oficial` (solo fondos y piezas generadas; subtítulos/tarjetas blanco con borde negro en video real) y `luxline-ventas` (paleta y logo definidos por universo: `logo-negro` en Android/iPhone, `logo-blanco` en Accesorios).

@@ -1,0 +1,40 @@
+30 EFECTOS TONALES CC0 - SELECCION PARA LUXLINE CR
+Fecha de consulta y descarga: 14 de noviembre de 2026.
+
+30 archivos MP3 originales descargados de la biblioteca publica de SFXMint.
+Seleccion inspirada en el enfoque tonal de Candy: campanas, kalimba, arpa,
+resonancias, tonos cristalinos, revelaciones, destellos y transiciones suaves.
+No es Candy, no contiene archivos de Ocular Sounds y no intenta replicarlo.
+No incluye canciones completas ni narracion.
+
+USO
+Segun la licencia publicada por SFXMint, estos archivos de su biblioteca
+publica estan dedicados al dominio publico bajo CC0 1.0 Universal.
+Puedes usarlos en proyectos personales y comerciales, editarlos,
+combinarlos y redistribuirlos, sin atribucion obligatoria ni regalias.
+
+Fuente de la licencia: https://sfxmint.com/license
+CC0: https://creativecommons.org/publicdomain/zero/1.0/
+Texto legal: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+PROCEDENCIA
+SFXMint declara que sus sonidos son generados con IA o sintesis procedural.
+La seleccion procede de su biblioteca publica, no de AI Studio privado.
+LISTADO_Y_FUENTES.csv identifica la pagina fuente de cada MP3, su duracion
+y su huella SHA256. Se conservaron los MP3 descargados sin conversiones.
+
+CARPETAS
+01 Campanas: 4     02 Kalimba: 4       03 Arpa: 1
+04 Resonancias: 3 05 Tonos cristalinos: 4
+06 Revelaciones: 4 07 Destellos: 4
+08 Aperturas: 3   09 Transiciones: 3
+
+CONSEJOS
+Prueba cada efecto al volumen de tu video. Usa campanas y kalimba para
+revelar texto; arpegios para progreso; destellos para transformaciones;
+transiciones de aire para movimientos de camara o cambios de escena.
+
+CC0 no garantiza que un tercero nunca genere una reclamacion automatica.
+Si ocurre, conserva la pagina fuente y el SHA256 como evidencia.
+Los archivos fueron verificados con FFprobe y decodificados con FFmpeg.
+No se ha realizado una audicion humana de toda la seleccion.

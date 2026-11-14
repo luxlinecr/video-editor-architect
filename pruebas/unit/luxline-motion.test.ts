@@ -1,4 +1,6 @@
 // id: er-2f298797
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 import {describe, expect, it} from 'vitest';
 import {ZONA_SEGURA, fueraDeZona} from '../../src/estilo/zona-segura';
 import {
@@ -11,6 +13,8 @@ import {
 	normalizeWord,
 	type AssetDictionary,
 } from '../../src/reel/motion/luxline/Techniques';
+import {PALETA_ANDROID, PRIVACY_S26U_ASSETS, brilloDesdeAngulo} from '../../src/reel/motion/luxline/PrivacyDisplayS26U';
+import privacyCues from '../../src/reel/motion/luxline/privacy-s26u-cues.json';
 import {glassShotSequence, sampleGlassMotion} from '../../src/reel/motion/luxline/glass-motion';
 import dictionary from '../../src/reel/motion/luxline/word-assets.json';
 
@@ -103,5 +107,70 @@ describe('luxline motion — zona segura del editor y curvas', () => {
 		const seq = glassShotSequence(600, 60, 3);
 		expect(sampleGlassMotion(0, seq).width).toBeCloseTo(0.72, 4);
 		expect(sampleGlassMotion(599, seq).width).toBeCloseTo(1, 4);
+	});
+});
+
+describe('Luxline-PrivacyDisplay-S26U — cues, paleta, textos y assets', () => {
+	it('mantiene las 6 líneas exactas en tuteo sin audio generado y compatibles con cuesDesdeTranscripcion', () => {
+		expect(privacyCues.compositionId).toBe('Luxline-PrivacyDisplay-S26U');
+		expect(privacyCues.fps).toBe(60);
+		expect(privacyCues.durationInFrames).toBe(1500);
+		expect(privacyCues.voiceApproved).toBe(false);
+		expect(privacyCues.simulation).toBe(false);
+		expect(privacyCues.lines.map((l) => l.text)).toEqual([
+			'¿Alguien te mira la pantalla?',
+			'Desde un lado, cualquiera puede leer tus mensajes.',
+			'En el S26 Ultra, activas Privacy Display con un toque.',
+			'De frente, perfecta. A 45 grados, solo el 3.5 % del brillo.',
+			'Quien mire de lado, solo ve negro.',
+			'Tu pantalla, solo para ti. Luxline CR.',
+		]);
+
+		const dicS26u: AssetDictionary = {
+			...dictionary,
+			pantalla: {src: PRIVACY_S26U_ASSETS.front, label: 'Galaxy S26 Ultra'},
+			s26: {src: PRIVACY_S26U_ASSETS.angle, label: 'Galaxy S26 Ultra ángulo'},
+			luxline: {src: PRIVACY_S26U_ASSETS.logo, label: 'Luxline CR'},
+		};
+		const cues = cuesDesdeTranscripcion(privacyCues, dicS26u, privacyCues.fps);
+		expect(cues.length).toBeGreaterThanOrEqual(3);
+		for (let i = 0; i < cues.length; i++) {
+			expect(cues[i].end).toBeGreaterThan(cues[i].start);
+			if (i > 0) expect(cues[i].start).toBeGreaterThanOrEqual(cues[i - 1].end);
+		}
+	});
+
+	it('usa solo assets autorizados, registra la composición en Root.tsx y cumple los textos y curva de brillo', () => {
+		expect(PALETA_ANDROID.background).toBe('#F6F5F2');
+		for (const ruta of Object.values(PRIVACY_S26U_ASSETS)) {
+			expect(esAssetProhibido(ruta)).toBe(false);
+		}
+		expect(brilloDesdeAngulo(0)).toBeCloseTo(1, 5);
+		expect(brilloDesdeAngulo(45)).toBeCloseTo(0.035, 5);
+		expect(brilloDesdeAngulo(60)).toBeLessThanOrEqual(0.009);
+
+		const rootSrc = readFileSync(resolve('src/Root.tsx'), 'utf8');
+		expect(rootSrc).toContain('id="Luxline-PrivacyDisplay-S26U"');
+		expect(rootSrc).toContain('durationInFrames={1500}');
+		expect(rootSrc).toContain('fps={60}');
+
+		const compSrc = readFileSync(resolve('src/reel/motion/luxline/PrivacyDisplayS26U.tsx'), 'utf8');
+		for (const requerido of [
+			'¿Te miran la pantalla?',
+			'Privacy Display',
+			'0° = 100 %',
+			'45° = 3.5 %',
+			'60° = menos de 1 %',
+			'Vertical u horizontal',
+			'Puede activarse sola con tu PIN',
+			'Tu pantalla, solo para ti.',
+			'Galaxy S26 Ultra · luxline.tech',
+		]) {
+			expect(compSrc).toContain(requerido);
+		}
+		expect(compSrc).not.toContain('Se activa al poner tu PIN');
+		for (const prohibido of ASSETS_PROHIBIDOS_VIDEO) {
+			expect(compSrc.toLowerCase()).not.toContain(prohibido);
+		}
 	});
 });

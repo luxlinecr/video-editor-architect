@@ -1,0 +1,31 @@
+﻿archivo,nombre,duracion_segundos,formato,licencia,fuente,sha256
+01_Campanas/01_Vibrafono_calido.mp3,Vibrafono calido,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-chime-bar-36,2bfec5eaeb5afeeab4a685ed1e4d068b69298107eb3a6818a4b461ee102a1680
+01_Campanas/02_Campana_brillante_corta.mp3,Campana brillante corta,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-chime-bar-37,698a5647f5f5a8c840693083284402ea87a6a20371fa75b9d6d0a7eb5496a516
+01_Campanas/03_Glockenspiel_resonante.mp3,Glockenspiel resonante,4.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-chime-bar-51,76ff6c17b81aed128b2ae2079fc57c79f5d70bed234c7ce4a53f3ba08fbda5a1
+01_Campanas/04_Vibrafono_suave_largo.mp3,Vibrafono suave largo,4.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-chime-bar-63,414f90df708f44c585de5bb1fbc623afe47215c5d1b6a4c6125e5fa6fefc3d66
+02_Kalimba/05_Kalimba_grave.mp3,Kalimba grave,3.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-kalimba-48,8adefa8224bd87b69a5e241ea27e0daf10a42dadc5e67d706a242385133abc7c
+02_Kalimba/06_Kalimba_calida.mp3,Kalimba calida,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-kalimba-37,e871fea993c63800574830e1996a55ea7abd476a438d2d4e8d64b1bdf42bda21
+02_Kalimba/07_Kalimba_doble_pulsacion.mp3,Kalimba doble pulsacion,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-kalimba-36,7351ce397dfc90ce4dfdce898073ccaa2056a7a3e847a7c659ab777775f1e59a
+02_Kalimba/08_Kalimba_brillante.mp3,Kalimba brillante,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-kalimba-52,b0c560d5e5b5e720d62c57da885a18953cb43537fa88fa09a05713cce3d34893
+03_Arpa/09_Arpa_pulsada.mp3,Arpa pulsada,2.92,MP3,CC0 1.0,https://sfxmint.com/sounds/harp-pluck,c394d6ee1ac0213896311335f7a2445fdfcaf22478b3e428b670fd7f3c8ee6fc
+04_Resonancias/10_Cuenco_brillante.mp3,Cuenco brillante,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-singing-bowl-47,f82714d5ab54d9020ac1fa808fbd1aa6682071356d0234c687d9c0c1a72c8b5b
+04_Resonancias/11_Cuenco_resonante.mp3,Cuenco resonante,3.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-singing-bowl-48,e67ec965afc9eec9622dfee009e2495755a9a4361656bf61e9184b3dba457c21
+04_Resonancias/12_Cuenco_grave.mp3,Cuenco grave,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/instrument-singing-bowl-39,928391797696d45d23cdcaeedc63ce500cb22bac414ad641e8c5558ea08c7e20
+05_Tonos_Cristalinos/13_Tono_de_cristal.mp3,Tono de cristal,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-chime-41,80c88cec141a04b2d829d71975c8c0d6eee5099684feff96aed2dc1f58f8d0d5
+05_Tonos_Cristalinos/14_Tono_aereo.mp3,Tono aereo,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-chime-47,b3f5299c8f4eee3370c69cf15addf13d3168b5b8360a6641f08d1fd0ff9a9d45
+05_Tonos_Cristalinos/15_Tono_suave_de_dos_notas.mp3,Tono suave de dos notas,1.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-chime-57,9aa7b251efca06366ac6e099de731deb949f30e0c651d3fb7a50e75c25fc831c
+05_Tonos_Cristalinos/16_Tono_calido.mp3,Tono calido,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-chime-61,b325538f76bd6053ef2eb81ce5e30b8d65f776d92e01b6c4a1b8b33a734eb1a2
+06_Revelaciones/17_Revelacion_armonica_de_vidrio.mp3,Revelacion armonica de vidrio,1.948,MP3,CC0 1.0,https://sfxmint.com/sounds/logo-reveal-05,525b7e91898cc4bf6017e6abe03107d5e29c41cac4f73707b59a13c3ace50f61
+06_Revelaciones/18_Revelacion_con_brillo.mp3,Revelacion con brillo,2.195,MP3,CC0 1.0,https://sfxmint.com/sounds/logo-reveal-03,a758ea35ea33edc78e84eb3edebf39b65198d40d23862107aa2b0d80102a02e4
+06_Revelaciones/19_Revelacion_campana_de_cristal.mp3,Revelacion campana de cristal,2.587,MP3,CC0 1.0,https://sfxmint.com/sounds/logo-reveal-04,e20eee25cc04988dc1d4d29289cb037d382ecc3d100621726b190308405b1932
+06_Revelaciones/20_Revelacion_carga_sintetica.mp3,Revelacion carga sintetica,2.028,MP3,CC0 1.0,https://sfxmint.com/sounds/logo-reveal-09,9bbe0271fdc132ca675de9229a634463b904fbead5304c1f50109670a280023c
+07_Destellos/21_Destello_calido.mp3,Destello calido,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/magic-scifi-spell-17,3fed2edf94c1f4a870b4b3f0e9c5891a5872d06187c6c1f0987e6f750212c734
+07_Destellos/22_Destello_cristalino.mp3,Destello cristalino,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/magic-scifi-spell-61,88bd057cf11f820c65d08d17cf3389d78da49127b3e8e70edaf25dc999076633
+07_Destellos/23_Destello_brillante.mp3,Destello brillante,3.0,MP3,CC0 1.0,https://sfxmint.com/sounds/magic-scifi-spell-53,2eadb776b1b4926ec8286456e6ca27e91e276e4e13e8df9126ad077090824846
+07_Destellos/24_Textura_magica_calida.mp3,Textura magica calida,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/magic-scifi-spell-57,d10fefd0135508fee611f740046cb3708b0e80be121c92017b4c6729941e1bb0
+08_Aperturas/25_Apertura_campana_suave.mp3,Apertura campana suave,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-app-open-54,94afad10b28a620232c2ae451946cae912063ecbe9286941557ceab8af5f3476
+08_Aperturas/26_Arpegio_ascendente.mp3,Arpegio ascendente,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-app-open-39,1e553c20d3e4626d50b890de0fb3960adc42232bbe9f662cc1e7408c95118687
+08_Aperturas/27_Apertura_minimalista_dos_notas.mp3,Apertura minimalista dos notas,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/ui-app-open-33,6e4cda93c48a7ba929ee29a2ae2d6ac52463f6fde8a28c343aa9ade377d353d4
+09_Transiciones/28_Transicion_de_aire_suave.mp3,Transicion de aire suave,2.0,MP3,CC0 1.0,https://sfxmint.com/sounds/transition-whoosh-64,89d071703b2b34b2b2f5f118e7f6110edf2bd8bc1f67888912c1606bdf7d8782
+09_Transiciones/29_Transicion_fluida_cinematica.mp3,Transicion fluida cinematica,3.0,MP3,CC0 1.0,https://sfxmint.com/sounds/transition-whoosh-38,618c36be4ad9d8bd82353b0b9b36b09d90616d5d41140c1bb95b82f84cfa1c61
+09_Transiciones/30_Transicion_aerea.mp3,Transicion aerea,3.0,MP3,CC0 1.0,https://sfxmint.com/sounds/transition-whoosh-63,50ab0b43820aa1bd764c81ccbb58c841a09310690bad4786c81ffe05e6007e51
