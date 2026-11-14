@@ -1278,7 +1278,7 @@ export async function procesarInserts(op: OpcionesProcesar): Promise<ResultadoIn
 					estado: 'terminada',
 					entradas: [{ruta: huella.ruta, sha256: huella.sha256, bytes: huella.tamano_bytes}],
 					parametros,
-					salidas: [{ruta: join('inserts', archivo), sha256: meta.salida.sha256, bytes: meta.salida.bytes}],
+					salidas: [{ruta: `inserts/${archivo}`, sha256: meta.salida.sha256, bytes: meta.salida.bytes}],
 					extra: {segundos: Math.round((performance.now() - t0) / 10) / 100},
 				},
 				proyectos,

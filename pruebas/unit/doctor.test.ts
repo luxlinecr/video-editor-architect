@@ -160,7 +160,7 @@ describe('llaves: estado sin valor (HOME temporal con .env falso)', () => {
 	it('el doctor completo (CLI) con HOME temporal no imprime ningún valor y sale con 0 o 2', () => {
 		const home = homeConEnv(contenido);
 		const cwd = carpetaTemporal('doctor-cwd-');
-		const env: NodeJS.ProcessEnv = {...process.env, HOME: home, GOOGLE_API_KEY: FALSO_ENTORNO};
+		const env: NodeJS.ProcessEnv = {...process.env, HOME: home, USERPROFILE: home, GOOGLE_API_KEY: FALSO_ENTORNO};
 		// Ninguna llave real de tu shell entra a esta prueba.
 		delete env.GEMINI_API_KEY;
 		delete env.APIFY_TOKEN;
