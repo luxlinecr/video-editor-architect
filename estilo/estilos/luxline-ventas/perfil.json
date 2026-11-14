@@ -37,7 +37,12 @@
 			"archivo": "biblioteca/fuentes/Mono-Regular.ttf",
 			"peso": 400
 		},
-		"logos": "assets/marca/logos/"
+		"logos": {
+			"carpeta": "assets/marca/logos/",
+			"android": "assets/marca/logos/logo-negro.svg",
+			"iphone": "assets/marca/logos/logo-negro.svg",
+			"accessories": "assets/marca/logos/logo-blanco.svg"
+		}
 	},
 	"marca": {
 		"nombre": "LUXLINE CR",
@@ -48,8 +53,34 @@
 		"sin_precios_inventados": true,
 		"prohibidos_video": ["fondo-mesh-elevenlabs.png", "foto-producto.jpg"],
 		"paletas_fuente": "estilo/luxline-marca.json",
-		"paletas_pendientes_confirmacion": true,
+		"paletas_alcance": "en luxline-ventas y videos generados por código, el universo (android, iphone, accessories) define la paleta y el logo",
 		"guia": "assets/marca/docs/ESTILO-DE-VIDEO.md"
+	},
+	"paletas": {
+		"android": {
+			"background": {"hex": "#F6F5F2", "uso": "Fondo principal"},
+			"ink": {"hex": "#0D0D0D", "uso": "Texto y CTA con contraste"},
+			"accent": {"hex": "#9E9E9E", "uso": "Acento material; plata neutra en Android"},
+			"secondary": {"hex": "#2E2E2E", "uso": "Contraste secundario / iridiscencia sutil"},
+			"highlight": {"hex": "#FFFFFF", "uso": "Reflejos"},
+			"metalDark": {"hex": "#383838", "uso": "Metal oscuro"},
+			"frosted": {"hex": "#E2E2E2", "uso": "Vidrio esmerilado"},
+			"statusActive": {"hex": "#22C55E", "uso": "Solo estados activos o confirmaciones, con etiqueta; no decoración ni CTA genérico"}
+		},
+		"iphone": {
+			"background": {"hex": "#F8F7F4", "uso": "Fondo principal"},
+			"ink": {"hex": "#111111", "uso": "Texto y CTA con contraste"},
+			"accent": {"hex": "#AEBACB", "uso": "Acento material; plata azulada"},
+			"secondary": {"hex": "#B8A4CF", "uso": "Contraste secundario / iridiscencia sutil"},
+			"highlight": {"hex": "#FFFFFF", "uso": "Reflejos"}
+		},
+		"accessories": {
+			"background": {"hex": "#211814", "uso": "Fondo principal"},
+			"ink": {"hex": "#F7EADB", "uso": "Texto y CTA con contraste"},
+			"accent": {"hex": "#D18C62", "uso": "Acento material; cobre"},
+			"secondary": {"hex": "#F2B45F", "uso": "Contraste secundario / iridiscencia sutil"},
+			"highlight": {"hex": "#FFF1DA", "uso": "Reflejos"}
+		}
 	},
 	"motion": {
 		"activo": true,
@@ -82,9 +113,10 @@
 		"min_palabras": 2,
 		"max_palabras": 3,
 		"y": null,
-		"color": "#FFFFFF",
-		"borde": "#000000",
-		"paletas_pendientes_confirmacion": true
+		"color_por_defecto": "#FFFFFF",
+		"borde_por_defecto": "#000000",
+		"por_universo": true,
+		"nota": "en videos generados por código usar ink/background del universo activo; sobre toma real mantener contraste alto legible"
 	},
 	"tarjetas": {
 		"palabras_min": 1,
@@ -97,7 +129,7 @@
 		"con_emoji": 0,
 		"prompt_tecleado": true,
 		"literales": true,
-		"estilo_visual": "liquid glass 2.5D cuando aporte valor, sin repetir 3 tarjetas fijas"
+		"estilo_visual": "liquid glass 2.5D con paleta del universo activo cuando aporte valor, sin repetir 3 tarjetas fijas"
 	},
 	"stickers": {
 		"por_minuto": {
@@ -147,7 +179,7 @@
 	},
 	"direccion": {
 		"sin_borrador_automatico": false,
-		"nota": "activa las 5 técnicas de src/reel/motion/luxline/ con cues reales de transcripcion.json"
+		"nota": "activa las 5 técnicas de src/reel/motion/luxline/ con cues reales de transcripcion.json y paleta según universo"
 	},
 	"motor": {
 		"version": 1,
@@ -177,6 +209,12 @@
 				"tema": "motion_5_tecnicas",
 				"cita": "Crea el estilo luxline-ventas con las 5 técnicas activadas y regístralo en estilos.json.",
 				"nota": "MaskReveal, ChainMove, CameraFollow, ObjectMorph/glassShotSequence y SpeechVisualSync (con cuesDesdeTranscripcion en producción)."
+			},
+			{
+				"fecha": "2026-11-14",
+				"tema": "paletas_por_universo",
+				"cita": "En luxline-ventas y videos generados por código, el universo define la paleta. Logo: logo-negro en Android e iPhone, logo-blanco en Accesorios.",
+				"nota": "Aplicadas las 3 paletas (android, iphone con 'plata azulada', accessories con 'cobre') definidas por universo."
 			}
 		]
 	}

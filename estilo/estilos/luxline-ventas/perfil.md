@@ -9,10 +9,13 @@ Perfil vivo de ventas/producto para **LUXLINE CR (`luxline.tech`)** con las **5 
 
 ## Reglas vigentes
 
-### Identidad, tipografía y reglas editoriales
+### Identidad, tipografía, paletas por universo y reglas editoriales
 - **Marca y categorías:** `LUXLINE CR · luxline.tech` — Android, iPhone, accesorios y **Seminuevos** (evitar *usado* o *reacondicionado*). Español de Costa Rica cercano y con voseo en piezas de marca.
-- **Tipografía:** `Noto Sans Display` variable `100–900` (`biblioteca/fuentes/NotoSansDisplay-Variable.ttf`; titulares `500–700`, cuerpo `400–500`) y `Noto Sans Mono` `400` (`biblioteca/fuentes/Mono-Regular.ttf`) para etiquetas técnicas discretas. Logo oficial de `assets/marca/logos/` sin reconstrucción tipográfica.
-- **Paletas (`estilo/luxline-marca.json`):** pendientes de confirmación del creador tras comparar con `DEMO-CONTACTOS.png` (todavía no aplicadas en colores fijos).
+- **Tipografía:** `Noto Sans Display` variable `100–900` (`biblioteca/fuentes/NotoSansDisplay-Variable.ttf`; titulares `500–700`, cuerpo `400–500`) y `Noto Sans Mono` `400` (`biblioteca/fuentes/Mono-Regular.ttf`) para etiquetas técnicas discretas.
+- **El universo define la paleta y el logo (ver `perfil.json → paletas`):**
+  - **Android:** fondo `#F6F5F2`, texto/CTA `#0D0D0D`, acento `#9E9E9E` (plata neutra), secundario `#2E2E2E`, reflejos `#FFFFFF`, metal `#383838`, vidrio `#E2E2E2`, estado activo `#22C55E` (solo con etiqueta). **Logo:** `assets/marca/logos/logo-negro.svg`.
+  - **iPhone:** fondo `#F8F7F4`, texto/CTA `#111111`, acento `#AEBACB` (plata azulada), secundario `#B8A4CF` (iridiscencia sutil), reflejos `#FFFFFF`. **Logo:** `assets/marca/logos/logo-negro.svg`.
+  - **Accesorios:** fondo `#211814`, texto/CTA `#F7EADB`, acento `#D18C62` (cobre), secundario `#F2B45F` (ámbar), reflejos `#FFF1DA` (champagne). **Logo:** `assets/marca/logos/logo-blanco.svg`.
 - **Rigor comercial:** una idea y un CTA claros; beneficio verificable y deseo real sobre el producto. Cero textos legales, créditos o "información oficial"; no inventar precios, stock ni compatibilidad.
 - **Imágenes prohibidas:** nunca usar `fondo-mesh-elevenlabs.png` ni `foto-producto.jpg`.
 
@@ -37,11 +40,11 @@ Curva habitual `cubic-bezier(0.22, 1, 0.36, 1)`; transición glass quintic `6t�
 - Exportación en 4K (`2160×3840`).
 
 ## Falta herramienta
-- Confirmar la aplicación de las 3 paletas de `estilo/luxline-marca.json` tras revisarlas junto a `DEMO-CONTACTOS.png`.
 - Validar en una toma real con voz la integración de `SpeechVisualSync` + `cuesDesdeTranscripcion` dentro de `Reel`.
 
 ## Números de referencia
 Ninguno medido en reels publicados todavía (`n = 0`; criterios operativos iniciales de `ESTILO-DE-VIDEO.md` v3).
 
 ## Historial de entrenamiento
-- 2026-11-14 (v1): "Crea el estilo luxline-ventas con las 5 técnicas activadas y regístralo en estilos.json." + "La sincronía texto-visual debe leer los tiempos por palabra de la transcripción del editor y no demo-cues.json, que queda solo para la demo." + "Antes de aplicar las paletas, muéstrame las tres de estilo/luxline-marca.json con hex y uso, y compáralas con DEMO-CONTACTOS.png. No las apliques hasta que yo confirme."
+- 2026-11-14 (v1): "Crea el estilo luxline-ventas con las 5 técnicas activadas y regístralo en estilos.json." + "La sincronía texto-visual debe leer los tiempos por palabra de la transcripción del editor y no demo-cues.json, que queda solo para la demo."
+- 2026-11-14 (v1): "Confirmado. Aplica las 3 paletas tal cual, como bloque por universo (android, iphone, accessories), en luxline-cr-oficial y luxline-ventas. Corrige el texto de 'uso' del accent en iphone ('plata azulada') y accessories ('cobre')... En luxline-ventas y videos generados por código, el universo define la paleta. Logo: logo-negro en Android e iPhone, logo-blanco en Accesorios."

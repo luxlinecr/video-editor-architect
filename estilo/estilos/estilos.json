@@ -9,7 +9,7 @@
 			"estado": "en-prueba",
 			"desde": "2026-11-14",
 			"referencia": "assets/marca/referencias-visuales/DEMO-CONTACTOS.png",
-			"resumen": "Estilo de ventas/producto LUXLINE CR con las 5 técnicas de motion activadas (MaskReveal, ChainMove, CameraFollow, ObjectMorph, SpeechVisualSync con transcripción real), tipografía Noto Sans Display/Mono, liquid glass 2.5D y zona segura del editor (paletas pendientes de confirmación).",
+			"resumen": "Estilo de ventas/producto LUXLINE CR con las 5 técnicas de motion activadas (MaskReveal, ChainMove, CameraFollow, ObjectMorph, SpeechVisualSync con transcripción real), paletas y logos por universo (android/iphone/accessories), tipografía Noto Sans Display/Mono, liquid glass 2.5D y zona segura del editor.",
 			"version": 1
 		},
 		{
@@ -19,7 +19,7 @@
 			"estado": "en-prueba",
 			"desde": "2026-11-14",
 			"referencia": null,
-			"resumen": "Reels hablados de Luxline CR (@luxline.cr): tipografía Noto Sans Display/Mono y reglas editoriales v3 sin cambiar su motion (sin motion graphics ni exportación 4K; paletas pendientes de confirmación).",
+			"resumen": "Reels hablados de Luxline CR (@luxline.cr): subtítulos y tarjetas blanco con borde negro sobre video real, paletas android/iphone/accessories para fondos y piezas generadas, tipografía Noto Sans Display/Mono y reglas v3 sin cambiar su motion (sin motion graphics ni 4K).",
 			"version": 2
 		},
 		{

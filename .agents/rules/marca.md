@@ -16,16 +16,20 @@ Guía operativa obligatoria de **LUXLINE CR (`luxline.tech`)** basada en `assets
 ## 2. Tipografía, logos y color
 
 - **Tipografía:** `Noto Sans Display` variable `100–900` (`biblioteca/fuentes/NotoSansDisplay-Variable.ttf`; titulares `500–700` ~`72–96 px`, cuerpo `400–500` ~`38–48 px`) y `Noto Sans Mono` `400` (`biblioteca/fuentes/Mono-Regular.ttf`; datos técnicos `28–34 px`, sin falsificar otros pesos). Esperar carga con `delayRender`/`FontFace`.
-- **Logos:** usar siempre los assets oficiales de `assets/marca/logos/` (`logo-negro.svg` sobre fondo claro, `logo-blanco.svg` sobre oscuro); nunca reconstruir el logo con texto ni deformarlo.
-- **Paletas y material:** definidas por universo (`android`, `iphone`, `accessories`) en `estilo/luxline-marca.json`. No teñir con colores históricos ni mezclar las tres paletas sin motivo. Verde `#22C55E` solo para estados activos con etiqueta. Usar tarjetas *liquid glass 2.5D* (`glass-motion.ts`) únicamente cuando aporten claridad, sin repetir una plantilla fija de tres tarjetas.
+- **Logos:** usar siempre los assets oficiales de `assets/marca/logos/` sin reconstruir con texto ni deformarlos: **`logo-negro.svg` en Android e iPhone**, **`logo-blanco.svg` en Accesorios**.
+- **Paletas por universo (`estilo/luxline-marca.json`):**
+  - `android`: fondo `#F6F5F2`, tinta `#0D0D0D`, acento `#9E9E9E` (plata neutra), secundario `#2E2E2E`, reflejos `#FFFFFF`, metal `#383838`, vidrio `#E2E2E2`, estado `#22C55E` (solo estados activos con etiqueta).
+  - `iphone`: fondo `#F8F7F4`, tinta `#111111`, acento `#AEBACB` (plata azulada), secundario `#B8A4CF`, reflejos `#FFFFFF`.
+  - `accessories`: fondo `#211814`, tinta `#F7EADB`, acento `#D18C62` (cobre), secundario `#F2B45F`, reflejos `#FFF1DA`.
+- **Alcance de paletas y material:** no teñir con colores históricos ni mezclar las tres paletas sin motivo. Usar tarjetas *liquid glass 2.5D* (`glass-motion.ts`) únicamente cuando aporten claridad, sin repetir una plantilla fija de tres tarjetas.
 
 ## 3. Zona segura, lienzo y estilos activos
 
 - **Zona segura (`src/estilo/zona-segura.ts` manda sobre la del kit):** capas y motion dentro de **`x: 135–945` (`810 px`), `y: 220–1600`** en base `1080×1920` (subtítulos `y ≤ 1590`, columna de iconos `x > 945` libre). `acotarPoseZonaSegura()` y `ZONA_SEGURA_LUXLINE` aseguran estos límites.
 - **Canvas y FPS:** salida final estándar del editor `1080×1920` a **30 fps** (`Reel` renderiza a `1440×2560` y `render.ts` escala ×`0.75` a `1080×1920`); `DemoComposition` (`Luxline-Style-Demo`) corre autónomamente a `60 fps` y `600` cuadros (`1080×1920`).
 - **Dos perfiles de marca en `estilo/estilos/`:**
-  - `luxline-cr-oficial`: reels hablados a cámara **sin motion graphics** ni zooms de edición.
-  - `luxline-ventas`: reels de venta/producto con las **5 técnicas de motion** activadas.
+  - `luxline-cr-oficial`: reels hablados sobre video real **sin motion graphics** ni zooms de edición; **subtítulos y tarjetas conservan blanco (`#FFFFFF`) con borde negro (`#000000`)** y las paletas aplican solo a fondos y piezas generadas.
+  - `luxline-ventas`: reels de venta/producto y videos generados por código con las **5 técnicas de motion** activadas; el universo (`android`, `iphone`, `accessories`) define la paleta y el logo.
 
 ## 4. Cinco técnicas de motion (`src/reel/motion/luxline/`)
 
