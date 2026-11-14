@@ -1,9 +1,12 @@
 # ESTADO
 
-Estado: Instalación verificada (`doctor.ts` 13/13 ✔ con refresco automático de `PATH` en Windows, `tsc --noEmit` y `vitest run` en verde con 0 fallos), perfil `creador.json` (`Luxline CR`, `@luxline.cr`, `instagram, tiktok`, `es`, `estilo_activo: luxline-cr-oficial`), estilo `luxline-cr-oficial` (`en-prueba`) y salida final estándar `1080×1920` (`scale: 0.75` en `render.ts` / `qa.ts`) listos; esperando el primer video crudo (Paso 5 de `/empezar`).
+Estado: Borrador `v3` listo para revisión de [2026-11-14-iphone-13](proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4) (`cumple 3 de 3 checks (0 N/A)` en QA y `cumple 6 de 6 reglas (7 N/A)` en `validar.ts`), con el perfil `luxline-cr-oficial` intacto y soporte de junction para `public/` en `herramientas/render.ts` bajo Windows verificado (`render.test.ts` `27/27`, `tsc --noEmit` en 0).
 
 ## Qué se hizo
 
+- Se creó el proyecto aislado `proyectos/2026-11-14-iphone-13/` (prueba de motion para venta de iPhone 13 Negro 128 GB sin modificar `estilo/estilos/luxline-cr-oficial/`, `src/` ni `C:\Users\jerem\Downloads\20261114_150814.mp4`), omitiendo transcripción/corte de silencios al trabajar por ritmo visual (`base.mp4`, `655` cuadros, `21.833 s`, `subtitulos: []`) y limitando todo texto en pantalla a `"iPhone 13"`, `"128 GB"` y `"Negro"`.
+- Se corrigió `herramientas/render.ts` en Windows (`process.platform === 'win32'`) para evitar el `EPERM` de `@remotion/bundler` al copiar junctions de `public/`, enlazando `public/` al bundle generado mediante `'junction'` (compatibilidad con `borrarBundle`); `npx vitest run pruebas/unit/render.test.ts` (`27 passed | 4 skipped`) y `npx tsc --noEmit` (código `0`) pasaron.
+- Se iteraron `edicion-v1.json` → `edicion-v2.json` → `edicion-v3.json` tras inspeccionar hojas de contacto (`qa/v1`–`v3`): se reemplazó el artefacto de espejo de `desenfoque` por un push-in de zoom encadenado y se reubicaron `t_cap_3` y `tv_cierre` eliminando solapes; `borrador-v3.mp4` (`720×1280`, `655` cuadros) pasó `validar.ts` (`6 de 6 reglas (7 N/A)`) y `qa.ts` (`3 de 3 checks (0 N/A)`).
 - Se implementó `leerPathRegistroWindows` y la fusión con `pathAmpliado`/`refrescarPath` en `herramientas/instalar.ts` (y `refrescarPathWindows` en `herramientas/doctor.ts`), leyendo `Machine` + `User` `Path` del registro de Windows y aplicándolo a `process.env.Path` y `process.env.PATH`, con prueba unitaria nueva en `pruebas/unit/instalar.test.ts`.
 - Se verificó el hook `PreToolUse` de Antigravity en `.agents/hooks/vigilar-bash.mjs` (`negarAntigravity` con `{decision, reason}` sin `hookSpecificOutput` y `negarLegado` intacto), se eliminaron con aprobación del creador los respaldos `.claude.bak/` y `CLAUDE.md.bak`, y se guardó en Git (`34f4f47` / `eed8082`).
 - Se actualizó `pruebas/unit/hook.test.ts` a `.agents/hooks/vigilar-bash.mjs` (`44/44` pasan).
@@ -25,9 +28,12 @@ Estado: Instalación verificada (`doctor.ts` 13/13 ✔ con refresco automático 
 
 ## Qué sigue
 
-- Recibir la ruta del primer video crudo para editarlo con `/editar` (Paso 5 de `/empezar`).
+- Revisar visualmente `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4` y confirmar si pasamos a render final (`1080×1920`) o ajustamos algo en una `v4`.
 
 ## Decisiones
+
+- En Windows (`render.ts`), al construir el bundle de Remotion se omite el `copyDir()` de `@remotion/bundler` sobre `public/` (que arroja `EPERM` en junctions sin Modo de desarrollador) y se enlaza `outDir/public` hacia `public/` mediante `'junction'`.
+- Para `proyectos/2026-11-14-iphone-13/`, `desenfoque` (`ConDesenfoque`) mostró bordes reflejados tipo espejo en el borrador `v1`, por lo que se optó por una transformación basada en push-in de zoom encadenado (`z_trans`) + apertura de píldora y entrada de texto sincronizada sin editar `src/`.
 
 - Se mantuvo la ruta literal `~/.config/claude-editor/.env` en reglas y documentación porque `herramientas/lib/llaves.ts` y `herramientas/doctor.ts` leen esa ruta en código.
 - `revisor-qa` se migró como skill y workflow (`/revisor-qa`), con opción de delegarse a un subagente `self` vía `invoke_subagent`.

@@ -25,7 +25,7 @@
  */
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, unlinkSync} from 'node:fs';
+import {existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, symlinkSync, unlinkSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join, relative, resolve, sep} from 'node:path';
 import {parseArgs} from 'node:util';
@@ -531,7 +531,19 @@ export async function renderizar(op: OpcionesRender): Promise<ResultadoRender> {
 		avisar(`Render ${borrador ? 'borrador' : cuatroK ? 'final 4K (2160×3840)' : 'final'} de ${slug} v${version} (${cuadros} cuadros)…`);
 		serveUrl = await cronometrar('bundle', async () => {
 			try {
-				return await motor.bundle({entryPoint: join(RAIZ, 'src', 'index.ts'), rootDir: RAIZ, publicDir: join(RAIZ, 'public'), symlinkPublicDir: true, enableCaching: true, onProgress: () => {}});
+				const esWin = process.platform === 'win32';
+				const dir = await motor.bundle({
+					entryPoint: join(RAIZ, 'src', 'index.ts'),
+					rootDir: RAIZ,
+					publicDir: esWin ? join(trabajo, '.sin-public') : join(RAIZ, 'public'),
+					symlinkPublicDir: true,
+					enableCaching: true,
+					onProgress: () => {},
+				});
+				if (esWin && existsSync(dir) && !existsSync(join(dir, 'public'))) {
+					symlinkSync(join(RAIZ, 'public'), join(dir, 'public'), 'junction');
+				}
+				return dir;
 			} catch (error) {
 				throw falloRemotion(`armar el bundle de ${slug}`, error, slug);
 			}
