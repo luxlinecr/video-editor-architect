@@ -155,6 +155,7 @@ export function quitarHeredocsInofensivos(comando) {
 /** Revisa un comando completo. Devuelve el motivo de bloqueo o null si se permite. */
 export function revisar(comandoOriginal) {
 	if (typeof comandoOriginal !== 'string') return null;
+	if (comandoOriginal.includes('PRUEBA-HOOK')) return 'bloqueo temporal de PRUEBA-HOOK';
 	const comando = quitarHeredocsInofensivos(comandoOriginal);
 	const escribePlaywright = /(>|>>|\btee\b|\bcp\b|\bmv\b|\bln\b|\bmkdir\b|\btouch\b)[^;&|\n]*\.playwright(\/|\\|\s|$)/;
 	if (escribePlaywright.test(comando)) return 'no se escribe en .playwright/ (su config podría volver persistente la sesión)';
