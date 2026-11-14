@@ -76,6 +76,17 @@ describe('hook vigilar-bash: lista blanca de playwright-cli', () => {
 		const json = JSON.parse(r.salida);
 		expect(json.hookSpecificOutput.permissionDecision).toBe('deny');
 		expect(json.hookSpecificOutput.hookEventName).toBe('PreToolUse');
+
+		const rAgy = spawnSync(
+			'node',
+			[HOOK],
+			{input: JSON.stringify({toolCall: {name: 'run_command', args: {CommandLine: 'npx playwright-cli cookie-list'}}}), encoding: 'utf8'},
+		);
+		expect(rAgy.status).toBe(0);
+		const jsonAgy = JSON.parse(rAgy.stdout.trim());
+		expect(jsonAgy.decision).toBe('deny');
+		expect(jsonAgy.reason).toMatch(/^Bloqueado por el hook del editor:/);
+		expect(jsonAgy).not.toHaveProperty('hookSpecificOutput');
 	});
 
 	it('el proceso real no decide nada para un comando normal', () => {

@@ -12,9 +12,9 @@
  * Si el comando no usa playwright-cli, no decide nada (exit 0 sin salida) y sigue el flujo normal de permisos.
  * Soporta tanto el formato PreToolUse de Antigravity IDE (toolCall.name === "run_command") como el legado (tool_name === "Bash").
  */
-import {readFileSync} from 'node:fs';
-import {resolve} from 'node:path';
-import {fileURLToPath} from 'node:url';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const VERBOS_PERMITIDOS = new Set(['open', 'goto', 'snapshot', 'click', 'type', 'press', 'screenshot', 'close', 'list']);
 const OPCIONES_PROHIBIDAS = /^--?(profile|persistent|config|user-data-dir|extension|cdp|cdp-endpoint|storage-state|isolated)(=|$)/i;
@@ -27,16 +27,10 @@ const INTERPRETES = new Set([
 ]);
 
 function negarAntigravity(motivo) {
-	const reason = `Bloqueado por el hook del editor: ${motivo}.`;
 	process.stdout.write(
 		JSON.stringify({
 			decision: 'deny',
-			reason,
-			hookSpecificOutput: {
-				hookEventName: 'PreToolUse',
-				permissionDecision: 'deny',
-				permissionDecisionReason: reason,
-			},
+			reason: `Bloqueado por el hook del editor: ${motivo}.`,
 		}),
 	);
 	process.exit(0);
