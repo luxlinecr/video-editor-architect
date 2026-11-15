@@ -1,0 +1,61 @@
+{
+  "voz": "Brian",
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "modelo": "eleven_multilingual_v2",
+  "lineas": [
+    {
+      "id": "locucion-01",
+      "text": "¿Alguien te mira la pantalla?",
+      "startSec": 0.2,
+      "maxSec": 2.7,
+      "archivo": "assets/marca/audio/privacy-s26u/locucion-01.mp3",
+      "duracion_s": 1.578957,
+      "valido": true
+    },
+    {
+      "id": "locucion-02",
+      "text": "Desde un lado, cualquiera puede leer tus mensajes.",
+      "startSec": 3.1,
+      "maxSec": 3.7,
+      "archivo": "assets/marca/audio/privacy-s26u/locucion-02.mp3",
+      "duracion_s": 2.879274,
+      "valido": true
+    },
+    {
+      "id": "locucion-03",
+      "text": "En el S26 Ultra, activas Privacy Display con un toque.",
+      "startSec": 7.2,
+      "maxSec": 3.6,
+      "archivo": "assets/marca/audio/privacy-s26u/locucion-03.mp3",
+      "duracion_s": 3.575873,
+      "valido": true
+    },
+    {
+      "id": "locucion-04",
+      "text": "De frente, perfecta. A 45 grados, solo el 3.5 % del brillo.",
+      "startSec": 11.1,
+      "maxSec": 5.7,
+      "archivo": "assets/marca/audio/privacy-s26u/locucion-04.mp3",
+      "duracion_s": 5.01551,
+      "valido": true
+    },
+    {
+      "id": "locucion-05",
+      "text": "Quien mire de lado, solo ve negro.",
+      "startSec": 17.2,
+      "maxSec": 3.6,
+      "archivo": "assets/marca/audio/privacy-s26u/locucion-05.mp3",
+      "duracion_s": 2.182676,
+      "valido": true
+    },
+    {
+      "id": "locucion-06",
+      "text": "Tu pantalla, solo para ti. Luxline CR.",
+      "startSec": 21.2,
+      "maxSec": 3.3,
+      "archivo": "assets/marca/audio/privacy-s26u/locucion-06.mp3",
+      "duracion_s": 3.018594,
+      "valido": true
+    }
+  ]
+}

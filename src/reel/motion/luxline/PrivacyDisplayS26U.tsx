@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import {useEffect, useState} from 'react';
 import {
 	AbsoluteFill,
+	Audio,
 	Easing,
 	Img,
 	Sequence,
@@ -23,6 +24,10 @@ import {
 	progress,
 } from './Techniques';
 import {SceneFade} from './SceneFade';
+import {
+	CUES_SFX_PRIVACY_DISPLAY_S26U,
+	obtenerEfectoPorId,
+} from './sfx-tonales';
 
 /**
  * Paleta oficial del universo `android` (estilo/luxline-marca.json).
@@ -46,6 +51,45 @@ export const PRIVACY_S26U_ASSETS = {
 	fontDisplay: 'biblioteca/fuentes/NotoSansDisplay-Variable.ttf',
 	fontMono: 'biblioteca/fuentes/Mono-Regular.ttf',
 } as const;
+
+export const VOCES_PRIVACY_DISPLAY_S26U = [
+	{
+		id: 'locucion-01',
+		from: 12, // 0.2 s
+		durationInFrames: 105,
+		src: 'assets/marca/audio/privacy-s26u/locucion-01.mp3',
+	},
+	{
+		id: 'locucion-02',
+		from: 186, // 3.1 s
+		durationInFrames: 185,
+		src: 'assets/marca/audio/privacy-s26u/locucion-02.mp3',
+	},
+	{
+		id: 'locucion-03',
+		from: 432, // 7.2 s
+		durationInFrames: 220,
+		src: 'assets/marca/audio/privacy-s26u/locucion-03.mp3',
+	},
+	{
+		id: 'locucion-04',
+		from: 666, // 11.1 s
+		durationInFrames: 310,
+		src: 'assets/marca/audio/privacy-s26u/locucion-04.mp3',
+	},
+	{
+		id: 'locucion-05',
+		from: 1032, // 17.2 s
+		durationInFrames: 145,
+		src: 'assets/marca/audio/privacy-s26u/locucion-05.mp3',
+	},
+	{
+		id: 'locucion-06',
+		from: 1272, // 21.2 s
+		durationInFrames: 190,
+		src: 'assets/marca/audio/privacy-s26u/locucion-06.mp3',
+	},
+] as const;
 
 const ANCHO_UTIL = ZONA_SEGURA_LUXLINE.x1 - ZONA_SEGURA_LUXLINE.x0; // 810 px
 const RATIO_S26U = 1076 / 524;
@@ -1394,7 +1438,13 @@ const EscenaCierreLogo = () => {
 	);
 };
 
-export const PrivacyDisplayS26U = () => {
+export interface PrivacyDisplayS26UProps {
+	conAudio?: boolean;
+}
+
+export const PrivacyDisplayS26U: React.FC<PrivacyDisplayS26UProps> = ({
+	conAudio = true,
+}) => {
 	const {width} = useVideoConfig();
 	const escala = width / 1080;
 	const [handle] = useState(() => delayRender('Luxline PrivacyDisplay fonts'));
@@ -1464,6 +1514,41 @@ export const PrivacyDisplayS26U = () => {
 				<Sequence from={1260} durationInFrames={240}>
 					<EscenaCierreLogo />
 				</Sequence>
+
+				{conAudio && (
+					<>
+						{/* Locución en tuteo (ElevenLabs - Brian) */}
+						{VOCES_PRIVACY_DISPLAY_S26U.map((v) => (
+							<Sequence
+								key={v.id}
+								from={v.from}
+								durationInFrames={v.durationInFrames}
+							>
+								<Audio src={staticFile(v.src)} volume={1.0} />
+							</Sequence>
+						))}
+
+						{/* Efectos de sonido tonales CC0 integrados */}
+						{CUES_SFX_PRIVACY_DISPLAY_S26U.map((cue) => {
+							const efecto = obtenerEfectoPorId(cue.efectoId);
+							if (!efecto) return null;
+							return (
+								<Sequence
+									key={`sfx-${cue.efectoId}-${cue.cuadro}`}
+									from={cue.cuadro}
+									durationInFrames={Math.round(efecto.duracion_s * 60)}
+								>
+									<Audio
+										src={staticFile(
+											`biblioteca/${efecto.archivo_relativo_biblioteca}`,
+										)}
+										volume={cue.volumen * 0.45}
+									/>
+								</Sequence>
+							);
+						})}
+					</>
+				)}
 			</div>
 		</AbsoluteFill>
 	);

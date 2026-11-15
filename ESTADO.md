@@ -1,8 +1,22 @@
 # ESTADO
 
-Estado: **Biblioteca de 30 efectos sonoros tonales CC0 (`Luxline_30_Efectos_Tonales_CC0`) integrada, catalogada y testeada** — 30 archivos MP3 organizados en `biblioteca/sfx/tonales/` (9 carpetas), catalogados con 6 etiquetas de uso (`campana`, `kalimba`, `arpa`, `cristalino`, `destello`, `transicion`), registrados en `biblioteca/LICENCIAS.md` con sus URLs de origen y hashes SHA-256 de SFXMint, accesibles para Remotion vía `public/biblioteca`, integrados en `src/reel/motion/luxline/sfx-tonales.ts` y `herramientas/lib/sfx-tonales.ts`, y verificados con pruebas unitarias (`pruebas/unit/sfx-tonales.test.ts`, 10/10 ✔) y suite completa (61 passed, 1552 tests, 0 fallos).
+Estado: **`Luxline-PrivacyDisplay-S26U` completado con locución en tuteo (ElevenLabs), efectos tonales CC0 y audio final normalizado (−14.1 LUFS / −1.5 dBTP)** — video 1080×1920 a 60 fps (1500 cuadros, 25.0 s, H.264 `yuv420p` + AAC estéreo 48 kHz 320 kbps) renderizado en `out/luxline-privacy-display-s26u-1080x1920.mp4`, con las 6 líneas de locución sintetizadas con ElevenLabs (`eleven_multilingual_v2`, voz Brian: masculina, calmada, resonante) sincronizadas a los cues del guion, 6 efectos de sonido tonales CC0 integrados en la composición de Remotion, y sonoridad normalizada con dos pasadas de `loudnorm` a −14.1 LUFS y −1.5 dBTP.
 
 ## Qué se hizo
+
+- Se integraron las credenciales de ElevenLabs desde `Elevenlabs.env` (protegido por `.gitignore` con `*.env`).
+- Con aprobación explícita del creador, se sintetizaron las 6 líneas del guion en tuteo con ElevenLabs (`eleven_multilingual_v2`, voz premade Brian: masculina, calmada, cálida y de tono comercial/tecnológico) en `assets/marca/audio/privacy-s26u/locucion-01.mp3` a `locucion-06.mp3`, validando que cada archivo encaja dentro de su ventana temporal de escena (1.58s en 2.7s, 2.88s en 3.7s, 3.58s en 3.6s, 5.02s en 5.7s, 2.18s en 3.6s, 3.02s en 3.3s).
+- Se actualizó `src/reel/motion/luxline/privacy-s26u-cues.json` con `voiceApproved: true` y notas de producción.
+- Se conectaron las pistas de audio en `src/reel/motion/luxline/PrivacyDisplayS26U.tsx` mediante secuencias de `<Audio>` sincronizadas:
+  - 6 pistas de locución (voces con volumen 1.0) ubicadas en sus cuadros exactos (frames 12, 186, 432, 666, 1032, 1272).
+  - 6 pistas de efectos tonales CC0 (`CUES_SFX_PRIVACY_DISPLAY_S26U`) bajo la voz (volumen ponderado 0.45) desde `biblioteca/sfx/tonales/` (vibráfono cálido, destello cristalino, carga sintética, transición cinematográfica, cuenco grave y campana de cristal).
+- Se renderizó la composición completa `Luxline-PrivacyDisplay-S26U` (1080×1920 a 60 fps, 1500 cuadros / 25.0 s) con Remotion y Puppeteer usando el patrón de bundle `sinPublic` + junction para Windows.
+- Se aplicó normalización de dos pasadas con ffmpeg `loudnorm` (`I=-14:TP=-1.5:LRA=7`), alcanzando con precisión broadcast:
+  - Sonoridad integrada: **−14.1 LUFS** (tolerancia ±0.5).
+  - Pico real (True Peak): **−1.5 dBFS**.
+  - Rango dinámico (LRA): **4.5 LU**.
+  - Pistas: Video H.264 BT.709 1080×1920 + Audio AAC 48 kHz estéreo a 320 kbps.
+- Se actualizó el artefacto `luxline-privacy-display-s26u-1080x1920.mp4` y pasaron todas las pruebas unitarias (`pruebas/unit/luxline-motion.test.ts` y `pruebas/unit/sfx-tonales.test.ts`).
 
 - Se importaron e integraron los 30 efectos tonales CC0 de `Luxline_30_Efectos_Tonales_CC0.zip` en `biblioteca/sfx/tonales/` conservando sus 9 carpetas temáticas (`01_Campanas`, `02_Kalimba`, `03_Arpa`, `04_Resonancias`, `05_Tonos_Cristalinos`, `06_Revelaciones`, `07_Destellos`, `08_Aperturas`, `09_Transiciones`), sus nombres originales y su documentación (`LEEME.txt`, `LISTADO_Y_FUENTES.csv`).
 - Se verificó la integridad bit a bit (SHA-256) de cada uno de los 30 archivos MP3 contra `LISTADO_Y_FUENTES.csv`.

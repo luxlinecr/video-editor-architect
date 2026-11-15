@@ -111,11 +111,11 @@ describe('luxline motion — zona segura del editor y curvas', () => {
 });
 
 describe('Luxline-PrivacyDisplay-S26U — cues, paleta, textos y assets', () => {
-	it('mantiene las 6 líneas exactas en tuteo sin audio generado y compatibles con cuesDesdeTranscripcion', () => {
+	it('mantiene las 6 líneas exactas en tuteo con locución aprobada y compatibles con cuesDesdeTranscripcion', () => {
 		expect(privacyCues.compositionId).toBe('Luxline-PrivacyDisplay-S26U');
 		expect(privacyCues.fps).toBe(60);
 		expect(privacyCues.durationInFrames).toBe(1500);
-		expect(privacyCues.voiceApproved).toBe(false);
+		expect(privacyCues.voiceApproved).toBe(true);
 		expect(privacyCues.simulation).toBe(false);
 		expect(privacyCues.lines.map((l) => l.text)).toEqual([
 			'¿Alguien te mira la pantalla?',

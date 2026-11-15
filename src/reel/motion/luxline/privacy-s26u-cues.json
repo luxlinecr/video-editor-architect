@@ -3,9 +3,9 @@
   "mode": "sales",
   "fps": 60,
   "durationInFrames": 1500,
-  "voiceApproved": false,
+  "voiceApproved": true,
   "simulation": false,
-  "note": "Marcadores planeados de locucion en tuteo para grabacion futura. Sin audio generado.",
+  "note": "Locucion en tuteo aprobada y generada con ElevenLabs (voz: Brian, calmada/masculina, multilingual_v2) sincronizada a 60 fps con efectos tonales CC0.",
   "lines": [
     {
       "id": "escena-1",
