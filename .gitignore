@@ -6,6 +6,7 @@ __pycache__/
 
 # Llaves y configuración local (nunca se versionan) / Keys and local config (never committed)
 .env*
+*.env
 !.env.remotion
 !.env.example
 
@@ -35,6 +36,8 @@ biblioteca/**/*.ttf
 biblioteca/**/*.otf
 biblioteca/**/*.woff
 biblioteca/**/*.woff2
+# Excepto los 30 efectos tonales CC0 incorporados a la biblioteca
+!biblioteca/sfx/tonales/**
 
 # Sistema / System
 .DS_Store
