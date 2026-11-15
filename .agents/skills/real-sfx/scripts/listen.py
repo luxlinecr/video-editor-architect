@@ -67,7 +67,8 @@ def status():
     print(f"ears, level 2 (YAMNet tags + embeddings): "
           f"{'READY' if MODEL.exists() and (have_runtime() or venv_python()) else 'not installed'}")
     print(f"  model file     : {'yes' if MODEL.exists() else 'no'}  {MODEL}")
-    print(f"  venv           : {'yes' if venv_python() else 'no'}  {VENV}")
+    vp = venv_python()
+    print(f"  venv           : {'yes' if vp else 'no'}  {vp or VENV}")
     print(f"  runtime in use : {'yes' if have_runtime() else 'no (will use venv if present)'}")
     emb = EMB_BIN.exists()
     print(f"  library tagged : {'yes' if emb else 'no'}")

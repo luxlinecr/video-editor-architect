@@ -1,8 +1,16 @@
 # ESTADO
 
-Estado: **`Luxline-PrivacyDisplay-S26U` en formato «¿Sabías que…?» sin subtítulos rápidos ni voz generada, con efectos tonales CC0** — video `1080×1920` a `60 fps` (`1500` cuadros, `25.0 s`, H.264 `yuv420p` + AAC estéreo `48 kHz` `317 kbps`) en `out/luxline-privacy-display-s26u-1080x1920.mp4`, con encabezados editoriales revelados con máscara (`SceneContextHeader`), reencuadre vertical completo dentro de `ZONA_SEGURA.capas`, 6 efectos tonales CC0 (`max_volume: -11.5 dB`, `mean_volume: -35.4 dB`, sin voz en off para que el creador integre la suya), y `<SpeechVisualSync>` pre-cableado con diccionario autorizado (`PRIVACY_S26U_WORD_ASSETS`) en espera de tiempos reales (`voiceApproved: false`).
+Estado: **Skill `real-sfx` instalada, adaptada a Antigravity/Windows y verificada (`189/189` checks en `tests/selftest.py`), lista junto a `Luxline-PrivacyDisplay-S26U` (`out/luxline-privacy-display-s26u-1080x1920.mp4`, `1500` cuadros a `60 fps`)**
 
 ## Qué se hizo
+
+- Se extrajo `real-sfx.skill` (`997` archivos, incluidos `38` scripts Python y `936` sonidos UI CC0-1.0 de `uisfx` v0.4.0) en `.agents/skills/real-sfx/`, preservando las guías de referencia y licencias (MIT/CC0-1.0).
+- Se adaptó la skill para Antigravity IDE / Windows en `video-editor-architect`:
+  - `.agents/skills/real-sfx/scripts/common.py`: `venv_python()` toma el `.venv` del workspace (`Python 3.12.16` con `numpy` y `onnxruntime`) como respaldo cuando no existe `vendor/venv` ni `REAL_SFX_VENV_PYTHON`.
+  - `.agents/skills/real-sfx/scripts/setup.py`: `tool()` invoca la ruta resuelta por `shutil.which` (`npm.cmd`) sin usar `shell=True`.
+  - `.agents/skills/real-sfx/scripts/listen.py`: `status()` muestra la ruta real del entorno resuelto por `venv_python()`.
+  - `.agents/skills/real-sfx/SKILL.md` y `.agents/workflows/real-sfx.md` (`/real-sfx`): se documentó la ejecución aislada con `.venv\Scripts\python.exe` y `PYTHONUTF8=1`, carpetas de trabajo ignoradas por git (`proyectos/<slug>/real-sfx/`, `out/`), cumplimiento de `biblioteca/LICENCIAS.md` y confirmación previa ante descargas de modelos (`listen.py install --yes`, `hear.py install --yes`) o servicios en la nube.
+- Se generó el índice inicial `.agents/skills/real-sfx/library_index.json` (`0 sounds`, `"libraries": []`), pasó `.venv\Scripts\python.exe .agents\skills\real-sfx\scripts\setup.py check` (código `0`, `ffmpeg` con `rubberband`/`drawtext`, `ffprobe`, `node v26.13.0`, `npm 11.20.0`, `uisfx ok`) y pasó completa la autoprueba aislada `.venv\Scripts\python.exe -X utf8 .agents\skills\real-sfx\tests\selftest.py` (**`189/189` checks aprobados en `189 s`**, incluyendo `maskmodel` y `mix.py --masking`).
 
 - Se retiró la barra inferior de 11 subtítulos animados (`SubtitulosPremiumConMascara` / `SUBTITULOS_PRIVACY_DISPLAY_S26U`) de `src/reel/motion/luxline/PrivacyDisplayS26U.tsx` por petición del creador (*«van muy rapido los subtitulos, mejor quitalos»*), dejando encabezados contextuales con máscara (`SceneContextHeader`) en las escenas en tuteo y el guion/diccionario listos en `src/reel/motion/luxline/privacy-s26u-cues.json`.
 - Se restauró el encuadre vertical en `ZONA_SEGURA.capas` (`x: 135–945`, `y: 220–1600`) al recuperar el espacio inferior: diorama dueño+espía a `scale(0.95)` (`translate(0px, -16px)`, `clipPath: inset(512px 135px 320px 135px)`), telefonía Quick Settings y tarjeta morph centradas, S26 Ultra 3D de la escena 4 a `332×682 px` (`top: 492`, barra de progreso en `top: 1212`) y cierre con logo+título+CTA centrados, inspeccionados en cuadros clave sin solapamientos ni huecos.
@@ -60,11 +68,13 @@ Estado: **`Luxline-PrivacyDisplay-S26U` en formato «¿Sabías que…?» sin sub
 
 ## Qué sigue
 
+- Opcional: conectar a `real-sfx` los 30 efectos tonales CC0 de `biblioteca/sfx/tonales/` (u otra carpeta local con licencia) mediante `setup.py add-library` + `--index`, o probarla sobre un render en `out/`.
 - Creador agrega su propia locución en español latino sobre `out/luxline-privacy-display-s26u-1080x1920.mp4` (opcionalmente transcribiendo tiempos reales de palabra hacia `privacy-s26u-cues.json` con `voiceApproved: true` para encender `SpeechVisualSync`).
 - Pendiente anterior: revisar `proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4` y `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4`.
 
 ## Decisiones
 
+- En lugar de crear un `vendor/venv` duplicado para `real-sfx`, `common.py` (`venv_python()`) reutiliza el `.venv` del repositorio (que ya tiene `numpy` y `onnxruntime`) tras verificar `REAL_SFX_VENV_PYTHON` y `vendor/venv`; se dejaron `config.json` con `"libraries": []` y `real-sfx.skill` intacto, sin descargar modelos opcionales (`listen.py install --yes` / `hear.py install --yes`).
 - En `Luxline-PrivacyDisplay-S26U` se prescinde de subtítulos rápidos inferiores para priorizar la lectura visual limpia (`SceneContextHeader` con máscara y el protagonista centrado en `ZONA_SEGURA.capas`), mientras que `privacy-s26u-cues.json` y `PRIVACY_S26U_WORD_ASSETS` conservan los cues listos para encender `<SpeechVisualSync>` cuando el creador añada su voz (`voiceApproved: true`); el audio entrega únicamente SFX tonales CC0 con `max_volume: -11.5 dB` sin normalizar a `-14 LUFS` para no inflar picos aislados y dejar margen limpio a la locución.
 - `"Luxline-PrivacyDisplay-S26U"` usa `<Sequence>` por escena con `SceneFade` (ya que `SceneFade` evalúa `useCurrentFrame()` en tiempo local), escala vía `width / 1080` para renderizar `720×1280` o `1080×1920` sin alterar proporciones ni la zona segura `ZONA_SEGURA.capas`, y combina `front-cutout.png` + `angle.png` ajustado por `scaleX(cos(θ)/cos(30°))` para evitar dobles bordes durante la rotación 3D.
 
