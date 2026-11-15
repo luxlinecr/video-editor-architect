@@ -1,22 +1,17 @@
 # ESTADO
 
-Estado: **`Luxline-PrivacyDisplay-S26U` completado con locución en tuteo (ElevenLabs), efectos tonales CC0 y audio final normalizado (−14.1 LUFS / −1.5 dBTP)** — video 1080×1920 a 60 fps (1500 cuadros, 25.0 s, H.264 `yuv420p` + AAC estéreo 48 kHz 320 kbps) renderizado en `out/luxline-privacy-display-s26u-1080x1920.mp4`, con las 6 líneas de locución sintetizadas con ElevenLabs (`eleven_multilingual_v2`, voz Brian: masculina, calmada, resonante) sincronizadas a los cues del guion, 6 efectos de sonido tonales CC0 integrados en la composición de Remotion, y sonoridad normalizada con dos pasadas de `loudnorm` a −14.1 LUFS y −1.5 dBTP.
+Estado: **`Luxline-PrivacyDisplay-S26U` actualizado al formato «¿Sabías que…?» con subtítulos editoriales con máscara y efectos tonales CC0 (sin voz generada)** — video `1080×1920` a `60 fps` (`1500` cuadros, `25.0 s`, H.264 `yuv420p` + AAC estéreo `48 kHz` `317 kbps`) en `out/luxline-privacy-display-s26u-1080x1920.mp4`, con 11 subtítulos premium revelados con máscara (`SubtitulosPremiumConMascara`), 6 efectos tonales CC0 (`max_volume: -11.5 dBFS`, sin voz en off para que el creador integre la suya), y `<SpeechVisualSync>` pre-cableado con diccionario autorizado (`PRIVACY_S26U_WORD_ASSETS`) en espera de tiempos reales (`voiceApproved: false`).
 
 ## Qué se hizo
 
-- Se integraron las credenciales de ElevenLabs desde `Elevenlabs.env` (protegido por `.gitignore` con `*.env`).
-- Con aprobación explícita del creador, se sintetizaron las 6 líneas del guion en tuteo con ElevenLabs (`eleven_multilingual_v2`, voz premade Brian: masculina, calmada, cálida y de tono comercial/tecnológico) en `assets/marca/audio/privacy-s26u/locucion-01.mp3` a `locucion-06.mp3`, validando que cada archivo encaja dentro de su ventana temporal de escena (1.58s en 2.7s, 2.88s en 3.7s, 3.58s en 3.6s, 5.02s en 5.7s, 2.18s en 3.6s, 3.02s en 3.3s).
-- Se actualizó `src/reel/motion/luxline/privacy-s26u-cues.json` con `voiceApproved: true` y notas de producción.
-- Se conectaron las pistas de audio en `src/reel/motion/luxline/PrivacyDisplayS26U.tsx` mediante secuencias de `<Audio>` sincronizadas:
-  - 6 pistas de locución (voces con volumen 1.0) ubicadas en sus cuadros exactos (frames 12, 186, 432, 666, 1032, 1272).
-  - 6 pistas de efectos tonales CC0 (`CUES_SFX_PRIVACY_DISPLAY_S26U`) bajo la voz (volumen ponderado 0.45) desde `biblioteca/sfx/tonales/` (vibráfono cálido, destello cristalino, carga sintética, transición cinematográfica, cuenco grave y campana de cristal).
-- Se renderizó la composición completa `Luxline-PrivacyDisplay-S26U` (1080×1920 a 60 fps, 1500 cuadros / 25.0 s) con Remotion y Puppeteer usando el patrón de bundle `sinPublic` + junction para Windows.
-- Se aplicó normalización de dos pasadas con ffmpeg `loudnorm` (`I=-14:TP=-1.5:LRA=7`), alcanzando con precisión broadcast:
-  - Sonoridad integrada: **−14.1 LUFS** (tolerancia ±0.5).
-  - Pico real (True Peak): **−1.5 dBFS**.
-  - Rango dinámico (LRA): **4.5 LU**.
-  - Pistas: Video H.264 BT.709 1080×1920 + Audio AAC 48 kHz estéreo a 320 kbps.
-- Se actualizó el artefacto `luxline-privacy-display-s26u-1080x1920.mp4` y pasaron todas las pruebas unitarias (`pruebas/unit/luxline-motion.test.ts` y `pruebas/unit/sfx-tonales.test.ts`).
+- Se rediseñó el guion y montaje de `src/reel/motion/luxline/PrivacyDisplayS26U.tsx` y `src/reel/motion/luxline/privacy-s26u-cues.json` al formato viral/ventas **«¿Sabías que…?»** en tuteo conservando exclusivamente hechos permitidos (`~40 %` de brillo lateral en pantalla normal, `Privacy Display` exclusivo Galaxy S26 Ultra, `0° = 100 %`, `45° = 3.5 %`, `60° = 0.9 % o menos` / `menos de 1 %`, `Vertical u horizontal`, `Puede activarse sola con tu PIN`).
+- Se eliminó la locución previa de Brian (`VOCES_PRIVACY_DISPLAY_S26U`) del render conforme a lo pedido por el creador (*«No vas a generar voz, lo haré yo»*), conservando únicamente los 6 efectos tonales CC0 (`CUES_SFX_PRIVACY_DISPLAY_S26U`) con margen dinámico limpio (`max_volume: -11.5 dB`, `mean_volume: -35.4 dB` medido con `ffmpeg volumedetect`).
+- Se implementó `SubtitulosPremiumConMascara`, `LineaSubtituloMascara` y `SceneContextHeader` dentro de `ZONA_SEGURA.subtitulos` (`x: 135–945`, `y: 1412–1580 <= 1590`): dock translúcido fijo de cristal en paleta `android` con contador monoespaciado (`01 / 11` a `11 / 11`), barra hairline de progreso, máscara vertical encadenada por línea con `luxuryEase` sin escalar glifos y barrido horizontal (`clip-path`) para resaltar conceptos clave (`~40 %`, `Privacy Display`, `3.5 %`, `0.9 % o menos`, `solo ve negro`, `con tu PIN`).
+- Se reencuadraron el diorama dueño+espía (`scale(0.835)`, `translate(0, -34px)` con `clipPath` limpio durante `CameraFollow`) y la rotación 3D de la escena 4 (`296×608 px`) para garantizar holgura visual en las 6 escenas y cero solapamientos al inspeccionar cuadros clave.
+- Se definió `PRIVACY_S26U_WORD_ASSETS` (usando únicamente `front-cutout.png`, `angle.png`, `shield.svg` y `logo-negro.svg`) y se conectó `<SpeechVisualSync>` (`mode="sales"`, `voiceApproved: false`, `simulation: false`) listo para activarse con tiempos reales al añadir la voz del creador.
+- Se actualizaron las pruebas en `pruebas/unit/luxline-motion.test.ts` y se verificó el render `1080×1920` con `ffprobe` (`1500` cuadros, `60 fps`, `25.0 s`).
+
+- Se sintetizó previamente (en iteración anterior, ya desvinculada del render actual) la prueba de voz en `assets/marca/audio/privacy-s26u/`.
 
 - Se importaron e integraron los 30 efectos tonales CC0 de `Luxline_30_Efectos_Tonales_CC0.zip` en `biblioteca/sfx/tonales/` conservando sus 9 carpetas temáticas (`01_Campanas`, `02_Kalimba`, `03_Arpa`, `04_Resonancias`, `05_Tonos_Cristalinos`, `06_Revelaciones`, `07_Destellos`, `08_Aperturas`, `09_Transiciones`), sus nombres originales y su documentación (`LEEME.txt`, `LISTADO_Y_FUENTES.csv`).
 - Se verificó la integridad bit a bit (SHA-256) de cada uno de los 30 archivos MP3 contra `LISTADO_Y_FUENTES.csv`.
@@ -67,11 +62,12 @@ Estado: **`Luxline-PrivacyDisplay-S26U` completado con locución en tuteo (Eleve
 
 ## Qué sigue
 
-- Opcional: grabar y conectar la locución en tuteo usando `src/reel/motion/luxline/privacy-s26u-cues.json` si luego se agrega voz a `Luxline-PrivacyDisplay-S26U` (el render final `1080×1920` sin audio quedó en `out/luxline-privacy-display-s26u-1080x1920.mp4`).
+- Creador agrega su propia locución en español latino sobre `out/luxline-privacy-display-s26u-1080x1920.mp4` (opcionalmente transcribiendo tiempos reales de palabra hacia `privacy-s26u-cues.json` con `voiceApproved: true` para encender `SpeechVisualSync`).
 - Pendiente anterior: revisar `proyectos/2026-11-14-s26-ultra-privacy/salida/borrador-v1.mp4` y `proyectos/2026-11-14-iphone-13/salida/borrador-v3.mp4`.
 
 ## Decisiones
 
+- Los subtítulos con máscara de `Luxline-PrivacyDisplay-S26U` viven en un dock fijo translúcido (`SubtitulosPremiumConMascara`, `y: 1412–1580 <= 1590`) fuera de `<CameraFollow>` para evitar parpadeos del contenedor y mantener estabilidad visual mientras solo las líneas y el barrido horizontal de énfasis mutan mediante `clipPath` + `luxuryEase`; el audio entrega únicamente SFX tonales CC0 con `max_volume: -11.5 dB` sin normalizar a `-14 LUFS` para no inflar picos aislados y dejar margen limpio a la voz del creador.
 - `"Luxline-PrivacyDisplay-S26U"` usa `<Sequence>` por escena con `SceneFade` (ya que `SceneFade` evalúa `useCurrentFrame()` en tiempo local), escala vía `width / 1080` para renderizar `720×1280` o `1080×1920` sin alterar proporciones ni la zona segura `ZONA_SEGURA.capas`, y combina `front-cutout.png` + `angle.png` ajustado por `scaleX(cos(θ)/cos(30°))` para evitar dobles bordes durante la rotación 3D.
 
 - Para mantener la compatibilidad del editor (`Reel` y `herramientas/` a `30 fps`), `Luxline-Style-Demo` se registró con sus `60 fps` y `600` cuadros propios sin alterar el `30 fps` global; `SpeechVisualSync` lee tiempos reales por palabra vía `cuesDesdeTranscripcion()`, reservando `demo-cues.json` (`simulation: true`) solo para `Demo.tsx`, y `ZONA_SEGURA` de `src/estilo/zona-segura.ts` gobierna los márgenes.

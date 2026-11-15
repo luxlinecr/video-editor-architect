@@ -13,7 +13,13 @@ import {
 	normalizeWord,
 	type AssetDictionary,
 } from '../../src/reel/motion/luxline/Techniques';
-import {PALETA_ANDROID, PRIVACY_S26U_ASSETS, brilloDesdeAngulo} from '../../src/reel/motion/luxline/PrivacyDisplayS26U';
+import {
+	PALETA_ANDROID,
+	PRIVACY_S26U_ASSETS,
+	PRIVACY_S26U_WORD_ASSETS,
+	SUBTITULOS_PRIVACY_DISPLAY_S26U,
+	brilloDesdeAngulo,
+} from '../../src/reel/motion/luxline/PrivacyDisplayS26U';
 import privacyCues from '../../src/reel/motion/luxline/privacy-s26u-cues.json';
 import {glassShotSequence, sampleGlassMotion} from '../../src/reel/motion/luxline/glass-motion';
 import dictionary from '../../src/reel/motion/luxline/word-assets.json';
@@ -110,29 +116,31 @@ describe('luxline motion — zona segura del editor y curvas', () => {
 	});
 });
 
-describe('Luxline-PrivacyDisplay-S26U — cues, paleta, textos y assets', () => {
-	it('mantiene las 6 líneas exactas en tuteo con locución aprobada y compatibles con cuesDesdeTranscripcion', () => {
+describe('Luxline-PrivacyDisplay-S26U — subtítulos con máscara "¿Sabías que…?", paleta y assets', () => {
+	it('mantiene el guion "¿Sabías que…?" en tuteo con 11 subtítulos ordenados sin locución generada', () => {
 		expect(privacyCues.compositionId).toBe('Luxline-PrivacyDisplay-S26U');
 		expect(privacyCues.fps).toBe(60);
 		expect(privacyCues.durationInFrames).toBe(1500);
-		expect(privacyCues.voiceApproved).toBe(true);
+		expect(privacyCues.voiceApproved).toBe(false);
 		expect(privacyCues.simulation).toBe(false);
-		expect(privacyCues.lines.map((l) => l.text)).toEqual([
-			'¿Alguien te mira la pantalla?',
-			'Desde un lado, cualquiera puede leer tus mensajes.',
-			'En el S26 Ultra, activas Privacy Display con un toque.',
-			'De frente, perfecta. A 45 grados, solo el 3.5 % del brillo.',
-			'Quien mire de lado, solo ve negro.',
-			'Tu pantalla, solo para ti. Luxline CR.',
-		]);
+		expect(SUBTITULOS_PRIVACY_DISPLAY_S26U).toHaveLength(11);
+		expect(SUBTITULOS_PRIVACY_DISPLAY_S26U[0].text).toContain('¿Sabías que');
+		expect(SUBTITULOS_PRIVACY_DISPLAY_S26U[0].text).toContain('~40 %');
 
-		const dicS26u: AssetDictionary = {
-			...dictionary,
-			pantalla: {src: PRIVACY_S26U_ASSETS.front, label: 'Galaxy S26 Ultra'},
-			s26: {src: PRIVACY_S26U_ASSETS.angle, label: 'Galaxy S26 Ultra ángulo'},
-			luxline: {src: PRIVACY_S26U_ASSETS.logo, label: 'Luxline CR'},
-		};
-		const cues = cuesDesdeTranscripcion(privacyCues, dicS26u, privacyCues.fps);
+		for (let i = 0; i < SUBTITULOS_PRIVACY_DISPLAY_S26U.length; i++) {
+			const c = SUBTITULOS_PRIVACY_DISPLAY_S26U[i];
+			expect(c.endFrame).toBeGreaterThan(c.startFrame);
+			expect(c.startFrame).toBeGreaterThanOrEqual(0);
+			expect(c.endFrame).toBeLessThanOrEqual(1500);
+			if (i > 0) {
+				expect(c.startFrame).toBeGreaterThan(SUBTITULOS_PRIVACY_DISPLAY_S26U[i - 1].endFrame);
+			}
+		}
+
+		for (const item of Object.values(PRIVACY_S26U_WORD_ASSETS)) {
+			expect(esAssetProhibido(item.src)).toBe(false);
+		}
+		const cues = cuesDesdeTranscripcion(privacyCues, PRIVACY_S26U_WORD_ASSETS, privacyCues.fps);
 		expect(cues.length).toBeGreaterThanOrEqual(3);
 		for (let i = 0; i < cues.length; i++) {
 			expect(cues[i].end).toBeGreaterThan(cues[i].start);
@@ -156,7 +164,7 @@ describe('Luxline-PrivacyDisplay-S26U — cues, paleta, textos y assets', () => 
 
 		const compSrc = readFileSync(resolve('src/reel/motion/luxline/PrivacyDisplayS26U.tsx'), 'utf8');
 		for (const requerido of [
-			'¿Te miran la pantalla?',
+			'¿SABÍAS QUE…?',
 			'Privacy Display',
 			'0° = 100 %',
 			'45° = 3.5 %',
@@ -165,10 +173,13 @@ describe('Luxline-PrivacyDisplay-S26U — cues, paleta, textos y assets', () => 
 			'Puede activarse sola con tu PIN',
 			'Tu pantalla, solo para ti.',
 			'Galaxy S26 Ultra · luxline.tech',
+			'SubtitulosPremiumConMascara',
+			'SpeechVisualSync',
 		]) {
 			expect(compSrc).toContain(requerido);
 		}
 		expect(compSrc).not.toContain('Se activa al poner tu PIN');
+		expect(compSrc).not.toContain('VOCES_PRIVACY_DISPLAY_S26U');
 		for (const prohibido of ASSETS_PROHIBIDOS_VIDEO) {
 			expect(compSrc.toLowerCase()).not.toContain(prohibido);
 		}

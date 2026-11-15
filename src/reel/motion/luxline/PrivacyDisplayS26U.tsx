@@ -19,15 +19,18 @@ import {
 	ChainMove,
 	MaskReveal,
 	ObjectMorph,
+	SpeechVisualSync,
 	ZONA_SEGURA_LUXLINE,
 	chainStarts,
 	progress,
+	type AssetDictionary,
 } from './Techniques';
 import {SceneFade} from './SceneFade';
 import {
 	CUES_SFX_PRIVACY_DISPLAY_S26U,
 	obtenerEfectoPorId,
 } from './sfx-tonales';
+import privacyCues from './privacy-s26u-cues.json';
 
 /**
  * Paleta oficial del universo `android` (estilo/luxline-marca.json).
@@ -48,48 +51,37 @@ export const PRIVACY_S26U_ASSETS = {
 	logo: 'assets/marca/logos/logo-negro.svg',
 	front: 'assets/marca/imagenes/products/android/galaxy-s26-ultra-white/front-cutout.png',
 	angle: 'assets/marca/imagenes/products/android/galaxy-s26-ultra-white/angle.png',
+	shield: 'assets/marca/imagenes/asset-library/shield.svg',
 	fontDisplay: 'biblioteca/fuentes/NotoSansDisplay-Variable.ttf',
 	fontMono: 'biblioteca/fuentes/Mono-Regular.ttf',
 } as const;
 
-export const VOCES_PRIVACY_DISPLAY_S26U = [
-	{
-		id: 'locucion-01',
-		from: 12, // 0.2 s
-		durationInFrames: 105,
-		src: 'assets/marca/audio/privacy-s26u/locucion-01.mp3',
-	},
-	{
-		id: 'locucion-02',
-		from: 186, // 3.1 s
-		durationInFrames: 185,
-		src: 'assets/marca/audio/privacy-s26u/locucion-02.mp3',
-	},
-	{
-		id: 'locucion-03',
-		from: 432, // 7.2 s
-		durationInFrames: 220,
-		src: 'assets/marca/audio/privacy-s26u/locucion-03.mp3',
-	},
-	{
-		id: 'locucion-04',
-		from: 666, // 11.1 s
-		durationInFrames: 310,
-		src: 'assets/marca/audio/privacy-s26u/locucion-04.mp3',
-	},
-	{
-		id: 'locucion-05',
-		from: 1032, // 17.2 s
-		durationInFrames: 145,
-		src: 'assets/marca/audio/privacy-s26u/locucion-05.mp3',
-	},
-	{
-		id: 'locucion-06',
-		from: 1272, // 21.2 s
-		durationInFrames: 190,
-		src: 'assets/marca/audio/privacy-s26u/locucion-06.mp3',
-	},
-] as const;
+/** Diccionario autorizado para SpeechVisualSync cuando se agregue locución aprobada. */
+export const PRIVACY_S26U_WORD_ASSETS: AssetDictionary = {
+	pantalla: {src: PRIVACY_S26U_ASSETS.front, label: 'Galaxy S26 Ultra'},
+	ultra: {src: PRIVACY_S26U_ASSETS.front, label: 'Galaxy S26 Ultra'},
+	s26: {src: PRIVACY_S26U_ASSETS.front, label: 'Galaxy S26 Ultra'},
+	privacy: {src: PRIVACY_S26U_ASSETS.shield, label: 'Privacy Display'},
+	display: {src: PRIVACY_S26U_ASSETS.shield, label: 'Privacy Display'},
+	'45': {src: PRIVACY_S26U_ASSETS.angle, label: 'Ángulo lateral 45°'},
+	luxline: {src: PRIVACY_S26U_ASSETS.logo, label: 'Luxline CR'},
+};
+
+export interface SubtituloMascaraCue {
+	id: string;
+	tag: string;
+	startSec: number;
+	endSec: number;
+	startFrame: number;
+	endFrame: number;
+	text: string;
+	line1: string;
+	line2: string;
+	highlight: string;
+}
+
+export const SUBTITULOS_PRIVACY_DISPLAY_S26U =
+	privacyCues.lines as readonly SubtituloMascaraCue[];
 
 const ANCHO_UTIL = ZONA_SEGURA_LUXLINE.x1 - ZONA_SEGURA_LUXLINE.x0; // 810 px
 const RATIO_S26U = 1076 / 524;
@@ -97,6 +89,24 @@ const BASE_PHONE_X = 482;
 const BASE_PHONE_Y = 678;
 const BASE_PHONE_W = 358;
 const BASE_PHONE_H = Math.round(BASE_PHONE_W * RATIO_S26U); // 735 px
+
+/**
+ * Transformación uniforme para encuadrar el diorama dueño + espía en y: 525..1382,
+ * dejando aire limpio sobre el dock inferior de subtítulos con máscara (y: 1414..1580).
+ */
+const DIORAMA_WRAPPER_STYLE = {
+	position: 'absolute',
+	inset: 0,
+	transform: 'translate(0px, -34px) scale(0.835)',
+	transformOrigin: '540px 580px',
+} as const;
+
+const DIORAMA_CLIP_STYLE = {
+	position: 'absolute',
+	inset: 0,
+	clipPath: 'inset(512px 135px 534px 135px)',
+	pointerEvents: 'none',
+} as const;
 
 /**
  * Curva determinista de brillo remanente según ángulo lateral:
@@ -114,6 +124,316 @@ export function brilloDesdeAngulo(anguloGrados: number): number {
 function clampMix(frame: number, start: number, duration: number, from: number, to: number): number {
 	return from + (to - from) * progress(frame, start, duration);
 }
+
+/** Etiqueta superior con máscara horizontal limpia para el encabezado de cada escena. */
+const SceneContextHeader = ({
+	tag,
+	title,
+	from = 0,
+	exitAt,
+}: {
+	tag: string;
+	title: string;
+	from?: number;
+	exitAt?: number;
+}) => {
+	const f = useCurrentFrame();
+	const tagReveal = progress(f, from, 20);
+	const exitFade = exitAt !== undefined ? 1 - progress(f, exitAt, 14) : 1;
+	const exitShift = exitAt !== undefined ? progress(f, exitAt, 14) * -14 : 0;
+
+	if (exitFade <= 0.01) return null;
+
+	return (
+		<div
+			style={{
+				position: 'absolute',
+				left: ZONA_SEGURA_LUXLINE.x0,
+				top: 326,
+				width: ANCHO_UTIL,
+				opacity: exitFade,
+				transform: `translateY(${exitShift}px)`,
+				pointerEvents: 'none',
+			}}
+		>
+			<div
+				style={{
+					display: 'inline-flex',
+					alignItems: 'center',
+					gap: 9,
+					padding: '7px 16px',
+					borderRadius: 999,
+					background: PALETA_ANDROID.ink,
+					color: PALETA_ANDROID.highlight,
+					fontFamily: 'LuxlineMono',
+					fontSize: 18,
+					letterSpacing: '0.07em',
+					clipPath: `inset(0 ${(1 - tagReveal) * 100}% 0 0)`,
+					marginBottom: 12,
+				}}
+			>
+				<span
+					style={{
+						width: 7,
+						height: 7,
+						borderRadius: '50%',
+						background: PALETA_ANDROID.accent,
+						display: 'inline-block',
+					}}
+				/>
+				<span>{tag}</span>
+			</div>
+
+			<MaskReveal
+				from={from + 6}
+				duration={26}
+				style={{
+					width: ANCHO_UTIL,
+					fontFamily: 'LuxlineDisplay',
+					fontSize: 54,
+					fontWeight: 700,
+					lineHeight: 1.06,
+					letterSpacing: '-0.03em',
+					color: PALETA_ANDROID.ink,
+				}}
+			>
+				{title}
+			</MaskReveal>
+		</div>
+	);
+};
+
+/** Renderiza una línea de subtítulo dentro de una máscara vertical con barrido horizontal sobre palabras clave. */
+const LineaSubtituloMascara = ({
+	text,
+	highlight,
+	localFrame,
+	cueDuration,
+	lineDelay,
+	isPrimaryLine,
+}: {
+	text: string;
+	highlight: string;
+	localFrame: number;
+	cueDuration: number;
+	lineDelay: number;
+	isPrimaryLine: boolean;
+}) => {
+	const enterT = progress(localFrame, lineDelay, 20);
+	const exitStart = Math.max(lineDelay + 24, cueDuration - 14);
+	const exitT = progress(localFrame, exitStart, 14);
+	const wipeT = progress(localFrame, lineDelay + 10, 18);
+
+	const translateY = (1 - enterT) * 26 - exitT * 18;
+	const topClip = exitT * 100;
+	const bottomClip = (1 - enterT) * 100;
+
+	const idx = highlight ? text.indexOf(highlight) : -1;
+	const pre = idx >= 0 ? text.slice(0, idx) : text;
+	const match = idx >= 0 ? text.slice(idx, idx + highlight.length) : '';
+	const post = idx >= 0 ? text.slice(idx + highlight.length) : '';
+
+	const textColor = isPrimaryLine ? PALETA_ANDROID.ink : PALETA_ANDROID.secondary;
+	const fontWeight = isPrimaryLine ? 600 : 500;
+
+	return (
+		<div
+			style={{
+				clipPath: `inset(${topClip}% -6px ${bottomClip}% -6px)`,
+				padding: '2px 0',
+			}}
+		>
+			<div
+				style={{
+					transform: `translateY(${translateY}px)`,
+					fontFamily: 'LuxlineDisplay',
+					fontSize: 35,
+					fontWeight,
+					lineHeight: 1.24,
+					letterSpacing: '-0.02em',
+					color: textColor,
+					whiteSpace: 'nowrap',
+				}}
+			>
+				<span>{pre}</span>
+				{match && (
+					<span
+						style={{
+							position: 'relative',
+							display: 'inline-block',
+							verticalAlign: 'baseline',
+							padding: '1px 9px',
+							marginLeft: 2,
+							marginRight: /^[.,;:?!)]/.test(post) ? 0 : 2,
+							fontWeight: 700,
+						}}
+					>
+						<span style={{color: PALETA_ANDROID.ink}}>{match}</span>
+						<span
+							aria-hidden
+							style={{
+								position: 'absolute',
+								inset: 0,
+								borderRadius: 9,
+								background: PALETA_ANDROID.ink,
+								color: PALETA_ANDROID.highlight,
+								padding: '1px 9px',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								clipPath: `inset(0 ${(1 - wipeT) * 100}% 0 0)`,
+							}}
+						>
+							{match}
+						</span>
+					</span>
+				)}
+				<span style={{marginLeft: match && /^[.,;:?!)]/.test(post) ? 2 : 0}}>{post}</span>
+			</div>
+		</div>
+	);
+};
+
+/** Dock editorial premium en zona segura inferior (y: 1412..1580) con máscaras encadenadas por línea. */
+const SubtitulosPremiumConMascara = () => {
+	const frame = useCurrentFrame();
+	const dockIn = progress(frame, 6, 20);
+	const dockOut = 1 - progress(frame, 1482, 16);
+	const dockOpacity = Math.min(dockIn, dockOut);
+
+	const activeIdx = SUBTITULOS_PRIVACY_DISPLAY_S26U.findIndex(
+		(c) => frame >= c.startFrame && frame <= c.endFrame,
+	);
+	const cue = activeIdx >= 0 ? SUBTITULOS_PRIVACY_DISPLAY_S26U[activeIdx] : undefined;
+
+	const localFrame = cue ? frame - cue.startFrame : 0;
+	const cueDuration = cue ? cue.endFrame - cue.startFrame : 60;
+	const tagReveal = cue ? progress(localFrame, 0, 18) : 0;
+	const tagExit = cue ? 1 - progress(localFrame, Math.max(20, cueDuration - 12), 12) : 0;
+	const cueRatio = cue
+		? Math.min(1, Math.max(0, localFrame / Math.max(1, cueDuration)))
+		: 0;
+	const indexLabel =
+		activeIdx >= 0
+			? `${String(activeIdx + 1).padStart(2, '0')} / ${String(SUBTITULOS_PRIVACY_DISPLAY_S26U.length).padStart(2, '0')}`
+			: '';
+
+	return (
+		<div
+			style={{
+				position: 'absolute',
+				left: ZONA_SEGURA_LUXLINE.x0,
+				top: 1412,
+				width: ANCHO_UTIL,
+				height: 168,
+				opacity: dockOpacity,
+				transform: `translateY(${(1 - dockIn) * 20}px)`,
+				borderRadius: 28,
+				background: 'rgba(255, 255, 255, 0.90)',
+				backdropFilter: 'blur(18px)',
+				WebkitBackdropFilter: 'blur(18px)',
+				border: '1.5px solid rgba(158, 158, 158, 0.42)',
+				boxShadow:
+					'inset 0 1px 0 rgba(255, 255, 255, 0.96), 0 20px 44px rgba(13, 13, 13, 0.08)',
+				padding: '16px 28px 18px',
+				boxSizing: 'border-box',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'space-between',
+				zIndex: 50,
+				pointerEvents: 'none',
+			}}
+		>
+			{cue ? (
+				<>
+					<div>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'space-between',
+								marginBottom: 8,
+							}}
+						>
+							<div
+								style={{
+									display: 'inline-flex',
+									alignItems: 'center',
+									gap: 8,
+									fontFamily: 'LuxlineMono',
+									fontSize: 17,
+									letterSpacing: '0.07em',
+									color: PALETA_ANDROID.secondary,
+									opacity: tagExit,
+									clipPath: `inset(0 ${(1 - tagReveal) * 100}% 0 0)`,
+								}}
+							>
+								<span
+									style={{
+										width: 7,
+										height: 7,
+										borderRadius: '50%',
+										background: PALETA_ANDROID.ink,
+										display: 'inline-block',
+									}}
+								/>
+								<span>{cue.tag}</span>
+							</div>
+							<div
+								style={{
+									fontFamily: 'LuxlineMono',
+									fontSize: 16,
+									color: PALETA_ANDROID.accent,
+									letterSpacing: '0.06em',
+									opacity: tagExit,
+								}}
+							>
+								{indexLabel}
+							</div>
+						</div>
+
+						<div
+							style={{
+								width: '100%',
+								height: 2,
+								borderRadius: 2,
+								background: PALETA_ANDROID.frosted,
+								overflow: 'hidden',
+							}}
+						>
+							<div
+								style={{
+									width: `${cueRatio * 100}%`,
+									height: '100%',
+									background: PALETA_ANDROID.ink,
+								}}
+							/>
+						</div>
+					</div>
+
+					<div style={{display: 'flex', flexDirection: 'column', gap: 2}}>
+						<LineaSubtituloMascara
+							text={cue.line1}
+							highlight={cue.highlight}
+							localFrame={localFrame}
+							cueDuration={cueDuration}
+							lineDelay={2}
+							isPrimaryLine={false}
+						/>
+						<LineaSubtituloMascara
+							text={cue.line2}
+							highlight={cue.highlight}
+							localFrame={localFrame}
+							cueDuration={cueDuration}
+							lineDelay={9}
+							isPrimaryLine
+						/>
+					</div>
+				</>
+			) : null}
+		</div>
+	);
+};
 
 /** Logo superior fijo dentro de la zona segura. */
 const BrandHeaderLogo = () => (
@@ -763,7 +1083,7 @@ const ShieldEmblem = ({size = 136}: {size?: number}) => (
 	</svg>
 );
 
-/** Escenas 1 y 2 (0–7 s, f0..420): el espía se asoma y la lupa se acerca leyendo la pantalla. */
+/** Escenas 1 y 2 (0–7 s, f0..420): el espía se asoma (gancho ¿Sabías que…?) y la lupa se acerca leyendo la pantalla. */
 const EscenasSpyIntro = () => {
 	const f = useCurrentFrame();
 	const spyShift = clampMix(f, 8, 44, -170, 0);
@@ -774,39 +1094,49 @@ const EscenasSpyIntro = () => {
 
 	return (
 		<SceneFade span={420}>
-			<CameraFollow targetX={600} targetY={956} centerX={525} centerY={950} strength={camZoom} zoom={1 + 0.11 * camZoom}>
-				<OwnerWithPhone phoneX={BASE_PHONE_X} phoneY={BASE_PHONE_Y} phoneW={BASE_PHONE_W} phoneH={BASE_PHONE_H} />
-				<SpyWithMagnifier
-					spyShiftX={spyShift}
-					lensCx={lensCx}
-					lensCy={lensCy}
-					lensR={108}
-					lensMode="zoom"
-					phoneX={BASE_PHONE_X}
-					phoneY={BASE_PHONE_Y}
-					phoneW={BASE_PHONE_W}
-					phoneH={BASE_PHONE_H}
-				/>
-			</CameraFollow>
+			<div style={DIORAMA_CLIP_STYLE}>
+				<CameraFollow
+					targetX={624}
+					targetY={858}
+					centerX={525}
+					centerY={880}
+					strength={camZoom}
+					zoom={1 + 0.12 * camZoom}
+				>
+					<div style={DIORAMA_WRAPPER_STYLE}>
+						<OwnerWithPhone
+							phoneX={BASE_PHONE_X}
+							phoneY={BASE_PHONE_Y}
+							phoneW={BASE_PHONE_W}
+							phoneH={BASE_PHONE_H}
+						/>
+						<SpyWithMagnifier
+							spyShiftX={spyShift}
+							lensCx={lensCx}
+							lensCy={lensCy}
+							lensR={108}
+							lensMode="zoom"
+							phoneX={BASE_PHONE_X}
+							phoneY={BASE_PHONE_Y}
+							phoneW={BASE_PHONE_W}
+							phoneH={BASE_PHONE_H}
+						/>
+					</div>
+				</CameraFollow>
+			</div>
 
 			<BrandHeaderLogo />
-			<MaskReveal
-				from={8}
-				duration={28}
-				style={{
-					position: 'absolute',
-					left: ZONA_SEGURA_LUXLINE.x0,
-					top: 344,
-					width: ANCHO_UTIL,
-					fontSize: 82,
-					fontWeight: 600,
-					lineHeight: 1.03,
-					letterSpacing: '-0.03em',
-					color: PALETA_ANDROID.ink,
-				}}
-			>
-				¿Te miran la pantalla?
-			</MaskReveal>
+			<SceneContextHeader
+				tag="¿SABÍAS QUE…?"
+				title="Una pantalla normal conserva ~40 % de lado"
+				from={6}
+				exitAt={216}
+			/>
+			<SceneContextHeader
+				tag="VISTA LATERAL"
+				title="Desde un costado se lee todo"
+				from={228}
+			/>
 		</SceneFade>
 	);
 };
@@ -824,20 +1154,25 @@ const EscenaQuickSettingsEscudo = () => {
 	return (
 		<SceneFade span={240}>
 			<BrandHeaderLogo />
+			<SceneContextHeader
+				tag="EXCLUSIVO GALAXY S26 ULTRA"
+				title="Privacy Display en un toque"
+				from={6}
+			/>
 
 			{!morphActive ? (
 				<div
 					style={{
 						position: 'absolute',
-						left: 344,
-						top: 470,
-						width: 392,
-						height: Math.round(392 * RATIO_S26U),
+						left: 362,
+						top: 486,
+						width: 356,
+						height: Math.round(356 * RATIO_S26U),
 						opacity: contentOutPhone,
 						filter: 'drop-shadow(0 28px 44px rgba(13, 13, 13, 0.16))',
 					}}
 				>
-					<GalaxyS26UFrame width={392} height={Math.round(392 * RATIO_S26U)}>
+					<GalaxyS26UFrame width={356} height={Math.round(356 * RATIO_S26U)}>
 						<PhoneScreenContent pinFocused={false} />
 						<div
 							style={{
@@ -989,8 +1324,8 @@ const EscenaQuickSettingsEscudo = () => {
 				</div>
 			) : (
 				<ObjectMorph
-					from={{x: 374, y: 700, width: 332, height: 108, radius: 28}}
-					to={{x: 280, y: 600, width: 520, height: 520, radius: 76}}
+					from={{x: 382, y: 710, width: 316, height: 102, radius: 28}}
+					to={{x: 290, y: 575, width: 500, height: 500, radius: 72}}
 					start={122}
 					duration={45}
 					style={{
@@ -1109,13 +1444,19 @@ const EscenaRotacion3D = () => {
 				{Math.round(angleDeg)}°
 			</div>
 
+			<SceneContextHeader
+				tag="ÁNGULO DE VISIÓN"
+				title="Brillo medido por ángulo"
+				from={4}
+			/>
+
 			<div
 				style={{
 					position: 'absolute',
-					left: 360,
-					top: 410,
-					width: 360,
-					height: Math.round(360 * RATIO_S26U), // 739 px
+					left: 392,
+					top: 472,
+					width: 296,
+					height: Math.round(296 * RATIO_S26U), // 608 px
 					perspective: 1200,
 					display: 'flex',
 					alignItems: 'center',
@@ -1128,8 +1469,8 @@ const EscenaRotacion3D = () => {
 							position: 'absolute',
 							left: '50%',
 							top: '50%',
-							width: 1211,
-							height: 1211,
+							width: 996,
+							height: 996,
 							transform: `translate(-50%, -50%) scaleX(${angleScaleX})`,
 							opacity: angleAssetWeight,
 							pointerEvents: 'none',
@@ -1145,8 +1486,8 @@ const EscenaRotacion3D = () => {
 				<div
 					style={{
 						position: 'relative',
-						width: 360,
-						height: Math.round(360 * RATIO_S26U),
+						width: 296,
+						height: Math.round(296 * RATIO_S26U),
 						transformStyle: 'preserve-3d',
 						transform: `rotateY(${angleDeg}deg)`,
 						filter: 'drop-shadow(0 30px 48px rgba(13, 13, 13, 0.18))',
@@ -1176,7 +1517,7 @@ const EscenaRotacion3D = () => {
 					))}
 
 					<div style={{position: 'absolute', inset: 0, transform: 'translateZ(2px)'}}>
-						<GalaxyS26UFrame width={360} height={Math.round(360 * RATIO_S26U)} darkness={darkness}>
+						<GalaxyS26UFrame width={296} height={Math.round(296 * RATIO_S26U)} darkness={darkness}>
 							<PhoneScreenContent pinFocused={false} />
 						</GalaxyS26UFrame>
 					</div>
@@ -1187,18 +1528,18 @@ const EscenaRotacion3D = () => {
 				style={{
 					position: 'absolute',
 					left: ZONA_SEGURA_LUXLINE.x0,
-					top: 1220,
+					top: 1126,
 					width: ANCHO_UTIL,
 					display: 'flex',
 					flexDirection: 'column',
-					gap: 22,
+					gap: 18,
 				}}
 			>
 				<div
 					style={{
 						width: '100%',
-						height: 14,
-						borderRadius: 7,
+						height: 12,
+						borderRadius: 6,
 						background: PALETA_ANDROID.frosted,
 						overflow: 'hidden',
 						border: `1px solid ${PALETA_ANDROID.accent}`,
@@ -1215,12 +1556,12 @@ const EscenaRotacion3D = () => {
 
 				<div style={{display: 'flex', gap: 18, width: '100%'}}>
 					{marcas.map((m, idx) => (
-						<ChainMove key={m.texto} from={8 + starts[idx]} duration={30} dy={26} dx={0} style={{flex: 1}}>
+						<ChainMove key={m.texto} from={8 + starts[idx]} duration={30} dy={24} dx={0} style={{flex: 1}}>
 							<div
 								style={{
-									height: 184,
-									borderRadius: 28,
-									padding: '22px 18px',
+									height: 158,
+									borderRadius: 26,
+									padding: '18px 16px',
 									boxSizing: 'border-box',
 									background: m.activa ? PALETA_ANDROID.ink : PALETA_ANDROID.highlight,
 									color: m.activa ? PALETA_ANDROID.highlight : PALETA_ANDROID.ink,
@@ -1236,7 +1577,7 @@ const EscenaRotacion3D = () => {
 									<div
 										style={{
 											fontFamily: 'LuxlineDisplay',
-											fontSize: 32,
+											fontSize: 31,
 											fontWeight: 700,
 											lineHeight: 1.18,
 											letterSpacing: '-0.02em',
@@ -1269,26 +1610,37 @@ const EscenaEspiaSoloNegro = () => {
 
 	return (
 		<SceneFade span={240}>
-			<CameraFollow targetX={585} targetY={945} centerX={525} centerY={950} strength={camZoom} zoom={1 + 0.09 * camZoom}>
-				<OwnerWithPhone
-					phoneX={BASE_PHONE_X}
-					phoneY={BASE_PHONE_Y + 34}
-					phoneW={BASE_PHONE_W}
-					phoneH={BASE_PHONE_H}
-					phoneRotationDeg={orientRot}
-					screenDarkness={0.96}
-					pinLockedBadge
-					showHorizontalHint={f >= 10 && f < 96}
-				/>
-				<SpyWithMagnifier
-					spyShiftX={spyShift}
-					lensCx={655}
-					lensCy={990}
-					lensR={108}
-					lensMode="black"
-					showQuestionMarkProgress={questionPop}
-				/>
-			</CameraFollow>
+			<div style={DIORAMA_CLIP_STYLE}>
+				<CameraFollow
+					targetX={612}
+					targetY={858}
+					centerX={525}
+					centerY={880}
+					strength={camZoom}
+					zoom={1 + 0.1 * camZoom}
+				>
+					<div style={DIORAMA_WRAPPER_STYLE}>
+						<OwnerWithPhone
+							phoneX={BASE_PHONE_X}
+							phoneY={BASE_PHONE_Y + 34}
+							phoneW={BASE_PHONE_W}
+							phoneH={BASE_PHONE_H}
+							phoneRotationDeg={orientRot}
+							screenDarkness={0.96}
+							pinLockedBadge
+							showHorizontalHint={f >= 10 && f < 96}
+						/>
+						<SpyWithMagnifier
+							spyShiftX={spyShift}
+							lensCx={655}
+							lensCy={990}
+							lensR={108}
+							lensMode="black"
+							showQuestionMarkProgress={questionPop}
+						/>
+					</div>
+				</CameraFollow>
+			</div>
 
 			<BrandHeaderLogo />
 			<MaskReveal
@@ -1297,11 +1649,11 @@ const EscenaEspiaSoloNegro = () => {
 				style={{
 					position: 'absolute',
 					left: ZONA_SEGURA_LUXLINE.x0,
-					top: 334,
+					top: 328,
 					width: ANCHO_UTIL,
-					fontSize: 66,
-					fontWeight: 600,
-					lineHeight: 1.05,
+					fontSize: 58,
+					fontWeight: 700,
+					lineHeight: 1.06,
 					letterSpacing: '-0.03em',
 					color: PALETA_ANDROID.ink,
 				}}
@@ -1316,9 +1668,9 @@ const EscenaEspiaSoloNegro = () => {
 				style={{
 					position: 'absolute',
 					left: ZONA_SEGURA_LUXLINE.x0,
-					top: 416,
+					top: 404,
 					width: ANCHO_UTIL,
-					fontSize: 42,
+					fontSize: 38,
 					fontWeight: 500,
 					lineHeight: 1.15,
 					letterSpacing: '-0.02em',
@@ -1343,23 +1695,23 @@ const EscenaCierreLogo = () => {
 				<div
 					style={{
 						position: 'absolute',
-						left: 360,
-						top: 500,
-						width: 360,
-						height: Math.round(360 * RATIO_S26U),
+						left: 370,
+						top: 460,
+						width: 340,
+						height: Math.round(340 * RATIO_S26U),
 						opacity: phoneFadeOut,
 						transform: `scale(${interpolate(phoneFadeOut, [0, 1], [0.88, 1])})`,
 					}}
 				>
-					<GalaxyS26UFrame width={360} height={Math.round(360 * RATIO_S26U)}>
+					<GalaxyS26UFrame width={340} height={Math.round(340 * RATIO_S26U)}>
 						<PhoneScreenContent pinLockedBadge />
 					</GalaxyS26UFrame>
 				</div>
 			)}
 
 			<ObjectMorph
-				from={{x: 360, y: 500, width: 360, height: 739, radius: 36}}
-				to={{x: 205, y: 560, width: 670, height: 260, radius: 48}}
+				from={{x: 370, y: 460, width: 340, height: 698, radius: 36}}
+				to={{x: 205, y: 455, width: 670, height: 246, radius: 46}}
 				start={2}
 				duration={46}
 				style={{
@@ -1377,7 +1729,7 @@ const EscenaCierreLogo = () => {
 					src={staticFile(PRIVACY_S26U_ASSETS.logo)}
 					style={{
 						width: 540,
-						height: 170,
+						height: 164,
 						objectFit: 'contain',
 						opacity: logoReveal,
 						transform: `scale(${0.92 + 0.08 * logoReveal})`,
@@ -1391,10 +1743,10 @@ const EscenaCierreLogo = () => {
 				style={{
 					position: 'absolute',
 					left: ZONA_SEGURA_LUXLINE.x0,
-					top: 900,
+					top: 760,
 					width: ANCHO_UTIL,
 					textAlign: 'center',
-					fontSize: 74,
+					fontSize: 70,
 					fontWeight: 600,
 					lineHeight: 1.06,
 					letterSpacing: '-0.03em',
@@ -1412,7 +1764,7 @@ const EscenaCierreLogo = () => {
 				style={{
 					position: 'absolute',
 					left: ZONA_SEGURA_LUXLINE.x0,
-					top: 1090,
+					top: 965,
 					width: ANCHO_UTIL,
 					display: 'flex',
 					justifyContent: 'center',
@@ -1515,40 +1867,35 @@ export const PrivacyDisplayS26U: React.FC<PrivacyDisplayS26UProps> = ({
 					<EscenaCierreLogo />
 				</Sequence>
 
-				{conAudio && (
-					<>
-						{/* Locución en tuteo (ElevenLabs - Brian) */}
-						{VOCES_PRIVACY_DISPLAY_S26U.map((v) => (
-							<Sequence
-								key={v.id}
-								from={v.from}
-								durationInFrames={v.durationInFrames}
-							>
-								<Audio src={staticFile(v.src)} volume={1.0} />
-							</Sequence>
-						))}
+				<SpeechVisualSync
+					mode={privacyCues.mode as 'sales'}
+					voiceApproved={privacyCues.voiceApproved}
+					simulation={privacyCues.simulation}
+					transcripcion={privacyCues}
+					dictionary={PRIVACY_S26U_WORD_ASSETS}
+				/>
 
-						{/* Efectos de sonido tonales CC0 integrados */}
-						{CUES_SFX_PRIVACY_DISPLAY_S26U.map((cue) => {
-							const efecto = obtenerEfectoPorId(cue.efectoId);
-							if (!efecto) return null;
-							return (
-								<Sequence
-									key={`sfx-${cue.efectoId}-${cue.cuadro}`}
-									from={cue.cuadro}
-									durationInFrames={Math.round(efecto.duracion_s * 60)}
-								>
-									<Audio
-										src={staticFile(
-											`biblioteca/${efecto.archivo_relativo_biblioteca}`,
-										)}
-										volume={cue.volumen * 0.45}
-									/>
-								</Sequence>
-							);
-						})}
-					</>
-				)}
+				<SubtitulosPremiumConMascara />
+
+				{conAudio &&
+					CUES_SFX_PRIVACY_DISPLAY_S26U.map((cue) => {
+						const efecto = obtenerEfectoPorId(cue.efectoId);
+						if (!efecto) return null;
+						return (
+							<Sequence
+								key={`sfx-${cue.efectoId}-${cue.cuadro}`}
+								from={cue.cuadro}
+								durationInFrames={Math.round(efecto.duracion_s * 60)}
+							>
+								<Audio
+									src={staticFile(
+										`biblioteca/${efecto.archivo_relativo_biblioteca}`,
+									)}
+									volume={cue.volumen * 0.45}
+								/>
+							</Sequence>
+						);
+					})}
 			</div>
 		</AbsoluteFill>
 	);
