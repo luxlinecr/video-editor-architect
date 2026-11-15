@@ -5,7 +5,7 @@
   "durationInFrames": 1500,
   "voiceApproved": false,
   "simulation": false,
-  "note": "Guion formato '¿Sabías que…?' en tuteo con subtítulos editoriales con máscara. Sin voz generada: listo para que el creador agregue su propia locución y active voiceApproved=true con tiempos reales.",
+  "note": "Guion formato '¿Sabías que…?' en tuteo sin voz generada ni subtítulos rápidos en pantalla: listo para que el creador agregue su propia locución y active voiceApproved=true con tiempos reales.",
   "lines": [
     {
       "id": "sub-01",

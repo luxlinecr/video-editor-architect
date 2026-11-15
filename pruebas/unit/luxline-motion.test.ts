@@ -17,7 +17,6 @@ import {
 	PALETA_ANDROID,
 	PRIVACY_S26U_ASSETS,
 	PRIVACY_S26U_WORD_ASSETS,
-	SUBTITULOS_PRIVACY_DISPLAY_S26U,
 	brilloDesdeAngulo,
 } from '../../src/reel/motion/luxline/PrivacyDisplayS26U';
 import privacyCues from '../../src/reel/motion/luxline/privacy-s26u-cues.json';
@@ -116,26 +115,13 @@ describe('luxline motion — zona segura del editor y curvas', () => {
 	});
 });
 
-describe('Luxline-PrivacyDisplay-S26U — subtítulos con máscara "¿Sabías que…?", paleta y assets', () => {
-	it('mantiene el guion "¿Sabías que…?" en tuteo con 11 subtítulos ordenados sin locución generada', () => {
+describe('Luxline-PrivacyDisplay-S26U — formato "¿Sabías que…?" sin subtítulos rápidos ni voz generada', () => {
+	it('conserva los metadatos base de "¿Sabías que…?" sin locución generada y con cues listos para voz aprobada', () => {
 		expect(privacyCues.compositionId).toBe('Luxline-PrivacyDisplay-S26U');
 		expect(privacyCues.fps).toBe(60);
 		expect(privacyCues.durationInFrames).toBe(1500);
 		expect(privacyCues.voiceApproved).toBe(false);
 		expect(privacyCues.simulation).toBe(false);
-		expect(SUBTITULOS_PRIVACY_DISPLAY_S26U).toHaveLength(11);
-		expect(SUBTITULOS_PRIVACY_DISPLAY_S26U[0].text).toContain('¿Sabías que');
-		expect(SUBTITULOS_PRIVACY_DISPLAY_S26U[0].text).toContain('~40 %');
-
-		for (let i = 0; i < SUBTITULOS_PRIVACY_DISPLAY_S26U.length; i++) {
-			const c = SUBTITULOS_PRIVACY_DISPLAY_S26U[i];
-			expect(c.endFrame).toBeGreaterThan(c.startFrame);
-			expect(c.startFrame).toBeGreaterThanOrEqual(0);
-			expect(c.endFrame).toBeLessThanOrEqual(1500);
-			if (i > 0) {
-				expect(c.startFrame).toBeGreaterThan(SUBTITULOS_PRIVACY_DISPLAY_S26U[i - 1].endFrame);
-			}
-		}
 
 		for (const item of Object.values(PRIVACY_S26U_WORD_ASSETS)) {
 			expect(esAssetProhibido(item.src)).toBe(false);
@@ -148,7 +134,7 @@ describe('Luxline-PrivacyDisplay-S26U — subtítulos con máscara "¿Sabías qu
 		}
 	});
 
-	it('usa solo assets autorizados, registra la composición en Root.tsx y cumple los textos y curva de brillo', () => {
+	it('usa solo assets autorizados, omite subtítulos rápidos y cumple los textos y curva de brillo', () => {
 		expect(PALETA_ANDROID.background).toBe('#F6F5F2');
 		for (const ruta of Object.values(PRIVACY_S26U_ASSETS)) {
 			expect(esAssetProhibido(ruta)).toBe(false);
@@ -164,6 +150,7 @@ describe('Luxline-PrivacyDisplay-S26U — subtítulos con máscara "¿Sabías qu
 
 		const compSrc = readFileSync(resolve('src/reel/motion/luxline/PrivacyDisplayS26U.tsx'), 'utf8');
 		for (const requerido of [
+			'SceneContextHeader',
 			'¿SABÍAS QUE…?',
 			'Privacy Display',
 			'0° = 100 %',
@@ -173,11 +160,12 @@ describe('Luxline-PrivacyDisplay-S26U — subtítulos con máscara "¿Sabías qu
 			'Puede activarse sola con tu PIN',
 			'Tu pantalla, solo para ti.',
 			'Galaxy S26 Ultra · luxline.tech',
-			'SubtitulosPremiumConMascara',
 			'SpeechVisualSync',
 		]) {
 			expect(compSrc).toContain(requerido);
 		}
+		expect(compSrc).not.toContain('SubtitulosPremiumConMascara');
+		expect(compSrc).not.toContain('SUBTITULOS_PRIVACY_DISPLAY_S26U');
 		expect(compSrc).not.toContain('Se activa al poner tu PIN');
 		expect(compSrc).not.toContain('VOCES_PRIVACY_DISPLAY_S26U');
 		for (const prohibido of ASSETS_PROHIBIDOS_VIDEO) {
